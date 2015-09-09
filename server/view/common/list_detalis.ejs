@@ -1,0 +1,90 @@
+<%if(isHead=='true'){%>
+<html>
+<head>
+    <%include head.ejs%>
+</head>
+<body>
+<div id="pageContent" style="height: 100%;width: 100%;">
+<%}%>
+<div class="list_confirm_p07">
+
+    来自<%= ordersDetail[0].supplyName %>供应商
+    <div class="price_offerq">
+        <div class="price_offer_w " style="width: 25%">菜名</div>
+        <div class="price_offer_w" style="width: 25%">单价<sub>(元)</sub></div>
+        <div class="price_offer_w" style="width: 25%">单位</div>
+        <div class="price_offer_w" style="width: 25%">数量</div>
+    </div>
+</div>
+<ul class="price_list_copy">
+
+    <% for(var i = 0;i < ordersDetail[0].orderItem.length;i++) {
+
+        var subItem = ordersDetail[0].orderItem[i];
+    %>
+    <li class="tan" >
+        <div class="name" style="text-align:left;width:25%;display:block;"><%= subItem.materialName %></div>
+        <div class="money" style="width:25%;">￥<%= subItem.materialPrice %></div>
+        <div style="width:25%;"><%= subItem.unit %></div>
+        <div class="num" style="width:25%;"><%= subItem.number %></div>
+        <div class="beizhu" style="font-size: 12px;
+  line-height: 14px;
+  width: auto;
+  margin-top:-5px ;
+  color: #7B7A7A;overflow : hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+text-align: left;
+padding-left: 10px;
+clear: both;
+-webkit-box-orient: vertical;
+margin-top: 10px;"><%= subItem.remark %>
+        </div>
+    </li>
+
+    <%}%>
+</ul>
+    <div style="font-size: 15px; padding: 10px 15px;color: red;">
+        订购总额：￥<span id="sum" class="pricew"> 0</span>
+    </div>
+<div class="add_tem eed" style="padding-top: 0">
+    <a href="javascript:pageLoad('/queryOrderDetails?orderId=<%=ordersDetail[0]._id%>')" class="button_l" style="background-color: #39CB74;margin-top: 2px;margin-bottom: 0px;color: #FFFFFF">订单详情</a>
+</div>
+<% if(ordersDetail[0].orderStatus == 'N' || ordersDetail[0].orderStatus == 'S'){ %> <!--表示已下单-->
+
+<div style="font-size: 15px; padding: 10px 15px;color: #39CB74;border-top: 1px dashed #979797;margin-bottom: 110px">
+    下单人：<%= ordersDetail[0].comfirmeUserName %>
+</div>
+
+<% }else if(ordersDetail[0].orderStatus == 'R'){ %>
+<div style="font-size: 20px; padding: 10px 15px;color: red;margin-bottom: 160px">
+    收货人：<%= ordersDetail[0].receiver %>
+</div>
+<% } %>
+    <div style="width: 100px;height: 60px;">
+
+    </div>
+<script>
+    var tan = document.querySelectorAll(".tan")
+    for(var i = 0;i<tan.length;i++){
+        changan(tan[i],tan[i].querySelectorAll(".name")[0].innerText)
+    }
+    var li = document.querySelectorAll(".tan")
+    var pricew = 0
+    for (var a = 0; a < li.length; a++) {
+        var money = li[a].querySelectorAll('.money')[0].innerHTML;
+        var moneyq = money.substring(1, money.length)
+        var materialNumber = li[a].querySelectorAll('.num')[0].innerHTML;
+        var price = new Decimal(moneyq).times(new Decimal(materialNumber));
+        pricew=new Decimal(pricew).plus(new Decimal(price));
+    }
+    document.querySelectorAll('.pricew')[0].innerHTML = pricew;
+
+
+</script>
+<%if(isHead=='true'){%>
+</div>
+</body>
+</html>
+<%}%>

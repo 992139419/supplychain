@@ -1,0 +1,274 @@
+<ul class="price_list_copy list_copy_4" style="margin-bottom: 10px">
+
+    <li class="title" >
+        <div style="width: 25%">菜名</div>
+        <div style="width: 25%">单位</div>
+        <div style="width: 25%">单价<sub>(元)</sub></div>
+        <div style="width: 25%">数量</div>
+    </li>
+    <% JSON.parse(orderMaterialArray).forEach(function(orderMaterial){ %>
+    <li  name='material' class="material tan" id="<%= orderMaterial.materialId %>" style="padding-top: 20px;padding-right: 20px;">
+        <div style="width: 25%;padding-left:15px;text-align: left;" class="icon name">
+            <span class="pingm"
+                  style="display:block;"> <%= orderMaterial.materialName %></span>
+
+        </div>
+        <div style="height: 20px;line-height: 20px;width: 25%">
+            <div class="number danw" style="margin-top: -7px"> <%= orderMaterial.unit %></div>
+        </div>
+        <div style="width: 25%; margin-top: -2px;height: 20px; line-height: 20px;">
+            <div id="number_<%= orderMaterial.materialId %>" class="number danjia"
+                 style="margin: auto; margin-top: -6px;"><%= orderMaterial.materialPrice %></div>
+        </div>
+        <div style="width: 25%;margin-top: -17px">
+            <div name="number" id="<%= orderMaterial.materialId %>" class="number shuliang" ><%= orderMaterial.number %></div>
+        </div>
+
+        <div class="c"></div>
+        <div class="beizhu" style="  font-size: 12px;
+  line-height: 14px;
+  width: auto;
+  color: #7B7A7A;overflow : hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+text-align: left;
+padding-left: 10px;
+-webkit-box-orient: vertical;"><%= orderMaterial.remark %>
+        </div>
+    </li>
+
+    <div class="new_template"
+         style="width: auto;margin-bottom: 10px;  height: 130px;border-bottom: 1px solid #979797; display: none;padding: 3px 15px;clear: both">
+        <div class="keyboard_q" style=" margin-left:-15px; margin-right: -15px; width: auto; margin-bottom: 10px;display:block">
+
+            <div>
+                <div>1</div>
+            </div>
+            <div>
+                <div>2</div>
+            </div>
+            <div>
+                <div>3</div>
+            </div>
+            <div>
+                <div>4</div>
+            </div>
+            <div>
+                <div>5</div>
+            </div>
+            <div>
+                <div>6</div>
+            </div>
+            <div>
+                <div>7</div>
+            </div>
+            <div>
+                <div>8</div>
+            </div>
+            <div>
+                <div>9</div>
+            </div>
+            <div>
+                <div>0</div>
+            </div>
+            <div>
+                <div>.</div>
+            </div>
+            <div style="width: 12%">
+                <div class="dele_qq">⬅️</div>
+            </div>
+        </div>
+        <div class="keyboard_w" style="display:block">
+
+            <div style="width: 20%; text-align: center;height:30px;float: left;line-height: 30px">单位</div>
+            <input type="text" style="height: 30px;width: 75%;text-align:left; border-radius:10px "
+                   value="<%= orderMaterial.unit %>">
+
+            <div class="c" style="height: 10px"></div>
+            <div style="width: 20%; text-align: center;height:30px;float: left;line-height: 30px">备注</div>
+            <textarea style="width: 75%; border-radius:10px" name="textarea" cols="10" rows="3"
+                  placeholder="<%= orderMaterial.remark %>"></textarea>
+        </div>
+    </div>
+    <% }) %>
+</ul>
+<div style="font-size: 15px; padding: 10px 15px;color: red;border-bottom: 1px dashed #979797;">
+    订购总额：￥<span id="sum" class="pricew"> 0</span>
+</div>
+
+<div style="height: 110px;width: 100%">
+    </div>
+<div class="add_tem">
+    <div class="add_w">
+        <a class="add_w_w_q"
+           href="javascript:commit()">选择常联系餐厅</a>
+    </div>
+</div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    var biaoji = 1
+    var hei = document.querySelectorAll(".add_tem")[0];
+    guding(hei,100)
+
+    count();
+
+    var tan = document.querySelectorAll(".tan")
+    for (var i = 0; i < tan.length; i++) {
+        changan(tan[i], tan[i].querySelectorAll('.name')[0].innerText)
+    }
+
+    //初始化总额
+    function count(){
+        var li = document.querySelectorAll(".material")
+        var pricew = 0;
+        for (var a = 0; a < li.length; a++) {
+            var money = li[a].querySelectorAll('.danjia')[0].innerHTML;
+            //var moneyq = money.substring(1, money.length)
+            var number = li[a].querySelectorAll('.shuliang')[0].innerHTML;
+            var price =  new Decimal(money).times(new Decimal(number));
+            pricew=new Decimal(pricew).plus(new Decimal(price));
+        }
+        document.querySelectorAll('.pricew')[0].innerHTML = pricew
+    }
+
+
+    var jj =0
+    var li = document.querySelectorAll(".number");
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            biaoji = 2
+            var inpu = this.innerHTML;
+            this.parentNode.parentNode.nextElementSibling.querySelectorAll('input')[0].value = inpu
+            var keyboard_q = document.querySelectorAll(".keyboard_q")
+            var keyboard_w = document.querySelectorAll(".keyboard_w")
+            if (this.className == "number danw") {
+                if (this.parentNode.parentNode.nextElementSibling.querySelectorAll(".keyboard_w")[0].style.display == 'block'&&this.parentNode.parentNode.nextElementSibling.style.display == 'block') {
+                    new_template()
+                } else {
+                    new_template()
+                    this.parentNode.parentNode.nextElementSibling.style.display = "block"
+
+                }
+                for (var a = 0; a < keyboard_q.length; a++) {
+                    keyboard_q[a].style.display = 'none'
+                }
+                for (var a = 0; a < keyboard_w.length; a++) {
+                    keyboard_w[a].style.display = 'block'
+                }
+            }else if(this.className == "number danjia"){
+
+                if (this.parentNode.parentNode.nextElementSibling.querySelectorAll(".keyboard_q")[0].style.display == 'block'&&this.parentNode.parentNode.nextElementSibling.style.display == 'block'&&jj==1) {
+                    new_template()
+                } else {
+                    new_template()
+                    this.parentNode.parentNode.nextElementSibling.style.display = "block"
+                }
+                for (var a = 0; a < keyboard_q.length; a++) {
+                    keyboard_q[a].style.display = 'block'
+
+                }
+                for (var a = 0; a < keyboard_w.length; a++) {
+                    keyboard_w[a].style.display = 'none'
+                }
+                jj=1
+            }else if(this.className == "number shuliang"){
+                if (this.parentNode.parentNode.nextElementSibling.querySelectorAll(".keyboard_q")[0].style.display == 'block'&&this.parentNode.parentNode.nextElementSibling.style.display == 'block'&&jj==2) {
+                    new_template()
+                } else {
+
+                    new_template()
+                    this.parentNode.parentNode.nextElementSibling.style.display = "block"
+
+                }
+                for (var a = 0; a < keyboard_q.length; a++) {
+                    keyboard_q[a].style.display = 'block'
+                }
+                for (var a = 0; a < keyboard_w.length; a++) {
+                    keyboard_w[a].style.display = 'none'
+                }
+                jj=2
+            }
+        }
+    }
+    function new_template() {
+        var new_template = document.querySelectorAll(".new_template")
+        for (var a = 0; a < new_template.length; a++) {
+            new_template[a].style.display = 'none'
+        }
+    }
+    var boot = document.querySelectorAll("input")
+    for (var a = 0; a < boot.length; a++) {
+        boot[a].oninput = function () {
+            var inpu = this.value;
+            this.parentNode.parentNode.previousElementSibling.querySelectorAll('.danw')[0].innerHTML = inpu
+        }
+    }
+    var boot = document.querySelectorAll("textarea")
+    for (var a = 0; a < boot.length; a++) {
+        boot[a].oninput = function () {
+            var inpu = this.value;
+            this.parentNode.parentNode.previousElementSibling.querySelectorAll('.beizhu')[0].innerHTML = inpu
+        }
+    }
+
+    function commit() {
+        var orderMaterialArray = JSON.parse('<%-orderMaterialArray%>');
+        var materials = document.getElementsByName('material');
+        var sum = document.getElementById('sum').innerText;
+        for (var i = 0; i < materials.length; i++) {
+            for (var j = 0; j < orderMaterialArray.length; j++) {
+                if (orderMaterialArray[j].materialId == materials[i].id) {
+                    orderMaterialArray[j].unit = materials[i].querySelectorAll('.danw')[0].innerText;
+                    orderMaterialArray[j].remark = materials[i].querySelectorAll('.beizhu')[0].innerText;
+                    orderMaterialArray[j].materialPrice = materials[i].querySelectorAll('.danjia')[0].innerText;
+                    orderMaterialArray[j].number = materials[i].querySelectorAll('.shuliang')[0].innerText;
+                    break;
+                }
+            };
+        }
+        var url = '/chooseContactDist';
+        var data = {
+            orderItem:JSON.stringify(orderMaterialArray),
+            sum:sum
+        }
+        pageLoadPost(url,data,'新增配送单',true,'post');
+    }
+
+    var input = document.querySelectorAll(".keyboard_q div div")
+    for (var a = 0; a < input.length; a++) {
+        input[a].onclick = function (e) {
+            if(biaoji ==2){
+                this.parentNode.parentNode.parentNode.previousElementSibling.querySelectorAll('.number')[jj].innerHTML = "0.00"
+            }
+            var fu = this.parentNode.parentNode.parentNode.previousElementSibling.querySelectorAll('.number')[jj].innerHTML
+            var clas = this.getAttribute('class')
+            if (clas == 'dele_qq') {
+                if (fu == '0.00'|| fu == '0') {
+                } else {
+                    if (fu.length == 1) {
+                        var zi = '0.00'
+                    } else {
+                        var zi = fu.substring(0, fu.length - 1)
+                    }
+                    this.parentNode.parentNode.parentNode.previousElementSibling.querySelectorAll('.number')[jj].innerHTML = zi
+                }
+            }
+            else {
+                if (fu == '0.00'|| fu == '0') {
+                    var zi = this.innerHTML
+                    this.parentNode.parentNode.parentNode.previousElementSibling.querySelectorAll('.number')[jj].innerHTML = zi
+                } else {
+                    var zi = fu + this.innerHTML
+                    this.parentNode.parentNode.parentNode.previousElementSibling.querySelectorAll('.number')[jj].innerHTML = zi
+                }
+            }
+            count();
+            biaoji = 1
+        }
+    }
+</script>

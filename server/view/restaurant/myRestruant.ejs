@@ -1,0 +1,36 @@
+<dl class="template">
+    <dt>
+    <ul>
+        <li>餐厅名</li>
+        <li>电话</li>
+    </ul>
+    </dt>
+    <div class="hei" style="min-height: 100%;width: 100%">
+
+        <dd>
+            <ul id="template" style="margin-bottom: 60px">
+                <% mechanismArray.forEach(function(mechanism){ %>
+                <a href="javascript:pageLoad('/queryMechanismDetails?mechanismId=<%=mechanism._id%>')">
+                    <li  id="<%= mechanism._id %>">
+                        <div class="template_new_q">
+                            <div><%= mechanism.name %></div>
+                            <div><%= mechanism.telephone %></div>
+                        </div>
+                    </li>
+                </a>
+                <% }) %>
+            </ul>
+        </dd>
+    </div>
+</dl>
+<% if(userAuth == '1' && userType == '1'){ %>
+<div class="new_add_template_7"onclick="javaScript:pageLoad('/addChainRestaurantPage')">
+    <div class="new_add_template_7_q">
+    </div>
+    <div class="new_add_template_7_w">
+    </div>
+</div>
+<% } %>
+<script type="text/javascript">
+
+</script>

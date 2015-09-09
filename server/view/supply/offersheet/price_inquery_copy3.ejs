@@ -1,0 +1,70 @@
+<div class="bj" style="background-color: #F7F7F7;background-image: none">
+
+</div>
+<div class="price_inquery price_inquer">
+
+    <div class="price_inquery_w">
+        <a href="javascript:pageLoad('/qryOfferSheet')">
+            <div class="price_inquery_w_q nwe_price_inquee">
+                <div class="new_add_price" style="background-color: #F5F5F7;color: #636366;">报价单</div>
+            </div>
+        </a>
+        <a href="javascript:pageLoad('/supPriceInquery')">
+            <div class="price_inquery_w_w ">
+                <div style="color: #30cc72">询价单</div>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="c"></div>
+<ul class="price_list_copy list_copy_4" style="margin-top: 10px">
+    <li style="  height: 44px;
+  padding-top: 0;
+  line-height: 44px;">
+        <div> 餐厅名</div>
+        <div>日期</div>
+    </li>
+</ul>
+
+<ul class="new_price_copuyq" style="margin-top: 0px;margin-bottom: 55px">
+    <% JSON.parse(inquerySheets).forEach(function(inquerySheet){ %>
+    <a href="javascript:pageLoad('/qryInqueryById?oId=<%= inquerySheet._id %>')">
+        <li>
+            <div class="new_price_copuyq_q">
+                <div><%= inquerySheet.restruantName %>
+                        </div>
+                <div><%= inquerySheet.createdAt %></div>
+
+            </div>
+            <div id="<%= inquerySheet._id %>" style="clear:both;margin-left: 15px; position: inherit!important;" class="new_price_copuyq_w">
+
+            </div>
+        </li>
+    </a>
+    <% }) %>
+</ul>
+<% include ../template/bottom.ejs %>
+<script language="JavaScript">
+    var inquerySheets = JSON.parse('<%-inquerySheets%>');
+    inquerySheets.forEach(function (inquerySheet) {
+        var str = '';
+        var i = 0;
+        var num = 0;
+        inquerySheet.materials.forEach(function (material) {
+            if (material.isInquery === '1') {
+                num++;
+                if (i < 1) {
+                    str += material.material_name + '/';
+                    i++;
+                }
+            }
+        });
+        str += '...共' + num + '种';
+        document.getElementById(inquerySheet._id).innerText = str;
+
+    });
+
+    document.title = '<%=title%>';
+
+
+</script>

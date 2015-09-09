@@ -1,0 +1,28 @@
+<div class="swiper-slide red-slide">
+    <ul class="user_defined_copy">
+        <% for(var i = 0;i < material.length;i++){ %>
+        <li onclick="getSupplyDetails('<%= material[i]._id %>')" id='<%= material[i]._id %>'>
+
+            <div class="content">
+                <div class="content_new_q"><%= material[i].name %></div>
+                <img src="images/live.png"
+                     style="  width: 22px; margin-top: -4px;">
+                <span class="content_q">￥：<%= material[i].minPrice?material[i].minPrice:'0' %>/<%= material[i].unit %></span>
+
+                <div class="content_q">
+                    共<%= material[i].supplyNum?material[i].supplyNum:'0' %>家供应商报价<br>
+                    本地指导价 ￥<%= material[i].price?material[i].price:'0' %>/<%= material[i].unit %>
+                </div>
+            </div>
+        </li>
+        <% } %>
+    </ul>
+</div>
+<script type="text/javascript">
+
+    //获取供应商价格列表
+    function getSupplyDetails(id) {
+        pageLoad("/getSupplyPrice?id=" + id);
+    }
+
+</script>

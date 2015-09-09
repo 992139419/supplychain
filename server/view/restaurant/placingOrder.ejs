@@ -1,0 +1,45 @@
+<ul class="price_list_copy">
+    <li class="title">
+        <div> 菜名</div>
+        <div>单位</div>
+        <div>价格<sub>(元)</sub></div>
+    </li>
+    <div class="content">
+        <div class="content-inner">
+            <div class="container">
+                <div class="tile-wrap">
+                    <%for(var i=0;i<offerSheet.materials.length;i++){
+                        var material=offerSheet.materials[i];
+                    %>
+                    <div class="tile tile-collapse tile-collapse-full">
+                        <div class="tile-toggle" data-parent=".content" data-target="#tile-collapse-10"
+                             data-toggle="tile">
+                            <ul>
+
+                                <li  style="height: 58px;" name="orderItem">
+                                    <div id="<%=material.material_id.toString()%>"><%=material.material_name%></div>
+                                    <div  id="<%=material.unit%>" ><%=material.unit%></div>
+                                    <div  id="<%=material.price%>" >￥<%=material.price%></div>
+
+                                </li>
+                            </ul>
+                        </div>
+
+                        </div>
+                    </div>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+    </div>
+</ul>
+
+
+
+<script src="js/base.min.js"></script>
+
+
+
+
+
+

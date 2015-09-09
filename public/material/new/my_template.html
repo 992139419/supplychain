@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    @@include('../formation/head.html')
+</head>
+<body>
+<dl class="template">
+    <dt>
+    <ul>
+        <li>模版名</li>
+        <li>创建时间</li>
+    </ul>
+    </dt>
+    <dd>
+        <ul>
+            <li><div>模版一</div><div>2015.05.15<div class="icon icon-keyboard-arrow-right"></div><a class="dele">删除</a></div>  </li>
+            <li><div>模版二</div><div>2015.05.15<div class="icon icon-keyboard-arrow-right"></div><a class="dele">删除</a></div></li>
+            <li><div>模版三</div><div>2015.05.15<div class="icon icon-keyboard-arrow-right"></div><a class="dele">删除</a></div></li>
+        </ul>
+    </dd>
+
+</dl>
+<div class="add_w">
+
+    <a class="add_w_w_q">
+        添加分店
+    </a>
+</div>
+
+
+
+
+<script type="text/javascript">
+$('li').click(function(){
+
+        $('a',$('li')).removeClass('dele_q').addClass('dele')
+
+    $('a',$(this)).removeClass('dele').addClass('dele_q')
+})
+</script>
+</body>
+</html>

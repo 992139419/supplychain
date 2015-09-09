@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, width=device-width" name="viewport">
+    <title>Material</title>
+    <!-- css -->
+    <link href="css/base.min.css" rel="stylesheet">
+    <link href="css/wo.css" rel="stylesheet">
+    <script src="js/jquery-2.1.1.js" type="text/javascript"></script>
+    <script src="js/base.min.js" type="text/javascript"></script>
+    <!-- favicon -->
+    <!-- ... -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- ie -->
+    <!--[if lt IE 9]>
+    <script src="material/js/html5shiv.js" type="text/javascript"></script>
+    <script src="material/js/respond.js" type="text/javascript"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="tav">
+    <div class="tav_q">
+        <div class="tav_q_q">
+            食材
+        </div>
+        <dvi>
+            供应商
+        </dvi>
+    </div>
+</div>
+<div class="tavq">
+    <ul class="user_defined_copy">
+        <li>
+            <div class="new_tavq">
+                <div class="icon">
+                    <img src="images/icon.png">
+                </div>
+                <div class="content">
+                    猪肉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="content_q">￥：2元/斤</span>
+
+                    <div class="content_q">
+                        共30家供应商报价
+                    </div>
+                </div>
+                <a class="dele">删除</a>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="bottom">
+    <a>
+        <div><img src="images/bottom_q.png"><br>首页</div>
+    </a>
+    <a>
+        <div><img src="images/bottom_w.png"><br>询价</div>
+    </a>
+    <a>
+        <div><img src="images/bottom_e.png"><br>订单
+        </div>
+    </a>
+    <a href="my.html">
+        <div style="color: #2ecc70; "><img src="images/bottom_r_q.png"><br>我的</div>
+    </a>
+</div>
+
+<script type="text/javascript">
+    var start;
+    var end;
+    var li = document.querySelectorAll("li .new_tavq")
+    for (var a = 0; a < li.length; a++) {
+        li[a].addEventListener('touchstart', chstart, false);
+        li[a].addEventListener('touchmove', function (ev) {
+            var move = ev.changedTouches[0].clientX
+            var x = start - move
+            this.style.transform = 'translateX(' + -x + 'px)';
+            end = x
+        }, false);
+        li[a].addEventListener('touchend', end, false);
+    }
+    function chstart(ev) {
+        end = 0
+        start = ev.changedTouches[0].clientX
+    }
+    function end(ev) {
+        var en = parseInt(end)
+        if (en > 60) {
+            this.style.transform = 'translateX(-60px)';
+        } else if(en == 0){
+
+        }else{
+            this.style.transform = 'translateX(0px)';
+        }
+    }
+
+    var suoyou = document.querySelectorAll("*")
+    for (var a = 0; a < suoyou.length; a++) {
+        suoyou[a].onclick = function (event) {
+            var al = this.querySelectorAll('a')[0].getAttribute('class')
+            var f = this.style.transform
+            if (al == 'dele'&&f =='translateX(-60px)') {
+                if (window.confirm('你确定要删除吗？')) {
+                    alert("确定");
+                    return true;
+                } else {
+                    alert("取消");
+                    return false;
+                }
+            } else {
+                for (var a = 0; a < li.length; a++) {
+                    li[a].style.transform = 'translateX(0px)'
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>

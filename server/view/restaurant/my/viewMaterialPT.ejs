@@ -1,0 +1,98 @@
+<div class="vag_price_tendacy">
+    当前日期：最近7天
+</div>
+<div class="vag_price_tendacy_q">
+    <div class="vag_price_tendacy_q">
+
+    </div>
+</div>
+<div id="main" style="height:200px"></div>
+
+<script>
+    document.title = '<%=title%>'
+    // 路径配置
+    var price = '<%=price%>'
+    var priceq = []
+    priceq = price.split(',')
+
+    require.config({
+        paths: {
+            echarts: 'http://echarts.baidu.com/build/dist'
+        }
+    });
+
+    // 使用
+    require(
+            [
+                'echarts',
+                'echarts/chart/line' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main'));
+
+                var option = {
+                    legend: {
+                        data:['']
+                    },
+                    toolbox: {
+                        show : true,
+                        feature : {
+                            mark : {show: true},
+                            dataView : {show: true, readOnly: false},
+                            magicType : {show: true, type: ['line', 'bar']},
+                            restore : {show: true},
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    calculable : true,
+                    tooltip : {
+                        trigger: 'axis',
+                        formatter: "{c}元"
+                    },
+                    xAxis : [
+                        {
+                            type : 'category',
+                            axisLine : {onZero: false},
+                            axisLabel : {
+                                formatter: '{value}'
+                            },
+                            boundaryGap : false,
+                            data : [ '一', '二', '三', '四', '五', '六', '七' ]
+                        }
+
+
+
+
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value',
+                            axisLabel : {
+                                formatter: '{value} '
+                            }
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'价格',
+                            type:'line',
+                            smooth:true,
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        shadowColor : 'rgba(0,0,0,0.4)'
+                                    }
+                                }
+                            },
+                            data:priceq
+                        }
+                    ]
+                };
+
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+            }
+    );
+
+</script>

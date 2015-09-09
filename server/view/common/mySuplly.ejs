@@ -1,0 +1,41 @@
+<dl class="template">
+    <dt>
+    <ul>
+        <li>供应商名</li>
+        <li>电话</li>
+    </ul>
+    </dt>
+    <div class="hei" style="min-height: 100%;width: 100%">
+
+        <dd>
+            <ul id="template" style="margin-bottom: 60px">
+                <% mechanismArray.forEach(function(mechanism){ %>
+                <a href="javascript:pageLoad('/myteamMember?mechanismId=<%=mechanism._id%>')">
+                    <li  id="<%= mechanism._id %>">
+                        <div class="template_new_q">
+                            <div><%= mechanism.name %></div>
+                            <div><%= mechanism.telephone %></div>
+                        </div>
+                    </li>
+                </a>
+                <% }) %>
+            </ul>
+        </dd>
+    </div>
+</dl>
+<% if(userAuth == '1'){ %>
+<div class="new_add_template_7"onclick="javaScript:pageLoad('/myTeamMember02')">
+    <div class="new_add_template_7_q">
+    </div>
+    <div class="new_add_template_7_w">
+    </div>
+</div>
+<% } %>
+<% if(userType == '1'){ %>
+<% include ../restaurant/template/bottom.ejs %>
+<% }else if(userType == '2'){ %>
+<% include ../supply/template/bottom.ejs %>
+<% } %>
+<script type="text/javascript">
+
+</script>

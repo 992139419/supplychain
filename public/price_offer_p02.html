@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, width=device-width" name="viewport">
+    <title>Material</title>
+    <!-- css -->
+    <link href="css/base.min.css" rel="stylesheet">
+    <link href="css/wo.css" rel="stylesheet">
+    <link href="css/swiper.min.css" rel="stylesheet">
+
+    <!-- favicon -->
+    <!-- ... -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- ie -->
+    <!--[if lt IE 9]>
+
+    <![endif]-->
+</head>
+<body>
+<div class="price_offer">
+    共30家供应商报价
+</div>
+
+<div class="bottom">
+    <a>
+        <div style="color: #2ecc70; "><img src="images/bottom_q_q.png"><br>首页</div>
+    </a>
+    <a>
+        <div><img src="images/bottom_w.png"><br>询价</div>
+    </a>
+    <a>
+        <div><img src="images/bottom_e.png"><br>订单
+        </div>
+    </a>
+    <a href="my.html">
+        <div><img src="images/bottom_r.png"><br>我的</div>
+    </a>
+</div>
+<div class="new_price">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+
+            <div class="swiper-slide blue-slide">
+                <ul class="price_offerw">
+                    <li class="title">
+                        <div>供应商</div>
+                        <div>单价<sub>(元)</sub></div>
+                        <div>日期</div>
+                        <div>联系供应商</div>
+                    </li>
+                    <li>
+                        <div>蔬菜君A</div>
+                        <div>￥3.00</div>
+                        <div>5.5</div>
+                        <div>
+                            <a href=”tel://18601614130”><img src="images/telephone.png"></a>
+
+                            <div class="icon icon-keyboard-arrow-right"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="swiper-slide orange-slide">
+                <dl class="template">
+                    <dt>
+                    <ul>
+                        <li>供应商</li>
+                        <li>单价(元)</li>
+                    </ul>
+                    </dt>
+                    <dd>
+                        <ul>
+                            <li>
+                                <div>蔬菜网A</div>
+                                <div class="template_qw">￥3.00</div>
+                            </li>
+                            <li>
+                                <div>蔬菜网B</div>
+                                <div class="template_qw">￥3.00</div>
+                            </li>
+                            <li>
+                                <div>蔬菜网C</div>
+                                <div class="template_qw">￥3.00</div>
+                            </li>
+                        </ul>
+                    </dd>
+
+                </dl>
+            </div>
+
+        </div>
+        <div class="swiper-pagination swiper-pagination-clickable"></div>
+    </div>
+</div>
+<script src="js/base.min.js" type="text/javascript"></script>
+<script src="material/js/html5shiv.js" type="text/javascript"></script>
+<script src="material/js/respond.js" type="text/javascript"></script>
+<script src="js/base.min.js" type="text/javascript"></script>
+<script src="js/swiper.min.js" type="text/javascript"></script>
+<script>
+
+    var swiper = new Swiper('.swiper-container', {
+
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+
+        paginationBulletRender: function (index, className) {
+            switch (index) {
+                case 0:
+                    name = '白菜价';
+                    break;
+
+                case 1:
+                    name = '公网价';
+                    break;
+                default:
+                    name = '';
+            }
+            return '<span class="' + className + '">' + name + '</span>';
+        }
+    });
+
+</script>
+
+</body>
+</html>

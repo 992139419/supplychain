@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    @@include('../formation/head.html')
+<body>
+<ul class="user_defined_copy">
+    <li>
+        <div class="icon">
+            <img src="images/icon.png">
+        </div>
+        <div class="content">
+            猪肉
+            <div class="content_q">
+                共30家供应商报价
+            </div>
+        </div>
+        <div class="check"></div>
+    </li>
+</ul>
+<div class="add_w">
+
+    <a class="add_w_w_q">
+        询价
+    </a>
+</div>
+<div class="user_defined_copy_q">
+    <img src="images/switch.png"> 是否公开
+
+</div>
+@@include('../formation/bottom.html')
+
+<script  type="text/javascript">
+    $('li').click(function(){
+       $(this).toggleClass('li_q')
+    })
+</script>
+</body>
+</html>

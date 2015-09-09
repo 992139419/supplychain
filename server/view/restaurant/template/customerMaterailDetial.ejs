@@ -1,0 +1,110 @@
+
+<ul class="add_q new_add_q_q" style="margin-bottom: 55px">
+    <li style="padding-right: 15px">
+        <label class="add_q_q" for="name">
+            食材类型:
+        </label>
+
+        <div class="add_q_w" for='name'>
+            <select id="cantingq" class ="form-control" style="width: 100%; height: 32px; line-height: 32px;padding-top: 5px">
+                <%crategorys.forEach(function(crategory){%>
+                <option id="<%=crategory._id%>" value="<%=crategory._id%>" selected=""><%=crategory.name%></option>
+                <%})%>
+            </select>
+        </div>
+    </li>
+    <li style="padding-right: 15px">
+        <label class="add_q_q" for="name">
+            食材名称:
+        </label>
+
+        <div class="add_q_w" for='name'>
+            <input class="form-control" id="name" name="name" placeholder="请输入食材名称" type="text">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="name">
+            单价：
+        </label>
+
+        <div class="add_q_w" for='unitPrice'>
+            <input class="form-control" id="unitPrice" name="name" placeholder="请输入单价" type="text">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="volume">
+            单位：
+        </label>
+
+        <div class="add_q_w">
+            <input class="form-control" id="volume" name="header" placeholder="请输入单位" type="text">
+        </div>
+    </li>
+    <li style="height: 180px">
+        <label class="add_q_q" for="remarks">
+            备注：
+        </label>
+
+        <div class="add_q_w">
+            <textarea id="remarks" style="width: 75%; color: #000;font-size: 14px;line-height: 16px" name="textarea" cols="10" rows="3" placeholder=""></textarea>
+        </div>
+    </li>
+
+</ul>
+
+<div class="add_tem">
+    <div class="add_w">
+
+        <a href="javascript:commt()" class="add_w_w" style=" width: 100%;padding:0 ">
+            确定
+        </a>
+    </div>
+</div>
+<script>
+    var hei = document.querySelectorAll(".add_tem")[0]
+    guding(hei,100);
+    function commt(){
+        var name = document.getElementById('name').value;
+        var minPrice = document.getElementById('unitPrice').value;
+        var categoryId = document.getElementById('cantingq').value;
+        var categoryName = document.getElementById(categoryId).innerText;
+        var unit = document.getElementById('volume').value;
+        var remark = document.getElementById('remarks').value;
+
+        if(!name){
+            document.getElementById('name').focus();
+            return alert('请输入食材名');
+        }
+        if(!minPrice){
+            document.getElementById('unitPrice').focus();
+            return alert('请输入食材单价');
+        }
+        if(!unit){
+            document.getElementById('volume').focus();
+            return alert('请输入食材单位');
+        }
+
+        var url  = '/addCustomerMaterial';
+        var data = {
+            name:name,
+            minPrice:minPrice,
+            categoryId:categoryId,
+            categoryName:categoryName,
+            unit:unit,
+            remark:remark
+        }
+        $.post(url,data,function(result){
+            if(!result.code){
+                return alert('添加自定义食材失败');
+            }
+            var code = result.code;
+            if(code===100){
+                 alert('添加成功');
+                pageLoadPost('/addTemplate',{},'添加模版',true,'post');
+            }else{
+                return alert('添加失败');
+            }
+        });
+
+    }
+</script>

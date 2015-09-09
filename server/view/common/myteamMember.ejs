@@ -1,0 +1,170 @@
+<div class="hei" style="min-height: 100%;width: 100%;">
+
+    <ul class="new_add_template" style="margin-bottom: 120px">
+        <% for(var i = 0;i < users.length;i++){
+            if (users[i].isConfirme == '0') {
+                var show = "订单编辑人员";
+            } else {
+                var show = "订单确定员";
+            }
+        %>
+        <li style="padding: 0px;overflow: hidden;width: 100%">
+            <div class="template_new_q"
+                 style="position: relative;padding-top: 10px!important;padding-left: 15px!important;padding-right: 15px!important;">
+                <img src="images/template.png">
+
+                <div class="new_add_template_q"
+                     style="width:75% !important;"> <%= users[i].realName ? users[i].realName : users[i].userName %><br>
+                    <a><span
+                                class="new_add_template_q_q">权限：<%= show %></span></a>
+                    <a>
+                        <span class="new_add_template_q_q">餐厅：<%= users[i].mechanism_name %></span>
+                    </a>
+                </div>
+                </a>
+                <% if(userAuth == '1'){ %>
+                <% if(users[i].isAvab === 'false'){ %>
+                <a class="dele" id="dele" style="right: -4px;  height: 64px; line-height: 64px; font-size: 14px;transform: translateX(60px);
+  -ms-transform: translateX(60px);
+  -webkit-transform: translateX(60px);
+  -o-transform: translateX(60px);
+  -moz-transform: translateX(60px);" href="javascript:updateUserIsAvb('<%= users[0]._id %>',true)">激活</a>
+                <% }else{ %>
+                <a class="dele" id="dele" style="right: -4px;  height: 64px; line-height: 64px; font-size: 14px;transform: translateX(60px);
+                            -ms-transform: translateX(60px);
+                    -webkit-transform: translateX(60px);
+                    -o-transform: translateX(60px);
+                    -moz-transform: translateX(60px);"
+                   href="javascript:updateUserIsAvb('<%= users[0]._id %>','<%= users[0].userAuth %>',false)">禁用</a>
+
+                <% } %>
+                <a class="dele cafeteria"
+                   href="javascript:pageLoad('/setRestaurantPage?mId=<%= users[i].mechanism_id %>&uId=<%= users[i]._id %>')" style="right: -4px;  height: 64px; line-height: 64px; font-size: 14px;transform: translateX(60px);
+  -ms-transform: translateX(118px);
+  -webkit-transform: translateX(118px);
+  -o-transform: translateX(118px);
+  -moz-transform: translateX(118px);background-color: #2dc86f">餐厅</a>
+                <a class="dele jurisdiction" href="javascript:pageLoad('/setUserAuthPage?id=<%= users[i]._id %>')"
+                   style="right: -4px;  height: 64px; line-height: 64px; font-size: 14px;transform: translateX(60px);
+  -ms-transform: translateX(176px);
+  -webkit-transform: translateX(176px);
+  -o-transform: translateX(176px);
+  -moz-transform: translateX(176px);background-color: #FBD384">权限</a>
+                <% } %>
+            </div>
+        </li>
+        <% } %>
+    </ul>
+</div>
+
+<% if(userAuth == '1'){ %>
+<div class="new_add_template_7" onclick="javaScript:pageLoad('/myteamMember01')">
+    <div class="new_add_template_7_q">
+    </div>
+    <div class="new_add_template_7_w">
+    </div>
+</div>
+<% } %>
+<% if(userType == '1'){ %>
+<% include ../restaurant/template/bottom.ejs %>
+<% }else if(userType == '2'){ %>
+<% include ../supply/template/bottom.ejs %>
+<% } %>
+<script type="text/javascript">
+    var ad = 1;
+    var number = 1
+    var start;
+    var end;
+    var dele = document.querySelectorAll(".dele");
+    var hei = document.querySelectorAll("html")[0].offsetHeight - 50;
+    document.querySelectorAll(".hei")[0].style.minHeight = hei + 'px'
+    var li = document.querySelectorAll("li .template_new_q")
+    document.querySelectorAll(".hei")[0].onclick = function () {
+        for (var a = 0; a < li.length; a++) {
+            li[a].style.left = '0px'
+        }
+    }
+
+    function a() {
+        for (var a = 0; a < li.length; a++) {
+
+            li[a].addEventListener('touchstart', chstart, false);
+            li[a].addEventListener('touchmove', function (ev) {
+                this.className = "template_new_q"
+                ev.returnValue = false;
+                if (ad == 1) {
+                    for (var a = 0; a < li.length; a++) {
+                        li[a].style.left = '0px'
+                    }
+                }
+                ad = 2
+                var move = ev.changedTouches[0].clientX
+                var x = start - move
+                if (x < 200) {
+                    this.style.left = -x + 'px';
+                }
+                end = x
+            }, false);
+            li[a].addEventListener('touchend', end, false);
+        }
+        function chstart(ev) {
+            this.className = "template_new_q"
+            ad = 1;
+            end = 0
+            start = ev.changedTouches[0].clientX
+        }
+
+        function end(ev) {
+            this.className = "template_new_q template_new_q_q"
+
+            var en = parseInt(end)
+            if (en > 50) {
+                this.style.left = '-180px';
+            } else if (en == 0) {
+
+            } else {
+                this.style.left = '0px';
+            }
+        }
+
+//菜单
+        for (var a = 0; a < dele.length; a++) {
+            dele[a].onclick = function () {
+
+                if (e && e.preventDefault) {
+                    ev.returnValue = false;
+                }
+                var idq = this.id
+
+                if (this.className == "dele") {
+//                        删除
+                    if (window.confirm('你确定要删除吗？')) {
+//                    $.post('/deleteTemplate', {restaurantId: idq}, function (date) {
+//                                                if (date.resulte == true) {
+//                                                    var dl = document.querySelectorAll(".template dd ul")[0]
+//                                                    var li = dl.querySelectorAll('#li_' + idq)[0]
+//                                                    dl.removeChild(li);
+//                                                }
+//                                            })
+//                                            return true;
+                    } else {
+                        for (var a = 0; a < li.length; a++) {
+                            li[a].style.transform = 'translateX(0px)'
+                        }
+                        return false;
+                    }
+                } else if (this.className == "dele cafeteria") {
+
+
+
+
+                } else if (this.className == "dele jurisdiction") {
+
+                }
+            }
+
+        }
+    }
+    a()
+
+</script>

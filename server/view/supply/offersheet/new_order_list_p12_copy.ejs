@@ -1,0 +1,82 @@
+
+<dl class="template">
+    <dd>
+        <ul class="template_q" style="margin-bottom: 55px">
+            <% JSON.parse(restruantds).forEach(function(restruantd){ %>
+            <label for="input_<%= restruantd._id %>" style="width: 100%">
+                <li>
+                    <div id="supply_name_<%= restruantd._id %>"><%= restruantd.name %></div>
+                    <div>
+                        <div>
+                            <a href='tel://<%= restruantd.mobile %>'><img src="images/telephone.png"></a>
+
+                            <div class="check"></div>
+                        </div>
+                    </div>
+                </li>
+            </label>
+
+            <input name="checkbox" type="checkbox" id="input_<%= restruantd._id %>" style="display: none">
+            <% }) %>
+        </ul>
+    </dd>
+</dl>
+<div class="add_tem">
+    <div class="add_w">
+        <a href="javascript:commit()" class="add_w_w_q">
+            提交报价
+        </a>
+    </div>
+</div>
+
+<% include ../template/bottom.ejs %>
+<script type="text/javascript">
+    var hei = document.querySelectorAll(".add_tem")[0]
+    guding(hei,100)
+    var li = document.querySelectorAll("li")
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            var clas = this.getAttribute('class')
+            if (clas == 'li_q') {
+                this.className = ''
+            } else {
+                this.className = 'li_q'
+
+            }
+        }
+    }
+
+    function commit() {
+        var offerSheetData = JSON.parse('<%-offerSheetData%>');
+        var checkboxs = document.getElementsByName('checkbox')
+        var restruantds = new Array();
+        for(var i= 0,size = checkboxs.length;i<size;i++){
+            var id = (checkboxs[i].id).replace('input_','');
+            var name =document.getElementById('supply_name_'+id).innerText;
+            if(checkboxs[i].checked){
+                restruantds.push({id:id,name:name});
+            }
+        }
+
+        if(restruantds.length==0){
+            alert('请至少选择一个供应商进行询价.');
+            return;
+        }
+        offerSheetData.restruantds = restruantds;
+        var url = '/updateOfferSheer'
+        var data ={
+            offerSheetData:JSON.stringify(offerSheetData)
+        }
+        $.post(url,data,function(result){
+            if(result.code == 101){
+                alert('请联系管理人员进行报价');
+                return;
+            }else if(result.code==100){
+                alert('报价成功');
+                pageLoad('/qryOfferSheet');
+                return;
+            }
+        });
+    }
+
+</script>

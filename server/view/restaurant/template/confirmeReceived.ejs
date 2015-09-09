@@ -1,0 +1,301 @@
+<% if(isHead == 'true'){ %>
+<html>
+<head>
+    <% include ../../common/head.ejs %>
+</head>
+<body>
+
+
+<div id="pageContent" style="height: 100%;width: 100%;">
+    <% } %>
+    <div style="position: fixed;top:0;bottom: 0px;width: 100%;z-index: 1000000">
+        <div style="position: absolute;top: 0;bottom: 100px;overflow: auto;width: 100%">
+            <div class="list_confirm_p07">
+
+                来自<%= ordersDetail[0].supplyName %>供应商
+                <div class="price_offerq">
+                    <div class="price_offer_w" style="width: 20%">菜名</div>
+                    <div class="price_offer_w" style="width: 20%">单价<sub>(元)</sub></div>
+                    <div class="price_offer_w" style="width: 20%">单位</div>
+                    <div class="price_offer_w" style="width: 20%">数量</div>
+                    <div class="price_offer_w" style="width: 20%">实收</div>
+                </div>
+            </div>
+            <ul class="price_list_copy">
+                <% for(var i = 0;i < ordersDetail[0].orderItem.length;i++) {
+                    var subItem = ordersDetail[0].orderItem[i];
+                %>
+                <div>
+                    <li class="tan"
+                        style="height: auto;padding: 0 15px;padding-bottom:10px;float: left;width: 100%;padding-top: 15px">
+                        <div class="name"
+                             style="text-align:left;width:20%;display:block;line-height: 20px;"><%= subItem.materialName %></div>
+
+                        <div class="money" style="width:20%;">￥<%= subItem.materialPrice %></div>
+                        <div style="width:20%;"><%= subItem.unit %></div>
+                        <div style="width:20%;"><%= subItem.number %></div>
+                        <div style="width:20%;float: left;margin-top: -5px " id="<%= subItem.materialId %>"
+                             class="number paidIn"><%= subItem.number %></div>
+                        <div class="c"></div>
+                        <div class="beizhu" style="font-size: 12px;
+  line-height: 14px;
+  width: auto;
+  margin-top:-5px ;
+  color: #7B7A7A;overflow : hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+text-align: left;
+padding-left: 10px;
+clear: both;
+-webkit-box-orient: vertical;
+margin-top: 10px;"><%= subItem.remark %>
+                        </div>
+                    </li>
+                    <div class="tile-active-show collapse" style="clear: both" id="new<%= subItem.materialId %>"
+                         aria-expanded="false">
+                        <div class="keyboard_q">
+                            <div>
+                                <div>1</div>
+                            </div>
+                            <div>
+                                <div>2</div>
+                            </div>
+                            <div>
+                                <div>3</div>
+                            </div>
+                            <div>
+                                <div>4</div>
+                            </div>
+                            <div>
+                                <div>5</div>
+                            </div>
+                            <div>
+                                <div>6</div>
+                            </div>
+                            <div>
+                                <div>7</div>
+                            </div>
+                            <div>
+                                <div>8</div>
+                            </div>
+                            <div>
+                                <div>9</div>
+                            </div>
+                            <div>
+                                <div>0</div>
+                            </div>
+                            <div>
+                                <div>.</div>
+                            </div>
+                            <div style="width: 12%">
+                                <div class="dele_qq">⬅️</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+            </ul>
+
+
+            <div style="font-size: 15px; padding: 10px 15px;color: red;">
+                订购总额：￥<span id="sum" class="pricew"> 0</span>
+            </div>
+            <div style="font-size: 15px; padding: 10px 15px;color: red;border-top: 1px dashed #979797;">
+                实收总额：￥<span id="sum" class="paidInSum"> 0</span>
+            </div>
+
+            <% if(ordersDetail[0].orderStatus == 'N' || ordersDetail[0].orderStatus == 'S'){ %>
+            <!--表示已下单-->
+            <div style="font-size: 15px; padding: 10px 15px;color: #3CCE79; border-top: 1px dashed #979797;">
+                下单人：<%= ordersDetail[0].comfirmeUserName %>
+            </div>
+            <% }else if(ordersDetail[0].orderStatus == 'R'){ %>
+            <div class="kongjianq" style="font-size: 20px; padding: 10px 15px;color: red;">
+                收货人：<%= ordersDetail[0].receiver %>
+            </div>
+
+            <% } %>
+        </div>
+
+        <div class="add_tem aad" style="padding-top: 2px; bottom: 55px">
+            <div class="add_w" style="margin: 0px;margin-left: 10%">
+                <a href="javascript:pageLoad('/queryOrderDetails?orderId=<%= ordersDetail[0]._id %>')" class="button_l "
+                   style="margin: 0;margin: 0!important; width: 100%; background-color: transparent;">订单详情</a>
+            </div>
+        </div>
+        <div class="template_confirmw pa" style="position: absolute;padding-right:120px;margin-bottom: 0px; ">
+            <div class="template_confirmw_w">
+                <input class="form-control" id="receiverName" placeholder="请输入您的姓名" type="text">
+            </div>
+            <a onclick="confRecived('<%= ordersDetail[0]._id %>')"
+               class="template_confirmw_q btn btn-green waves-button waves-effect waves-light">确定收货</a>
+        </div>
+    </div>
+    <script src="js/jquery-2.1.1.js" type="text/javascript"></script>
+    <script src="js/base.min.js" type="text/javascript"></script>
+    <!-- ie -->
+    <!--[if lt IE 9]>
+    <script src="material/js/html5shiv.js" type="text/javascript"></script>
+    <script src="material/js/respond.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="js/base.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        //确认收货
+        var smallKeyboard = 1
+        var aad = document.querySelectorAll(".aad")[0];
+        var bbd = document.querySelectorAll(".bbd")[0];
+        if (bbd) {
+            guding(aad, 150)
+            guding(bbd, 100)
+        } else {
+            guding(aad, 100)
+        }
+        var tan = document.querySelectorAll(".tan")
+        for (var i = 0; i < tan.length; i++) {
+            changan(tan[i], tan[i].querySelector(".name").innerText)
+        }
+        var li = document.querySelectorAll("li")
+        var pricew = 0;
+        var paidInSum = 0;
+        for (var a = 0; a < tan.length; a++) {
+            var money = li[a].querySelectorAll('.money')[0].innerHTML;
+            var moneyq = money.substring(1, money.length)
+            var materialNumber = li[a].querySelectorAll('.number')[0].innerHTML;
+            var price = new Decimal(moneyq).times(new Decimal(materialNumber));
+            pricew = new Decimal(pricew).plus(new Decimal(price));
+            var paidInNumber = li[a].querySelectorAll('.paidIn')[0].innerHTML;
+            var paidInPrice = new Decimal(moneyq).times(new Decimal(paidInNumber));
+            paidInSum = new Decimal(paidInSum).plus(new Decimal(paidInPrice));
+        }
+
+        document.querySelectorAll('.pricew')[0].innerHTML = pricew
+        document.querySelectorAll('.paidInSum')[0].innerHTML = paidInSum
+
+        function confRecived(para) {
+            var li = document.querySelectorAll('li');
+            var name = document.getElementById('receiverName').value;
+            var isHead = '<%=isHead%>';
+            if (!name) {
+                alert('请输入收货人姓名');
+            } else {
+                var paidArray = new Array();
+                console.info(li.length);
+                for (var i = 0; i < li.length; i++) {
+                    var value = li[i].querySelectorAll('.paidIn')[0].innerText;
+                    var materialId = li[i].querySelectorAll('.paidIn')[0].id;
+                    var materialPaid = {
+                        materialId: materialId,
+                        value: value
+                    }
+                    paidArray.push(materialPaid);
+                }
+
+                $.post("/confOrder", {
+                    ids: para,
+                    orderStatus: 'R',
+                    receiver: name,
+                    paidArray: JSON.stringify(paidArray)
+                }, function (data) {
+                    if (data.status == 100) {
+                        alert('订单更新成功');
+                        if (isHead === 'true') {
+                            WeixinJSBridge.call('closeWindow');
+                        } else {
+                            pageLoad('/myorder');
+                        }
+                    } else if (data.status == 500) {
+                        alert('系统出错');
+                    }
+                });
+            }
+        }
+
+        var input = document.querySelectorAll(".keyboard_q div div")
+        for (var a = 0; a < input.length; a++) {
+            input[a].onclick = function (e) {
+                if (smallKeyboard == 2) {
+                    this.parentNode.parentNode.parentNode.parentNode.querySelectorAll('.number')[0].innerHTML = "0.00"
+                    smallKeyboard = 1
+                }
+                var fu = this.parentNode.parentNode.parentNode.parentNode.querySelectorAll('.number')[0].innerHTML
+                var clas = this.getAttribute('class')
+                if (clas == 'dele_qq') {
+                    if (fu == '0.00') {
+
+                    } else {
+                        if (fu.length == 1) {
+                            var zi = '0.00'
+                        } else {
+                            var zi = fu.substring(0, fu.length - 1)
+                        }
+                        this.parentNode.parentNode.parentNode.parentNode.querySelectorAll('.number')[0].innerHTML = zi
+                    }
+                }
+                else {
+                    if (fu == '0.00') {
+                        var zi = this.innerHTML
+                        this.parentNode.parentNode.parentNode.parentNode.querySelectorAll('.number')[0].innerHTML = zi
+                    } else {
+                        var zi = fu + this.innerHTML
+                        this.parentNode.parentNode.parentNode.parentNode.querySelectorAll('.number')[0].innerHTML = zi
+                    }
+                }
+                jisu()
+
+            }
+        }
+        var numbeClass = document.querySelectorAll(".number")
+        number(numbeClass);
+        //下拉展开
+        function number(number) {
+
+            for (var a = 0; a < number.length; a++) {
+                number[a].onclick = function () {
+                    smallKeyboard = 2
+                    var idd = this.getAttribute('id')
+                    var iddq = 'new' + idd
+                    var di = document.querySelectorAll("#" + iddq)[0]
+                    var sd = di.getAttribute('style') + ""
+                    var sssf = this.className
+                    if (sssf == 'number paidIn a') {
+                        var collapse = document.querySelectorAll(".collapse")
+                        for (var fg = 0; fg < collapse.length; fg++) {
+                            collapse[fg].style.display = "none"
+                        }
+                        this.className = "number paidIn"
+                    } else {
+                        var collapse = document.querySelectorAll(".collapse")
+                        for (var fg = 0; fg < collapse.length; fg++) {
+                            collapse[fg].style.display = "none"
+                        }
+                        this.className = "number paidIn a"
+                        di.style.display = 'block';
+                    }
+                }
+            }
+        }
+
+        function jisu() {
+            var li = document.querySelectorAll("li")
+            var paidInSum = 0;
+            for (var a = 0; a < tan.length; a++) {
+                var money = li[a].querySelectorAll('.money')[0].innerHTML;
+                var moneyq = money.substring(1, money.length)
+                var paidInNumber = li[a].querySelectorAll('.paidIn')[0].innerHTML;
+                var paidInPrice = new Decimal(moneyq).times(new Decimal(paidInNumber));
+                paidInSum = new Decimal(paidInSum).plus(new Decimal(paidInPrice));
+            }
+            document.querySelectorAll('.paidInSum')[0].innerHTML = paidInSum
+        }
+
+
+    </script>
+    <% if(isHead == 'true'){ %>
+    <% include bottom.ejs %>
+</div>
+</body>
+</html>
+<% } %>

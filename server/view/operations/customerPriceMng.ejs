@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include template/head.ejs %>
+</head>
+<body>
+<div id="wrapper">
+    <% include template/menu.ejs %>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <% include template/nav.ejs %>
+        <div class="row  border-bottom white-bg dashboard-header">
+            <div class="col-sm-12">
+                <div class="row">
+                </div>
+                <div class="row">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>食材价格列表</h5>
+                        </div>
+                        <form role="form" class="form-inline" method="get"
+                              action="/cmsGetCustMetiral?name=<%= name %>&startIdx=<%= parseInt(currentIdx - 1) * 10 %>">
+                            <div class="col-md-4">
+                                <div class="form-group"><label for="exampleInputEmail2" class="sr-only">自定义食材列表</label>
+                                    <label class="font-noraml">自定义食材名称</label>
+                                    <input type="text" placeholder="自定义食材名称" id="name" class="form-control" name="name"
+                                           value="<%= name %>">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="font-noraml">食材类别</label>
+                                <select class="form-control " name="category"
+                                        placeholder="物料类别">
+                                    <option value="">全部</option>
+                                    <% for(var i = 0;i < categorys.length;i++){
+                                        var category = categorys[i];
+                                    %>
+                                    <% if(category._id == categoryId){ %>
+                                    <option selected value="<%= category._id %>"><%= category.name %></option>
+                                    <% }else{ %>
+                                    <option value="<%= category._id %>"><%= category.name %></option>
+                                    <% } %>
+
+                                    <% } %>
+                                </select>
+                            </div>
+                            <% if(userInfo.userType === '0'){ %>
+                            <div class="col-md-4">
+                                <label class="font-noraml">审核类别</label>
+                                <select class="form-control " name="examine">
+                                    <option value="" <%= examine===''?'selected':'' %>  >全部</option>
+                                    <option value="0" <%= examine==='0'?'selected':'' %>>未审核</option>
+                                    <option value="1" <%= examine==='1'?'selected':'' %>>已审核</option>
+                                </select>
+                            </div>
+                            <% } %>
+                            <button class="btn btn-danger" type="submit">查询</button>
+
+                            <% if(userInfo.userType != 0){ %>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                新增
+                            </button>
+                            <% } %>
+                        </form>
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span
+                                                    aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">自定义食材</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form role="form" class="form-horizontal">
+                                            <div class="form-group"><label for="exampleInputEmail2"
+                                                                           class="sr-only">食材名称</label>
+                                                <input type="text" placeholder="食材名称" id="a_name" class="form-control"
+                                                       name="a_name"></div>
+                                            <div class="checkbox m-l m-r-xs"></div>
+                                            <div class="form-group"><label for="exampleInputEmail2"
+                                                                           class="sr-only">物料类别</label>
+                                                <select type="text" placeholder="物料类别" id="a_category"
+                                                        class="form-control" name="a_category">
+                                                    <% for(var i = 0;i < categorys.length;i++){ %>
+                                                    <option value="<%= categorys[i]._id %>||<%= categorys[i].name %>"><%= categorys[i].name %></option>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                            <div class="checkbox m-l m-r-xs"></div>
+                                            <div class="form-group"><label for="exampleInputEmail2"
+                                                                           class="sr-only">价格(元)</label>
+                                                <input type="text" placeholder="价格" id="a_price" class="form-control"
+                                                       name="a_price"></div>
+                                            <div class="checkbox m-l m-r-xs"></div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail2" class="sr-only">单位</label>
+                                                <input type="text" placeholder="单位" id="a_unit" class="form-control"
+                                                       name="a_name">
+                                            </div>
+                                            <div class="checkbox m-l m-r-xs"></div>
+                                            <div class="form-group"><label for="exampleInputEmail2"
+                                                                           class="sr-only">备注</label>
+                                                <input type="text" placeholder="备注" id="a_remark" class="form-control"
+                                                       name="a_remark"></div>
+                                            <div class="checkbox m-l m-r-xs"></div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a type="button" class="btn btn-default" href="javascript:cancelPrice();">取消</a>
+                                        <a type="button" class="btn btn-primary" href="javascript:savePrice();">保存</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="editModel" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabelEdit"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span
+                                                    aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabelEdit">食材编辑</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form role="form" class="form-horizontal">
+                                            <div class="form-group"><label for="exampleInputEmail2"
+                                                                           class="sr-only">食材名称</label>
+                                                <input type="text" placeholder="食材名称" id="a_name_edit"
+                                                       class="form-control" name="a_name">
+                                            </div>
+                                            <div class="checkbox m-l m-r-xs"></div>
+                                            <div class="form-group"><label for="exampleInputEmail2"
+                                                                           class="sr-only">物料类别</label>
+                                                <select type="text" placeholder="物料类别" id="a_category_edit"
+                                                        class="form-control"
+                                                        name="a_category">
+                                                    <% for(var i = 0;i < categorys.length;i++){ %>
+                                                    <option value="<%= categorys[i]._id %>||<%= categorys[i].name %>"><%= categorys[i].name %></option>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                            <div class="checkbox m-l m-r-xs"></div>
+                                            <div class="form-group"><label for="exampleInputEmail2"
+                                                                           class="sr-only">价格(元)</label>
+                                                <input type="text" placeholder="价格" id="a_price_edit"
+                                                       class="form-control" name="a_price">
+                                            </div>
+                                            <div class="checkbox m-l m-r-xs"></div>
+                                            <div class="form-group"><label for="exampleInputEmail2"
+                                                                           class="sr-only">单位</label>
+                                                <input type="text" placeholder="单位" id="a_unit_edit"
+                                                       class="form-control" name="a_unit"></div>
+                                            <div class="checkbox m-l m-r-xs"></div>
+                                            <div class="form-group"><label for="exampleInputEmail2"
+                                                                           class="sr-only">备注</label>
+                                                <input type="text" placeholder="备注" id="a_remark_edit"
+                                                       class="form-control" name="a_remark">
+                                            </div>
+                                            <div class="checkbox m-l m-r-xs"></div>
+                                            <input id="materId" type="hidden">
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a type="button" class="btn btn-default" href="javascript:cancelPrice_edit();">取消</a>
+                                        <a type="button" class="btn btn-primary"
+                                           href="javascript:savePrice_edit();">保存</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+
+                        <div class="ibox-content">
+
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>食材名称</th>
+                                    <th>物料类别</th>
+                                    <th>价格(元)</th>
+                                    <th>单位</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <%
+                                for(var i = 0;i < materials.length;i++, startIdx++){ %>
+                                <tr>
+                                    <td><%= startIdx %></td>
+                                    <td><%= materials[i].name %></td>
+                                    <td><%= materials[i].categoryName %></td>
+                                    <td><%= materials[i].minPrice %></td>
+                                    <td><%= materials[i].unit %></td>
+                                    <td><%= materials[i].remark %></td>
+
+                                    <td>
+                                        <% if(userInfo.userType != 0){ %>
+                                        <a href="javascript:showInfo('<%= materials[i]._id %>')"
+                                           class="btn btn-sm btn-primary">编辑</a>
+                                        <% }else { %>
+                                        <% if(materials[i].isExamine == '1'){ %>
+                                        <a style="border-color: darkgray;background-color: darkgrey;"
+                                           class="btn btn-sm btn-primary">已审批</a>
+                                        <% }else{ %>
+                                        <a href="javascript:approveMe('<%= materials[i]._id %>')"
+                                           class="btn btn-sm btn-primary">审批</a>
+                                        <% } %>
+                                        <% } %>
+                                        <a href="javascript:delUser('<%= materials[i]._id %>')"
+                                           class="btn btn-sm btn-primary">删除</a>
+                                    </td>
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                            <div id="pageIdx" class="pagination">
+                                <% var pageNum = sum / 10; %>
+                                <span style="float: left; line-height: 28px;">共有 <%= sum %> 条记录　</span>
+                                <% if(parseInt(sum) > 10){ %>
+                                <% if(currentIdx > 1){ %>
+                                <a href="/cmsGetCustMetiral?name=<%= name %>&category<%=categoryId%>" class="pagination-q" style="width:4rem">首页</a>
+                                <a href="/cmsGetCustMetiral?name=<%= name %>&category<%=categoryId%>&startIdx=<%= parseInt(currentIdx - 2) * 10 %>"
+                                   class="pagination-q"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>上一页</a>
+                                <% } %>
+                                <span style="float: left; line-height: 28px;padding: 0 0.5rem"> 第 <%= currentIdx %>
+                                    页 </span>
+                                <% if(parseInt(currentIdx * 10) < sum + 1){ %>
+                                <a href="/cmsGetCustMetiral?name=<%= name %>&category<%=categoryId%>&startIdx=<%= currentIdx * 10 %>"
+                                   class="pagination-q">下一页
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                </a>
+                                <% } %>
+                                <% if(pageNum > 10){ %>
+                                <span style="float: left; line-height: 28px;">... 共有 <%= Math.ceil(pageNum) %> 页
+                                <span>跳转到</span>
+                                <input id="pageSkippedTo" type="Number" min="1" style="width:4rem; height:28px;"/>
+                                <span>页</span>
+                                <a class="btn btn-default" onclick="skipHandler()"
+                                   href="javascript:void(0)" role="button" style="float:right;height:28px;">
+                                    <span style="position: relative; top: -8px;">go</span></a>
+                            </span>
+                                <% } %>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include template/footer.ejs %>
+</body>
+<script>
+
+    function showInfo(id) {
+        $.get('/cmsShowMateriesInfo?id=' + id, function (data) {
+            if (data.status == 100) {
+                var materies = data.data;
+                if (materies) {
+                    var name = materies.name;
+                    var categoryName = materies.categoryName;
+                    var categoryId = materies.categoryId;
+                    var price = materies.minPrice;
+                    var remark = materies.remark;
+                    var unit = materies.unit;
+                    $('#a_name_edit').val(name);
+                    $('#a_price_edit').val(price);
+                    $('#a_remark_edit').val(remark);
+                    $('#a_unit_edit').val(unit);
+                    $('#materId').val(id);
+                    var count = $("#a_category_edit option").length;
+                    for (var i = 0; i < count; i++) {
+                        if ($("#a_category_edit ").get(0).options[i].text == categoryName) {
+                            $("#a_category_edit ").get(0).options[i].selected = true;
+                            break;
+                        }
+                    }
+                        $("#editModel").modal('show');
+                    }
+                }
+            }
+            )
+            ;
+        }
+
+        function cancelPrice_edit() {
+            $('#a_name_edit').val('');
+            $('#a_price_edit').val('');
+            $('#a_category_edit').val('');
+            $('#a_remark_edit').val('');
+            $('#a_unit_edit').val('');
+            $("#editModel").modal('hide');
+        }
+
+        function savePrice_edit() {
+            var name = $('#a_name_edit').val();
+            var price = $('#a_price_edit').val();
+            var category = $('#a_category_edit').val();
+            var categoryId = '';
+            var categoryName = '';
+            if (category) {
+                var categorys = category.split('||');
+                if (categorys.length == 2) {
+                    categoryId = categorys[0];
+                    categoryName = categorys[1];
+                }
+            }
+            var remark = $('#a_remark_edit').val();
+            var unit = $('#a_unit_edit').val();
+            if (!name || !price || !unit) {
+                alert('除备注以外的字段，都为必须输入字段，请不要遗漏.');
+                return;
+            }
+            var id = $("#materId").val();
+            $.post('/cmsUpdatePrice', {
+                id: id,
+                name: name,
+                price: price,
+                categoryId: categoryId,
+                categoryName: categoryName,
+                remark: remark,
+                unit: unit,
+                isCustomer:'1'
+            }, function (data) {
+                if (data.status == 100) {
+                    window.location.reload();
+                }
+            });
+
+        }
+
+        function skipHandler() {
+            var nextPage = $('#pageSkippedTo').val();
+            if ($.trim(nextPage) == '') {
+                return;
+            }
+            nextPage = parseInt(nextPage);
+            if (!isNaN(nextPage)) {
+                if (nextPage <= parseInt(<%=Math.ceil(pageNum)%>)) {
+                    window.location.href = '/cmsGetPrice?name=<%=name%>&startIdx=' + ((nextPage - 1) * 10);
+                }
+            }
+        }
+
+        function delUser(id) {
+            if(confirm('是否确认删除？')){
+                $.post('/cmsDelPrice', {id: id}, function (data) {
+                    if (data.status == 100) {
+                        window.location.reload();
+                    }
+                });
+            }
+        }
+
+        function cancelPrice() {
+            $('#a_name').val('');
+            $('#a_price').val('');
+            $('#a_category').val('');
+            $('#a_remark').val('');
+            $('#a_unit').val('');
+            $("#myModal").modal('hide');
+        }
+
+        function savePrice() {
+            var name = $('#a_name').val();
+            var price = $('#a_price').val();
+            var category = $('#a_category').val();
+            var categoryId = '';
+            var categoryName = '';
+            if (category) {
+                var categorys = category.split('||');
+                if (categorys.length == 2) {
+                    categoryId = categorys[0];
+                    categoryName = categorys[1];
+                }
+            }
+            var remark = $('#a_remark').val();
+            var unit = $('#a_unit').val();
+            if (!name || !price || !category || !unit) {
+                alert('除备注以外的字段，都为必须输入字段，请不要遗漏.');
+                return;
+            }
+            $.post('/cmsAddCustMetiral', {
+                name: name,
+                minPrice: price,
+                categoryId: categoryId,
+                categoryName: categoryName,
+                remark: remark,
+                unit: unit
+            }, function (data) {
+                if (data.status == 100) {
+                    window.location.reload();
+                }
+            });
+
+        }
+
+        function approveMe(id) {
+            $.post('/appvCustMe', {meterialId: id},
+                    function (data) {
+                        if (data.status == 100) {
+                            alert('审批成功');
+                            window.location.reload();
+                        }
+                    });
+        }
+
+</script>
+</html>

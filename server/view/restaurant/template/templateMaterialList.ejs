@@ -1,0 +1,120 @@
+
+<div style="position: fixed;top:0;bottom: 0px;width: 100%;z-index: 1000;">
+<ul class="user_defined_copy template_confirm" style="    overflow: auto;
+    position: absolute;
+    width: 100%;
+    bottom: 60px;
+    top: 0;" >
+    <% var materials = JSON.parse(selectMaterials);
+            materials.forEach(function(material){ %>
+    <li name='material' id="<%= material._id %>" style="padding-top: 20px">
+
+        <div class="content">
+            <span class="pingm"> <%= material.name %></span>
+            <span  class="danw" style="float: right"><%= material.unit %></span>
+        </div>
+
+        <div class="c"></div>
+        <div class="beizhu" style="  font-size: 12px;
+  line-height: 14px;
+  margin-top: 7px;
+  color: #7B7A7A;overflow : hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+-webkit-box-orient: vertical;"><%= material.remark %>
+        </div>
+    </li>
+    <div class="new_template"
+         style="width: 100%; height: 150px;border-bottom: 1px solid #979797; display: none;padding: 3px 15px">
+        <div style="width: 20%; text-align: center;height:30px;float: left;line-height: 30px">单位</div>
+        <input type="text" style="height: 30px;width: 75%" value="" placeholder="<%= material.unit %>">
+
+        <div class="c" style="height: 10px"></div>
+        <div style="width: 20%; text-align: center;height:30px;float: left;line-height: 30px">备注</div>
+        <textarea style="width: 75%" name="textarea" cols="10" rows="3" placeholder="<%= material.remark %>"></textarea>
+
+    </div>
+    <% }) %>
+</ul>
+<div style="clear: both;width: 100%;height: 110px;"></div>
+<div class="template_confirmw pa" style="position: absolute;bottom: 0px;margin-bottom: 0px">
+    <div id="margin">
+        <div class="template_confirmw_w">
+
+            <input id="name" class="form-control" placeholder="请输入模板名" type="text" value="<%=templateName%>">
+        </div>
+        <a class="template_confirmw_q btn btn-green waves-button waves-effect waves-light"
+           href="javascript:commit()">修改</a>
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+    var li = document.querySelectorAll("li")
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            var inpu = this.querySelectorAll('.danw')[0].innerHTML;
+            this.nextElementSibling.querySelectorAll('input')[0].value = inpu
+            if (this.nextElementSibling.style.display == 'block') {
+                var new_template = document.querySelectorAll(".new_template")
+                for (var a = 0; a < new_template.length; a++) {
+                    new_template[a].style.display = 'none'
+                }
+            } else {
+                var new_template = document.querySelectorAll(".new_template")
+                for (var a = 0; a < new_template.length; a++) {
+                    new_template[a].style.display = 'none'
+                }
+                this.nextElementSibling.style.display = "block"
+            }
+        }
+    }
+    var boot = document.querySelectorAll("input")
+    for (var a = 0; a < boot.length; a++) {
+        boot[a].oninput = function () {
+            var inpu = this.value;
+            this.parentElement.previousElementSibling.querySelectorAll('.danw')[0].innerHTML = inpu
+        }
+    }
+    var boot = document.querySelectorAll("textarea")
+    for (var a = 0; a < boot.length; a++) {
+        boot[a].oninput = function () {
+            var inpu = this.value;
+            this.parentElement.previousElementSibling.querySelectorAll('.beizhu')[0].innerHTML = inpu
+        }
+    }
+
+    function commit() {
+        setTimeout('yourFunction()', 200);
+    }
+
+    function yourFunction() {
+        var selectMaterials = JSON.parse('<%-selectMaterials%>');
+        var materials = document.getElementsByName('material');
+        for(var i=0;i<materials.length;i++){
+            selectMaterials.forEach(function(selectMaterial){
+                if(selectMaterial._id==materials[i].id)
+                {
+                    selectMaterial.unit = materials[i].querySelectorAll('.danw')[0].innerText;
+                    selectMaterial.remark =  materials[i].querySelectorAll('.beizhu')[0].innerText;
+                }
+
+            });
+        }
+        var templateName = document.getElementById('name').value;
+        if(!templateName){
+            document.getElementById('name').focus();
+            return  alert('模版名不能唯空！');
+        }
+        var url = "/updateTemplate";
+        var data = {
+            templateId: '<%-templateId%>',
+            templateName :templateName,
+            selectMaterials:JSON.stringify(selectMaterials)
+        }
+        pageLoadPost(url,data,'修改模版',false,'post');
+
+    }
+
+
+</script>

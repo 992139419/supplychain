@@ -1,0 +1,123 @@
+<dl class="template">
+    <dt>
+    <ul style="height: 40px;">
+        <li style="height: 30px;margin-top: 10px;">模版名</li>
+        <li style="height: 30px;margin-top: 10px;">创建时间</li>
+    </ul>
+    </dt>
+    <dd>
+
+        <ul id="mulu">
+            <% templates.forEach(function(template){ %>
+            <li id="li_<%= template._id %>" onclick="templateMaterialList('<%= template._id %>')">
+                <div><%= template.name %></div>
+                <div><%= template.createdAt %>
+                </div>
+            </li>
+            <% }) %>
+        </ul>
+    </dd>
+</dl>
+<div style="width: 100%;height: 55px"></div>
+<div id="qubie" style="display: none"></div>
+<script type="text/javascript">
+
+    function templateMaterialList(templateId) {
+        pageLoad('/temMaterialForDist?templateId=' + templateId);
+    }
+    var fangfa =[ function (data) {
+        for (var i = 0; i < data.length; i++) {
+            var li = document.createElement('li');
+            li.id = data[i]._id
+            var nei = ' <div>' + data[i].name + '</div>'
+            nei += ' <div>' + data[i].createdAt + ''
+            nei += ' <div class="icon icon-keyboard-arrow-right"></div>'
+            nei += ' </div>'
+            li.innerHTML = nei
+            li.onclick = function () {
+                templateMaterialList(this.id)
+            }
+            document.getElementById("mulu").appendChild(li)
+        }
+    }]
+    fenye("templateListForDist",fangfa)
+
+
+
+    //    var qubie = document.getElementById('qubie')
+    //    var pageNo = 0
+    //    window.onscroll = function () {
+    //        if (qubie) {
+    //
+    ////alert(1)
+    //            //获取滚动条当前的位置
+    //            function getScrollTop() {
+    //                var scrollTop = 0;
+    //                if (document.documentElement && document.documentElement.scrollTop) {
+    //                    scrollTop = document.documentElement.scrollTop;
+    //                }
+    //                else if (document.body) {
+    //                    scrollTop = document.body.scrollTop;
+    //                }
+    //                return scrollTop;
+    //            }
+    //
+    ////获取当前可是范围的高度
+    //            function getClientHeight() {
+    //                var clientHeight = 0;
+    //                if (document.body.clientHeight && document.documentElement.clientHeight) {
+    //                    clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight);
+    //                }
+    //                else {
+    //                    clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);
+    //                }
+    //                return clientHeight;
+    //            }
+    //
+    ////获取文档完整的高度
+    //            function getScrollHeight() {
+    //                return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    //            }
+    //
+    //            if (getScrollTop() + getClientHeight() == getScrollHeight()) {
+    //                pageNo++
+    //                pageLoadq('/templateListForDist', pageNo)
+    //
+    //
+    //                function pageLoadq(url) {
+    //                    var url = url + "?number=" + pageNo
+    //                    $.get(url, function (data) {
+    //                                if (data.errmsg) {
+    //                                    alert(data.errmsg);
+    //                                    return;
+    //                                }
+    //
+    //                                if(data.templates[0]){
+    //                                    data = data.templates
+    //                                    for (var i=0;i<data.length;i++){
+    //                                        var li = document.createElement('li');
+    //                                        li.id = data[i]._id
+    //                                        var nei = ' <div>'+data[i].name+'</div>'
+    //                                        nei += ' <div>'+data[i].createdAt+''
+    //                                        nei += ' <div class="icon icon-keyboard-arrow-right"></div>'
+    //                                        nei += ' </div>'
+    //                                        li.innerHTML = nei
+    //                                        li.onclick = function(){
+    //                                            templateMaterialList(data[i]._id)
+    //                                        }
+    //                                        document.getElementById("mulu").appendChild(li)
+    //                                    }
+    //                                }
+    //
+    //                            }
+    //                    );
+    //                }
+    //
+    //
+    //            }
+    ////                $('.spinner').css('display', 'block')
+    //            //            添加方法
+    //
+    //        }
+    //    }
+</script>

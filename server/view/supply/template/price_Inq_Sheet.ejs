@@ -1,0 +1,61 @@
+
+<div class="new_price_copuy">
+    <div class="new_price_copuy_q">
+        共<%=reqSheetList.length%>个询价
+    </div>
+    <div class="new_price_copuy_w">
+        <div>询价单名</div>
+        <div>时间</div>
+    </div>
+</div>
+<ul class="new_price_copuyq">
+    <%if(reqSheetList.length==0){%>
+    <li >
+        <div class="new_price_copuyq_q">
+            <div >
+                <div class="new_price_copuyq_w" style="  text-align: center!important;
+  width: 100%!important;">
+                    该餐厅一个星期内没有公开报价单
+                </div>
+            </div>
+
+        </div>
+
+    </li>
+    <%}%>
+    <% for(var i=0;i<reqSheetList.length;i++){
+        var elem=reqSheetList[i];
+        materials=elem.materials;
+
+    %>
+    <li style="float: left;width: 100%">
+        <div class="new_price_copuyq_q">
+            <div onclick="getSheetDetials(this)" id=<%=elem._id%> ><%=elem.name%>
+                   </div>
+            <div><%=elem.createdAt%></div>
+            <div class="new_price_copuyq_w" style="position: static!important;">
+                <%for(var j=0;j<materials.length;j++){
+                    var materialName='';
+                    materialName+=materials[j].material_name+"/";
+                }%>
+                <%=materialName%>....共<%=materials.length%>种食材
+            </div>
+        </div>
+
+    </li>
+    <%}%>
+</ul>
+<% include bottom.ejs %>
+<script type="text/javascript">
+    function getSheetDetials(para){
+
+        var reqUrl="/qryInqueryById?oId="+para.id;
+
+        pageLoad(reqUrl);
+
+
+    }
+
+
+
+</script>

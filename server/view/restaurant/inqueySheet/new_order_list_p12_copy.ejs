@@ -1,0 +1,84 @@
+<dl class="template">
+    <dd>
+        <ul class="template_q" style="margin-bottom: 55px">
+            <% JSON.parse(supplys).forEach(function(supply){ %>
+            <label for="input_<%= supply._id %>" style="width: 100%">
+                <li>
+                    <div id="supply_name_<%= supply._id %>"><%= supply.name %></div>
+                    <div>
+                        <div>
+                            <a href='tel://<%= supply.telephone %>'><img src="images/telephone.png"></a>
+
+                            <div class="check"></div>
+                        </div>
+                    </div>
+                </li>
+            </label>
+
+            <input name="checkbox" type="checkbox" id="input_<%= supply._id %>" style="display: none">
+            <% }) %>
+        </ul>
+    </dd>
+</dl>
+
+<div class="add_tem">
+    <div class="add_w">
+        <a href="javascript:commit()" class="add_w_w_q">
+            提交询价
+        </a>
+    </div>
+</div>
+
+
+
+<% include ../template/bottom.ejs %>
+<script type="text/javascript">
+    var hei =document.querySelectorAll(".add_tem")[0]
+    guding(hei,100)
+    var li = document.querySelectorAll("li")
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            var clas = this.getAttribute('class')
+            if (clas == 'li_q') {
+                this.className = ''
+            } else {
+                this.className = 'li_q'
+
+            }
+        }
+    }
+
+    function commit() {
+        var inquerySheetData = JSON.parse('<%-inquerySheetData%>');
+        var checkboxs = document.getElementsByName('checkbox')
+        var supplyIds = new Array();
+        for(var i= 0,size = checkboxs.length;i<size;i++){
+            var id = (checkboxs[i].id).replace('input_','');
+            var name =document.getElementById('supply_name_'+id).innerText;
+            if(checkboxs[i].checked){
+                supplyIds.push({id:id,name:name});
+            }
+        }
+
+        if(supplyIds.length==0){
+            alert('请至少选择一个供应商进行询价.');
+            return;
+        }
+        inquerySheetData.supplyIds = supplyIds;
+        var url = '/updateInquerySheet'
+        var data ={
+            inquerySheetData:JSON.stringify(inquerySheetData)
+        }
+        $.post(url,data,function(result){
+            if(result.code == 101){
+                alert('请联系管理人员进行报价');
+                return;
+            }else if(result.code==100){
+                alert('询价成功');
+                pageLoad('/priceInquery');
+                return;
+            }
+        });
+    }
+
+</script>

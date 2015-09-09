@@ -1,0 +1,160 @@
+<div class="price_inquery">
+    <div class="price_inquery_q">
+        <a href="javascript:pageLoad('/qryOfferSheetforInquery')">
+            <div class="price_inquery_q_q">报价单</div>
+        </a>
+        <a href="javascript:pageLoad('/priceInquery','询价',false)">
+            <div class="price_inquery_q_w">询价单</div>
+        </a>
+    </div>
+</div>
+<div class="c"></div>
+<div class="new_price new_price_inquery" style="margin-bottom: 55px">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+
+            <div class="swiper-slide blue-slide">
+                <dl class="template">
+                    <dd>
+                        <ul>
+                            <% JSON.parse(constactOfferSheets).forEach(function(constactOfferSheet){ %>
+                            <div class="tc" id="<%= constactOfferSheet._id %>">
+                                <a href="javascript:pageLoad('/qryOfferSheetById?offerSheetId=<%= constactOfferSheet._id %>&supplyName=<%= constactOfferSheet.supply_name %>')">
+                                    <li>
+                                        <div style="width: 40%"><%= constactOfferSheet.supplyName %></div>
+                                        <div style="width: 40%"><%= constactOfferSheet.createdAt %></div>
+                                        <div class="deleQ" style="width: 20%;"><a
+                                                    href="javaScript:deleteOffer('<%= constactOfferSheet._id %>')"><img
+                                                        width="60%" src="images/dele.png"></a></div>
+                                    </li>
+                                </a>
+                            </div>
+                            <% }) %>
+                        </ul>
+                    </dd>
+                </dl>
+            </div>
+            <div class="swiper-slide orange-slide">
+                <dl class="template">
+                    <dd>
+                        <ul>
+                            <% JSON.parse(publicOfferSheets).forEach(function(publicOfferSheet){ %>
+                            <div id="<%= publicOfferSheet._id %>">
+                                <a href="javascript:pageLoad('/qryOfferSheetById?offerSheetId=<%= publicOfferSheet._id %>&supplyName=<%= publicOfferSheet.supply_name %>')">
+                                    <li>
+                                        <div style="width: 40%"><%= publicOfferSheet.supplyName %></div>
+                                        <div style="width: 40%"><%= publicOfferSheet.createdAt %></div>
+                                        <div class="deleQ" style="width: 20%;"><a
+                                                    href="javaScript:deleteOffer('<%= publicOfferSheet._id %>')"><img
+                                                        width="60%" src="images/dele.png"></a>
+                                        </div>
+                                    </li>
+                                </a>
+                            </div>
+                            <% }) %>
+                        </ul>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="swiper-pagination swiper-pagination-clickable"></div>
+    </div>
+</div>
+<% include ../template/bottom.ejs %>
+<script>
+    document.body.scrollTop = 0
+    var swiper = new Swiper('.swiper-container', {
+        onSlideChangeStart: function (swiper) {
+            document.body.scrollTop = 0
+        },
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+
+        paginationBulletRender: function (index, className) {
+            switch (index) {
+                case 0:
+                    name = '<span>常用供应商</span>';
+                    break;
+
+                case 1:
+                    name = '<span>公开供应商</span>';
+                    break;
+                default:
+                    name = '';
+            }
+            return '<span class="' + className + '">' + name + '</span>';
+        }
+    });
+
+    function deleteOffer(id) {
+        var url = '/updateOfferSheetById';
+        var data = {
+            offerSheetId: id
+        }
+        if (confirm("确认要删除？")) {
+            $.post(url, data, function (data) {
+                if (data.code == 500) {
+                    alert('删除失败');
+                } else {
+                    var node = document.getElementById(id);
+                    node.parentNode.removeChild(node);
+                }
+            });
+        }
+    }
+
+//    var dj = document.querySelectorAll(".tc")
+//    for (var i = 0; i < dj.length; i++) {
+//        changan(dj[i])
+//    }
+//    var deleQ = document.querySelectorAll(".deleQ")
+//    var js;
+//    var jss;
+//    function changan(dj) {
+//        dj.addEventListener('touchstart', function () {
+//            jss = 1
+//            js = 1
+//            setTimeout(jsq, 1000);
+//            function jsq() {
+//                js++
+//                if (jss == 1) {
+//                    if (/iP(hone|od|ad)/.test(navigator.userAgent)) {
+//                        js = 1
+//                        jss = 2
+//
+//                        for (var i = 0; i < deleQ.length; i++) {
+//                            deleQ[i].style.display = "none"
+//                        }
+//                        dj.querySelector(".deleQ").style.display = "block"
+//
+//                    }
+//                }
+//            }
+//        }, false)
+//        dj.addEventListener('touchmove', function () {
+//            js = 0
+//            jss = 2
+//        }, false)
+//        dj.addEventListener('touchend', function () {
+//            js = 0
+//            jss = 2
+//        }, false)
+//        dj.addEventListener('touchcancel', function () {
+//            if (/iP(hone|od|ad)/.test(navigator.userAgent)) {
+//            } else {
+//                if (js > 1) {
+//                    for (var i = 0; i < deleQ.length; i++) {
+//                        deleQ[i].style.display = "none"
+//                    }
+//                    dj.querySelector(".deleQ").style.display = "block"
+//
+//
+//                }
+//            }
+//            js = 0
+//            jss = 2
+//        }, false)
+//    }
+
+</script>
+</html>

@@ -1,0 +1,51 @@
+
+
+<div class="zhangkai" style="height: 40px;line-height: 40px;padding: 0 15px;border-bottom:1px solid #979797 ">
+    请选择餐厅<span class="icon icon-unfold-more" style="float: right;height: 40px;line-height: 40">
+
+    </span>
+</div>
+<div>
+    <ul class="price_list_copy nweprice_list_copy">
+        <%for(var i=0;i<data.length;i++){
+           var className='';
+           if(mId==data[i][0]._id){
+              className='li_q';
+           }
+        %>
+        <li class="<%=className %>" id='<%=data[i][0]._id%>' style="padding: 0 15px;height: 50px">
+            <div class = "aad" style="color:#696969;width: 75%!important;text-align:left!important"><%=data[i][0].name%></div>
+            <div>
+                <div class="check"></div>
+            </div>
+        </li>
+        <%}%>
+    </ul>
+</div>
+<script>
+    var id;
+    var name;
+    var li = document.querySelectorAll("li")
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            if (this.className == "li_q") {
+                for (var b = 0; b < li.length; b++) {
+                }
+                id = ''
+            } else {
+                for (var b = 0; b < li.length; b++) {
+                    li[b].className = ''
+
+                }
+                this.className = 'li_q'
+                id = this.id
+                name = this.querySelectorAll(".aad")[0].innerHTML;
+            }
+            $.post('/setRestaurant',{uId:'<%=uId%>',mId:id,name:name},function(data){
+                if(data.status!=100){
+                    alert('系统错误') ;
+                }
+            })
+        }
+    }
+</script>

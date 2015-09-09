@@ -1,0 +1,135 @@
+<div class="new_price_copuy">
+
+    <div class="new_price_copuy_q" style="line-height:20px;padding-top: 11px ">
+        <%= JSON.parse(inquerySheetData).name %>
+        <br>
+        <%if(JSON.parse(inquerySheetData).isPublic==='0'){%>
+            <span style="font-size:13px;display:<%= JSON.parse(inquerySheetData).start=='1'?'block':'none' %>">
+            (已向<%=JSON.parse(inquerySheetData).supplyName%>询价)
+        </span>
+        <%}else{%>
+        <span style="font-size:13px;display:<%= JSON.parse(inquerySheetData).start=='1'?'block':'none' %>">
+            (已公开询价)
+        </span>
+        <%}%>
+    </div>
+</div>
+<ul class="price_list_copy list_copy_4" style="line-height: 12px">
+    <li class="title">
+        <div style="width: 45%"> 菜名</div>
+        <div style="width: 45%">单位</div>
+    </li>
+</ul>
+<ul class="user_defined_copy" style="">
+    <% JSON.parse(inquerySheetData).materials.forEach(function(material){ %>
+    <label for="input_<%= material.material_id %>" style="width: 100%">
+        <li name='material' id="<%= material.material_id %>" style="padding-top: 20px;padding-right: 47px">
+            <!--<div class="icon">-->
+                <!--<img src="images/icon.png">-->
+            <!--</div>-->
+            <div class="name" style="float: left;width: 50%;text-align: center;">
+                <span class="pingm"> <%= material.material_name %></span>
+            </div>
+            <div style="float:left;width: 50%;text-align: center">
+                <span class="danw" style=" text-align: center"><%= material.material_unit %></span>
+            </div>
+            <!--<div class="content">-->
+                <!--<span class="pingm"> <%= material.material_name %></span>-->
+                <!--<span class="danw" style="margin-left: 100px;"><%= material.material_unit %></span>-->
+            <!--</div>-->
+            <div class="check"></div>
+            <div class="c"></div>
+            <div class="beizhu" style="  font-size: 12px;
+  line-height: 14px;
+  margin-top: 7px;
+  color: #7B7A7A;overflow : hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+-webkit-box-orient: vertical;"><%= material.material_remark %>
+            </div>
+        </li>
+        <div class="new_template"
+             style="width: 100%; height: 150px;border-bottom: 1px solid #979797; display: none;padding: 3px 15px">
+            <div style="width: 20%; text-align: center;height:30px;float: left;line-height: 30px">单位</div>
+            <input readonly type="text" style="height: 30px;width: 75%" value="" placeholder="<%= material.material_unit %>">
+
+            <div class="c" style="height: 10px"></div>
+            <div style="width: 20%; text-align: center;height:30px;float: left;line-height: 30px">备注</div>
+            <textarea readonly style="width: 75%" name="textarea" cols="10" rows="3"
+                      placeholder="<%= material.material_remark %>"></textarea>
+
+        </div>
+
+    </label>
+
+    <input name="checkbox" type="checkbox" id="input_<%= material.material_id %>"
+           style="display: none" <%= material.isInquery=='1'?'checked':'' %>>
+    <% }) %>
+</ul>
+
+<div class="add_w">
+    <a class="add_w_w_q" >
+        已询价
+    </a>
+</div>
+
+<input type="checkbox" style="display: none" id="switch">
+
+<% include ../template/bottom.ejs %>
+<script type="text/javascript">
+    var li = document.querySelectorAll(".user_defined_copy li");
+    for (var a = 0; a < li.length; a++) {
+        var checkbox = document.getElementById('input_' + li[a].id);
+        if (checkbox.checked) {
+            li[a].className = 'li_q tan';
+        } else {
+            li[a].className = '';
+        }
+
+    }
+    var tan = document.querySelectorAll(".tan")
+    for(var i=0;i<tan.length;i++){
+        changan(tan[i],tan[i].querySelector(".name").innerText)
+    }
+
+
+    //编辑备注 单位点击事件
+    var li = document.querySelectorAll(".user_defined_copy li");
+    for (var a = 0; a < li.length; a++) {
+
+        li[a].onclick = function () {
+            var inpu = this.querySelectorAll('.danw')[0].innerHTML;
+            this.nextElementSibling.querySelectorAll('input')[0].value = inpu
+            if (this.nextElementSibling.style.display == 'block') {
+                var new_template = document.querySelectorAll(".new_template")
+                for (var a = 0; a < new_template.length; a++) {
+                    new_template[a].style.display = 'none'
+                }
+            } else {
+                var new_template = document.querySelectorAll(".new_template")
+                for (var a = 0; a < new_template.length; a++) {
+                    new_template[a].style.display = 'none'
+                }
+                this.nextElementSibling.style.display = "block"
+            }
+        }
+    }
+    var boot = document.querySelectorAll("input")
+    for (var a = 0; a < boot.length; a++) {
+        boot[a].oninput = function () {
+            var inpu = this.value;
+            this.parentElement.previousElementSibling.querySelectorAll('.danw')[0].innerHTML = inpu
+        }
+    }
+    var boot = document.querySelectorAll("textarea")
+    for (var a = 0; a < boot.length; a++) {
+        boot[a].oninput = function () {
+            var inpu = this.value;
+            this.parentElement.previousElementSibling.querySelectorAll('.beizhu')[0].innerHTML = inpu
+        }
+    }
+
+
+
+</script>

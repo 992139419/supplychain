@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    @@include('../formation/head.html')
+
+</head>
+<body>
+<ul class="price_list_copy list_copy_4">
+    <li class="title">
+        <div>  菜名</div><div>提供报价<sub>(元/斤)</sub></div>
+    </li>
+    <li>
+        <div> <img src="images/icon.png">大白菜</div>
+        <div><div  class="number"><input class="form-control" id="address" placeholder="0.00" type="text"></div>
+            <div class="check_q"></div>
+        </div>
+    </li>
+</ul>
+@@include('../formation/button.html',{"button":"报价"})
+@@include('../formation/bottom_q.html')
+
+<script  type="text/javascript">
+    $('li').click(function(){
+        $(this).toggleClass('li_w')
+    })
+</script>
+</body>
+</html>

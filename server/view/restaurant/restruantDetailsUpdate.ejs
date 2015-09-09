@@ -1,0 +1,167 @@
+<ul class="add_q new_add_q_q" style="margin-bottom: 55px">
+    <li style="padding-right: 15px">
+        <label class="add_q_q" for="name" style="width: 40%!important;">
+            餐厅状态:
+        </label>
+
+        <div class="add_q_w" for='name' style="width: 60%!important;">
+            <select id="cantingq" class ="form-control" style="width: 100%; height: 32px; line-height: 32px">
+                <%if(restaurant.isAvab===false){%>
+                <option value="0" selected>禁用</option>
+                <option value="1"  >正常</option>
+                <%}else{%>
+                <option value="0" >禁用</option>
+                <option value="1" selected>正常</option>
+                <%}%>
+
+            </select>
+        </div>
+    </li>
+    <li style="padding-right: 15px">
+        <label class="add_q_q" for="name" style="width: 40%!important;">
+            餐厅名称:
+        </label>
+
+        <div class="add_q_w" for='name' style="width: 60%!important;">
+            <input class="form-control" id="name" name="name" placeholder="请输入餐厅名" type="text" value="<%=restaurant.name%>">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="header" style="width: 40%!important;">
+            餐厅负责人：
+        </label>
+
+        <div class="add_q_w" for='header' style="width: 60%!important;">
+            <input class="form-control" id="header" name="header" placeholder="请输入餐厅负责人名称" type="text" value="<%=restaurant.header%>">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="telephone" style="width: 40%!important;">
+            餐厅电话：
+        </label>
+
+        <div class="add_q_w" style="width: 60%!important;">
+            <input class="form-control" id="telephone" name="telephone" placeholder="请输入餐厅电话" type="text" value="<%=restaurant.telephone%>">
+        </div>
+    </li>
+    <li >
+        <label class="add_q_q" for="area" style="width: 40%!important;">
+            地区：
+        </label>
+
+        <div class="add_q_w" style="width: 60%!important;">
+            <label class="form-control" id="area"><%=restaurant.area%></label>
+            <!--<input class="form-control" id="area" name="area" placeholder="请输入餐厅所属地区" type="text" value="">-->
+        </div>
+    </li>
+    <li >
+        <label class="add_q_q" for="address" style="width: 40%!important;">
+            餐厅地址：
+        </label>
+
+        <div class="add_q_w" style="width: 60%!important;">
+            <input class="form-control" id="address" name="address" placeholder="请输入餐厅地址" type="text" value="<%=restaurant.address%>" >
+        </div>
+    </li>
+    <li >
+        <label class="add_q_q" for="remarks" style="width: 40%!important;">
+            备注：
+        </label>
+
+        <div class="add_q_w" style="width: 60%!important;">
+            <input class="form-control" id="remark" name="remark" placeholder="请输入备注信息" type="text" value="<%=restaurant.remark?restaurant.remark:''%>">
+        </div>
+    </li>
+</ul>
+
+<div class="add_tem">
+    <div class="add_w">
+
+        <a href="javascript:commt('<%=restaurant._id%>')" class="add_w_w" style=" width: 100%;padding:0 ">
+            保存修改
+        </a>
+    </div>
+</div>
+<script>
+    var hei = document.querySelectorAll(".add_tem")[0]
+    guding(hei,100);
+    function commt(id){
+        var name = document.getElementById('name').value;
+        var header = document.getElementById('header').value;
+        var remark = document.getElementById('remark').value;
+        var telephone = document.getElementById('telephone').value;
+        var area = document.getElementById('area').innerText;
+        var address = document.getElementById('address').value;
+
+        if(!name){
+            document.getElementById('name').focus();
+            return alert('请输入餐厅名');
+        }
+        if(name.indexOf('\'')>-1||name.indexOf('\"')>-1){
+            document.getElementById('name').focus();
+            return alert('餐厅名不能包含非法字符');
+        }
+        if(!header){
+            document.getElementById('header').focus();
+            return alert('请输入餐厅负责人姓名');
+        }
+        if(header.indexOf('\'')>-1||header.indexOf('\"')>-1){
+            document.getElementById('header').focus();
+            return alert('餐厅名不能包含非法字符');
+        }
+        if(!telephone){
+            document.getElementById('telephone').focus();
+            return alert('请输入餐厅联系电话');
+        }
+        if (!/^(1[0-9])\d{9}$/.test(telephone)) {
+            document.getElementById('telephone').focus();
+            alert("请填写正确的手机号码");
+            return false;
+        }
+        if(!area){
+            document.getElementById('area').focus();
+            return alert('请输入餐厅所属区域城市');
+        }if(!address){
+            document.getElementById('address').focus();
+            return alert('请输入餐厅地址');
+        }
+        if(address.indexOf('\'')>-1||address.indexOf('\"')>-1){
+            document.getElementById('address').focus();
+            return alert('地址不能包含非法字符');
+        }
+        if(remark && remark.indexOf('\'')>-1||remark.indexOf('\'')>-1){
+            document.getElementById('remark').focus();
+            return alert('备注中不能包含非法字符');
+        }
+
+
+        var url  = '/updateMechanismInfo';
+        var mechanismInfo = {
+            name:name,
+            header:header,
+            telephone:telephone,
+            area:area,
+            address:address,
+            remark:remark,
+            type:'1'
+        }
+        var data = {
+            id:id,
+            mechanismInfo:JSON.stringify(mechanismInfo)
+        }
+        $.post(url,data,function(result){
+            alert(JSON.stringify(result));
+            if(!result.code){
+                return alert('修改餐厅信息失败');
+            }
+            var code = result.code;
+            if(code==100){
+                alert('修改成功');
+                pageLoad('/queryMechanismByuser?type=1');
+            }else{
+                return alert('修改失败');
+            }
+        });
+
+    }
+</script>

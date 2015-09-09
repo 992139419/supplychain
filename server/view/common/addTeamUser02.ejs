@@ -1,0 +1,86 @@
+<div class="zhangkai" style="height: 40px;line-height: 40px;padding: 0 15px;border-bottom:1px solid #979797 ">
+    我的组员<span class="icon icon-unfold-more" style="float: right;height: 40px;line-height: 40px;">
+
+    </span>
+</div>
+<div>
+    <ul class="price_list_copy nweprice_list_copy">
+        <li id='<%= suplly[0]._id%>' style="padding: 0 15px;height: 50px;clear: both">
+            <div class="aad" style="color:#696969;width: 75%!important;text-align:left!important"><%= suplly[0].name %></div>
+            <div>
+                <div class="check" ></div>
+            </div>
+        </li>
+    </ul>
+
+
+</div>
+<div style=" font-size: 12px;color: #b6b6b6; padding: 0 15px;margin-top: 10px;margin-bottom: 55px">
+    提示:&nbsp;食材供货公司机构管理员，如需要为旗下供货公司机构添加组员，需先在下面选择供货机构。然后点击右上角的分享按钮，分享给你说需要添加的成员。
+</div>
+<script>
+    var id;
+    var name='';
+    var hrefUrl;
+    var wx=wx;
+    if (/iP(hone|od|ad)/.test(navigator.userAgent)) {
+        hrefUrl = hrefLocation;
+    } else {
+        hrefUrl = location.href.split('#')[0];
+    }
+    var li = document.querySelectorAll(".check")
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+
+            if (this.parentNode.parentNode.className == "li_q") {
+                for (var b = 0; b < li.length; b++) {
+                    li[b].parentNode.parentNode.className = ''
+                }
+                id = ''
+            } else {
+                for (var b = 0; b < li.length; b++) {
+                    li[b].parentNode.parentNode.className = ''
+                }
+                this.parentNode.parentNode.className = 'li_q'
+                id = this.parentNode.parentNode.id
+                name = this.parentNode.parentNode.querySelectorAll(".aad")[0].innerHTML;
+            }
+            $.post('http://www.idabaicai.com/getQMData', {
+                url: hrefUrl
+            }, function (data) {
+                wx.config({
+                    debug: false,
+                    appId: data.appId,
+                    timestamp: data.timestamp,
+                    nonceStr: data.nonceStr,
+                    signature: data.signature,
+                    jsApiList: [
+                        'checkJsApi',
+                        'onMenuShareAppMessage'
+                    ]
+                });
+            });
+            alert('你确定要添加吗？');
+            var urlLink = 'http://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa1915b3016eef8ac&redirect_uri=' + encodeURIComponent('http://www.idabaicai.com/getUserInfo?userType=2&mid=<%=suplly[0]._id%>&name=<%=suplly[0].name%>&headMechanismId=<%=suplly[0]._id%>&headMechanismName=<%=suplly[0].name%>&invitId=<%=openId%>') + '&response_type=code&scope=snsapi_userinfo&state=12354#wechat_redirect';
+            var desc1=name+'食材供应商管理员邀请你成为他的员';
+            wx.onMenuShareAppMessage({
+                title: '大白菜食材供应系统',
+                desc: desc1,
+                link: urlLink,
+                imgUrl: 'http://www.idabaicai.com/images/dabaicai.jpg',
+                type: 'link',
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                   // alert('用户确认分享后执行的回调函数');
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                   // alert('用户取消分享后执行的回调函数');
+                }
+            });
+            wx.error(function (res) {
+               // alert(res.errMsg);
+            });
+        }
+    }
+</script>

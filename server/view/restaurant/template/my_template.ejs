@@ -1,0 +1,164 @@
+<div id="templ"></div>
+<dl class="template" >
+    <dt>
+    <ul>
+        <li style="padding: 15px">模版名</li>
+        <li style="padding: 15px">创建时间</li>
+    </ul>
+    </dt>
+    <div class="hei" style="min-height: 100%;width: 100%;">
+
+        <dd>
+            <ul id="template">
+                <% templates.forEach(function(template){ %>
+                <a href="javascript:updateTemplate('<%=JSON.stringify(template)%>')">
+                    <li class="aaad" style="padding: 0px 10px" type="<%= template.type %>" mechanismId="<%= template.mechanism_id %>"
+                        id="li_<%= template._id %>">
+                        <div class="template_new_q" style="margin-bottom: 10px;margin-top: 10px;">
+                            <div><%= template.name %></div>
+                            <div><%= template.createdAt %>
+                                <a class="dele" id="<%= template._id %>">删除</a></div>
+                        </div>
+                    </li>
+                </a>
+                <% }) %>
+            </ul>
+        </dd>
+    </div>
+</dl>
+<div style="width: 100%;height: 110px"></div>
+<div class="add_tem">
+    <div class="add_w">
+        <a href="javascript:pageLoadPost('/addTemplate',{},'添加模版',true,'post')" class="add_w_w_q">
+            添加模版
+        </a>
+    </div>
+</div>
+<div id="qubie"></div>
+<script type="text/javascript">
+    var ad = 1;
+    var number = 1
+    var start;
+    var end;
+    var dele = document.querySelectorAll(".dele");
+    var hei = document.querySelectorAll("html")[0].offsetHeight - 50;
+    document.querySelectorAll(".hei")[0].style.minHeight = hei + 'px'
+
+    var li = document.querySelectorAll("li .template_new_q")
+    document.querySelectorAll(".hei")[0].onclick = function () {
+        for (var a = 0; a < li.length; a++) {
+            li[a].style.left = '0px'
+        }
+    }
+var hei = document.querySelectorAll(".add_tem")[0]
+    guding(hei,100)
+
+    function a() {
+        for (var a = 0; a < li.length; a++) {
+
+            li[a].addEventListener('touchstart', chstart, false);
+            li[a].addEventListener('touchmove', function (ev) {
+                this.className="template_new_q"
+
+                if (ad == 1) {
+                    for (var a = 0; a < li.length; a++) {
+                        li[a].style.left = '0px'
+                    }
+                }
+                ad = 2
+                var move = ev.changedTouches[0].clientX
+                var x = start - move
+                if (x < 60&&x>5) {
+                    ev.returnValue = false;
+                    this.style.left = -x + 'px';
+                }
+                end = x
+            }, false);
+            li[a].addEventListener('touchend', end, false);
+        }
+        function chstart(ev) {
+            this.className="template_new_q"
+            ad = 1;
+            end = 0
+            start = ev.changedTouches[0].clientX
+        }
+
+        function end(ev) {
+            this.className="template_new_q template_new_q_q"
+
+            var en = parseInt(end)
+            if (en > 50) {
+                this.style.left = '-50px';
+            } else if (en == 0) {
+
+            } else {
+                this.style.left = '0px';
+            }
+        }
+
+        for (var a = 0; a < dele.length; a++) {
+            dele[a].onclick = function () {
+                var idq = this.id
+                if (window.confirm('你确定要删除吗？')) {
+                    $.post('/deleteTemplate', {restaurantId: idq}, function (date) {
+                        if (date.resulte == true) {
+                            var dl = document.querySelectorAll(".template dd ul")[0]
+                            var li = dl.querySelectorAll('#li_' + idq)[0]
+                            dl.removeChild(li);
+                        }
+                    })
+//                    return true;
+                } else {
+                    for (var a = 0; a < li.length; a++) {
+                        li[a].style.transform = 'translateX(0px)'
+                    }
+                    return false;
+                }
+            }
+        }
+    }
+    var li = document.querySelectorAll(".template_new_q")
+    for(var i = 0; i<li.length;i++){
+        var hei = li[i].offsetHeight
+        li[i].querySelectorAll(".dele")[0].style.lineHeight = hei+"px"
+    }
+
+    a()
+    //    var suoyou = document.querySelectorAll("*")
+    //    var li = document.querySelectorAll("li .template_new_q")
+    //    for (var a = 0; a < suoyou.length; a++) {
+    //        suoyou[a].onclick = function (event) {
+    //            if (this.getAttribute('class') == 'dele' && this.parentNode.parentNode.style.transform == 'translateX(-50px)') {
+    //                var idq = this.id
+    //                if (window.confirm('你确定要删除吗？')) {
+    //                    $.post('/deleteTemplate', {restaurantId: idq}, function (date) {
+    //                        if (date.resulte == true) {
+    //                            var dl = document.querySelectorAll(".template dd ul")[0]
+    //                            var li = dl.querySelectorAll('#li_' + idq)[0]
+    //                            dl.removeChild(li);
+    //                        }
+    //                    })
+    ////                    return true;
+    //                } else {
+    //                    alert("取消");
+    //                    return false;
+    //                }
+    //            } else {
+    //
+    //                for (var a = 0; a < li.length; a++) {
+    //                    li[a].style.transform = 'translateX(0px)'
+    //                }
+    //            }
+    //        }
+    //    }
+    feiyeer()
+
+    function updateTemplate(template){
+        var url = '/addTemplate';
+        var data = {
+            template:template
+        }
+        pageLoadPost(url,data,'修改模版' ,false,'post');
+    }
+
+</script>

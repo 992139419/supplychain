@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, width=device-width" name="viewport">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title></title>
+    <!-- css -->
+    <link id="q" rel="stylesheet" href="http://7xi34i.com1.z0.glb.clouddn.com/base.min.css?<%=new Date().getTime()%>">
+    <link id="w" rel="stylesheet" href="http://7xi34i.com1.z0.glb.clouddn.com/wo.css?<%=new Date().getTime()%>">
+    <link id="e" rel="stylesheet" href="http://7xi34i.com1.z0.glb.clouddn.com/swiper.min.css?<%=new Date().getTime()%>">
+    <script type="text/javascript">
+        if (/iP(hone|od|ad)/.test(navigator.userAgent)) {
+            var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/),
+                    version = parseInt(v[1], 10);
+            if (version >= 8) {
+                document.write('<link rel="stylesheet"  href="http://7xi34i.com1.z0.glb.clouddn.com/base.min.css?<%=new Date().getTime()%>">');
+                document.write('<link rel="stylesheet"  href="http://7xi34i.com1.z0.glb.clouddn.com/wo.css?<%=new Date().getTime()%>">');
+                document.write('<link rel="stylesheet"  href="http://7xi34i.com1.z0.glb.clouddn.com/swiper.min.css?<%=new Date().getTime()%>">');
+            } else {
+                document.write('<link rel="stylesheet"  href="http://7xi34i.com1.z0.glb.clouddn.com/base_q.min.css?<%=new Date().getTime()%>">');
+                document.write('<link rel="stylesheet"  href="http://7xi34i.com1.z0.glb.clouddn.com/wo_q.css?<%=new Date().getTime()%>">');
+                document.write('<link rel="stylesheet"  href="http://7xi34i.com1.z0.glb.clouddn.com/swiper_q.min.css?<%=new Date().getTime()%>">');
+            }
+            var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/),
+                    version = parseInt(v[1], 10);
+        } else {
+            document.write('<link rel="stylesheet"  href="http://7xi34i.com1.z0.glb.clouddn.com/base_q.min.css?<%=new Date().getTime()%>">');
+            document.write('<link rel="stylesheet"  href="http://7xi34i.com1.z0.glb.clouddn.com/wo_q.css?<%=new Date().getTime()%>">');
+            document.write('<link rel="stylesheet"  href="http://7xi34i.com1.z0.glb.clouddn.com/swiper_q.min.css?<%=new Date().getTime()%>">');
+        }
+        var _openId = '<%=openId%>';
+        if (window.localStorage) {
+            window.localStorage.setItem('openId', '<%=openId%>');
+            var _v = window.localStorage.getItem('openId');
+            if (!_v && _v != 'underfied') {
+                window.localStorage.setItem('openId', '<%=openId%>');
+            }
+        }
+        var hrefLocation=location.href;
+    </script>
+
+    <script src="js/swiper.min.js?<%= new Date().getTime() %>" type="text/javascript"></script>
+    <script src="js/underscore.js?<%= new Date().getTime() %>" type="text/javascript"></script>
+    <script src="js/common.js?<%= new Date().getTime() %>" type="text/javascript"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+<body>
+
+<ul class="add_q" style="font-size: 12px; padding: 0 15px">
+<li style="background-color: #F7F7F7;margin: 0 -15px;height: 35PX;line-height: 35px">
+    <div class="list_confirm_p07" style="font-size:13px;height: 35px;text-align: left;padding: 0 15px;line-height: 35px">
+        联系人详情
+    </div>
+</li>
+    <li style="margin-top:5px;height: 22px;line-height: 22px;border: none;font-size: 12px">
+        <label class="add_q_q" style = "width:40%;text-align: left;height: 22px;line-height: 22px;font-size: 12px">
+            收货人：
+        </label>
+
+        <div class="add_q_w" style = "width: 60%; color: #666666;font-size: 12px">
+            王林海
+        </div>
+    </li>
+    <li style="height: 22px;line-height: 22px;border: none">
+        <label class="add_q_q" style = "width: 40%; color: #666666;font-size: 12px;text-align: left ;height: 22px;line-height: 22px">联系电话：
+        </label>
+
+        <div class="add_q_w" style = "width: 60%; color: #666666;font-size: 12px">1234567809
+        </div>
+    </li>
+    <li style="height: 22px;line-height: 22px;border: none">
+        <label class="add_q_q" style = "font-size: 12px;width: 40%; color: #666666;text-align: left;height: 22px;line-height: 22px">
+            收货地址：
+        </label>
+
+        <div class="add_q_w" style = "font-size: 12px;width: 60%; color: #666666;">
+            上海长宁
+        </div>
+    </li>
+</ul>
+<div class="list_confirm_p07" style="height: 35px;line-height: 35px;margin-top: 5px
+">
+    <div class="price_offerq">
+        <div class="price_offer_w" style="width: 100%;height: 35px;line-height: 35px;float: left;background-color: #F7F7F7;text-align: left;font-size: 14px;color: #212147;padding: 0 15px">商品名称</div>
+    </div>
+</div>
+<ul class="price_list_copy" style="  border-bottom: 1px dashed #979797;
+  padding-bottom: 10px;">
+    <li style="height: 35px;line-height: 35px;padding-top: 0px">
+        <div style="width: 20%;font-size: 13px; height: 35px;line-height: 35px"> 名称</div>
+        <div style="width: 20%; font-size: 13px; height: 35px;line-height: 35px">单价</div>
+        <div style="width: 20%; font-size: 13px;height: 35px;line-height: 35px">单位</div>
+        <div style="width: 20%; font-size: 13px;height: 35px;line-height: 35px">购买数量</div>
+        <div style="width: 20%;font-size: 13px;height: 35px;line-height: 35px">实收数量</div>
+    </li>
+    <li style="height: 25px; line-height: 25px;padding-top: 0px;border: none">
+        <div style="width: 20%;font-size: 12px;color: #666;height: 25px; line-height: 25px"> 大白菜</div>
+        <div style="width: 20%; font-size: 12px;color: #666;height: 25px; line-height: 25px">3</div>
+        <div style="width: 20%; font-size: 12px;color: #666;height: 25px; line-height: 25px">Kg</div>
+        <div style="width: 20%; font-size: 12px;color: #666;height: 25px; line-height: 25px">20</div>
+        <div style="width: 20%;font-size: 12px;color: #666">20</div>
+    </li>
+    <li style="height: 25px; line-height: 25px;padding-top: 0px;border: none">
+        <div style="width: 20%;font-size: 12px;color: #666;height: 25px; line-height: 25px"> 大白菜</div>
+        <div style="width: 20%; font-size: 12px;color: #666;height: 25px; line-height: 25px">3</div>
+        <div style="width: 20%; font-size: 12px;color: #666;height: 25px; line-height: 25px">Kg</div>
+        <div style="width: 20%; font-size: 12px;color: #666;height: 25px; line-height: 25px">20</div>
+        <div style="width: 20%;font-size: 12px;color: #666">20</div>
+    </li>
+</ul>
+
+<div style="font-size: 20px; padding: 20px 15px;color: #2ecc71">
+订单总价：¥400
+</div>
+</body>
+</html>

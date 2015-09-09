@@ -1,0 +1,62 @@
+<div class="bottom" >
+    <!--categoryId的值为no,不需要引入头部文件的首页-->
+    <a class="bottom_q" href="javascript:pageLoad('/resIndex?categoryId=no')">
+        <div style="color: #2ecc70; "><img src="images/bottom_q_q.png"><br>首页</div>
+    </a>
+    <a class="bottom_w" href="javascript:pageLoad('/priceInquery')">
+        <div><img src="images/bottom_w.png"><br>询价</div>
+    </a>
+    <a class="bottom_e" href="javascript:pageLoad('/myorder')">
+        <div><img src="images/bottom_e.png"><br>订单
+            <div style="width: 24px;margin: auto ; background-color: transparent;">
+                <div style="margin-left: 20px;position: static; width: 16px;display:none;" id="orderCounter">0</div>
+            </div>
+        </div>
+    </a>
+    <a class="bottom_r" href="javascript:pageLoad('/my')">
+        <div><img src="images/bottom_r.png"><br>我的</div>
+    </a>
+</div>
+
+
+<script>
+
+    //    setInterval(function () {
+    //                getPendingOrders();
+    //            }, 60000);//每分钟执行一次
+    //
+    function getPendingOrders() {
+//        $.get("/getPendingOrders", function (feed) {
+//            var orderCounter = document.getElementById('orderCounter');
+//            if (orderCounter&&feed!='0') {
+//                orderCounter.style.display = 'block';
+//                orderCounter.innerHTML = feed;
+//            }else{
+//                orderCounter.style.display = 'none';
+//            }
+//        }, null, true);//
+
+    }
+    var hei = document.querySelectorAll(".bottom")[0]
+    guding(hei)
+    var bottom = document.querySelectorAll(".bottom a");
+    for (var a = 0; a < bottom.length; a++) {
+        var bott = bottom[a]
+        bott.onclick = function () {
+//          var di =  document.querySelectorAll(".bottom a div");
+//            for(var a =0;a<di.label;a++){
+//                di.style.color='#939393'
+//            }
+            for (var b = 0; b < bottom.length; b++) {
+                var cla = bottom[b].getAttribute('class')
+                bottom[b].querySelectorAll('div')[0].style.color = '#939393'
+                bottom[b].querySelectorAll('img')[0].src = 'images/' + cla + '.png'
+            }
+            var cl = this.getAttribute('class')
+            this.querySelectorAll('div')[0].style.color = '#2ecc70'
+            this.querySelectorAll('img')[0].src = 'images/' + cl + '_q.png'
+        }
+    }
+
+
+</script>

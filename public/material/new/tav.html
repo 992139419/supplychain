@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    @@include('../formation/head.html')
+</head>
+<body>
+<div class="tav">
+<div class="tav_q">
+    <div class="tav_q_q">
+        食材
+    </div>
+<dvi >
+    供应商
+</dvi>
+</div>
+</div>
+<div class="tavq">
+<ul class="user_defined_copy">
+    <li>
+        <div class="icon">
+            <img src="images/icon.png">
+        </div>
+        <div class="content">
+            猪肉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span class="content_q">￥：2元/斤</span>
+            <div class="content_q">
+                共30家供应商报价
+            </div>
+        </div>
+        <a class="dele">删除</a>
+    </li>
+</ul>
+</div>
+@@include('../formation/bottom.html')
+
+<script type="text/javascript">
+    $('li').click(function(){
+
+        $('a',$('li')).removeClass('dele_q').addClass('dele')
+
+        $('a',$(this)).removeClass('dele').addClass('dele_q')
+    })
+</script>
+</body>
+</html>

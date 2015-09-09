@@ -1,0 +1,112 @@
+
+<html>
+<head>
+    <%include ./head.ejs %>
+</head>
+<body>
+<div id="pageContent" style="height: 100%;width: 100%;">
+
+<div class="list_confirm_p07">
+    订单编号:<%=ordersDetail[0].orderNo%>
+    <div class="price_offerq">
+        <div class="price_offer_w" style="width: 20%">菜名</div>
+        <div class="price_offer_w" style="width: 20%">单价<sub>(元)</sub></div>
+        <div class="price_offer_w" style="width: 20%">单位</div>
+        <div class="price_offer_w" style="width: 20%">订购数</div>
+        <div class="price_offer_w" style="width: 20%">实收数</div>
+    </div>
+</div>
+<ul class="price_list_copy">
+
+    <%for(var i=0;i<ordersDetail[0].orderItem.length;i++) {
+
+         var subItem=ordersDetail[0].orderItem[i];
+
+    %>
+
+    <li class="tan" >
+        <div style="text-align:left;;width:20%;display:block;" class="name"><%=subItem.materialName%></div>
+        <div class="money" style="width:20%;">￥<%=subItem.materialPrice%></div>
+        <div style="width:20%;"><%=subItem.unit%></div>
+        <div style="width:20%;" class="num"><%=subItem.number%></div>
+        <div style="width:20%;" class="paidIn"><%=subItem.paidIn%></div>
+        <div class="beizhu" style="font-size: 12px;
+  line-height: 14px;
+  width: auto;
+  margin-top:-5px ;
+  color: #7B7A7A;overflow : hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+text-align: left;
+padding-left: 10px;
+clear: both;
+-webkit-box-orient: vertical;
+margin-top: 10px;
+"><%= subItem.remark %>
+        </div>
+    </li>
+
+    <%}%>
+</ul>
+    <div style="font-size: 15px; padding: 10px 15px;color: red;border-bottom: 1px dashed #979797;">
+        订购总额：￥<span id="sum" class="pricew"> 0</span>
+    </div>
+    <div style="font-size: 15px; padding: 10px 15px;color: red;border-bottom: 1px dashed #979797">
+        实收总额：￥<span id="paidInsum" class="paidInsum"> 0</span>
+    </div>
+<div style="font-size: 20px; padding: 10px 15px;color: #3CCE79; border-top: 1px dashed #979797">
+    收货人：<%=ordersDetail[0].receiver%>
+</div>
+    <div style="width: 100%;height: 60px"></div>
+<div class="add_tem">
+    <div class="add_w" style="">
+        <a href="javascript:pageLoad('/queryOrderDetails?orderId=<%=ordersDetail[0]._id%>')" class="add_w_w_q" style="background-color: coral">订单详情</a>
+    </div>
+</div>
+<div style="width: 100%;height: 110px"></div>
+<script>
+    var tan = document.querySelectorAll(".tan")
+    for (var i = 0; i < tan.length; i++) {
+        changan(tan[i], tan[i].querySelectorAll('.name')[0].innerText)
+    }
+
+    var li = document.querySelectorAll(".tan")
+    var pricew = 0;
+    var paidInSum = 0;
+    for (var a = 0; a < li.length; a++) {
+        var money = li[a].querySelectorAll('.money')[0].innerHTML;
+        var moneyq = money.substring(1, money.length)
+        var materialNumber = li[a].querySelectorAll('.num')[0].innerHTML;
+        var price = new Decimal(moneyq).times(new Decimal(materialNumber));
+        pricew = new Decimal(pricew).plus(new Decimal(price));
+
+        var paidInNumber  =  li[a].querySelectorAll('.paidIn')[0].innerHTML;
+        var paidInPrice = new Decimal(moneyq).times(new Decimal(paidInNumber));
+        paidInSum = new Decimal(paidInSum).plus(new Decimal(paidInPrice));
+    }
+
+    document.querySelectorAll('.pricew')[0].innerHTML = pricew;
+    document.querySelectorAll('.paidInsum')[0].innerHTML = paidInSum;
+
+
+    var hei = document.querySelectorAll('.add_tem')[0];
+    guding(hei,50)
+    var li = document.querySelectorAll('li');
+    for(var i= 0,size=li.length;i<size;i++){
+        var number = li[i].querySelectorAll('.num')[0].innerText;
+        var paidIn = li[i].querySelectorAll('.paidIn')[0].innerText;
+        if(number!=paidIn){
+            li[i].style.color = 'red';
+        }
+    }
+    var tan = document.querySelectorAll(".tan")
+    for (var i = 0; i < tan.length; i++) {
+        changan(tan[i], tan[i].querySelectorAll('.name')[0].innerText)
+    }
+</script>
+
+</div>
+</body>
+</html>
+

@@ -1,0 +1,44 @@
+
+<div class="new_price_copuy">
+    <div class="new_price_copuy_q">
+        共<%=resturantList.length%>家餐厅询价
+    </div>
+    <div class="new_price_copuy_w">
+        <div>餐厅名</div>
+        <div>时间</div>
+    </div>
+</div>
+<ul class="new_price_copuyq">
+    <% for(var i=0;i<resturantList.length;i++){
+    var elem=resturantList[i];
+    %>
+
+
+    <li>
+        <div class="new_price_copuyq_q">
+            <div onclick="getInquerySheet('<%=elem.restruantId%>','<%=elem.material_id%>')" id=<%=elem.restruantId%> ><span><%=elem.restruantName%>
+                <div class="new_price_copuyq_w">
+                </div></span></div>
+            <div><%=elem.updatedAt%></div>
+        </div>
+
+        <%if(elem.distance=='-1'){%>
+        <span style="margin-left: 15px;font-size: 13px"> 地址不正确，无法计算 </span>
+        <%}else{%>
+        <span style="margin-left: 15px;font-size: 13px">  距离餐厅<%=elem.distance%>米 </span>
+        <%}%>
+
+    </li>
+    <%}%>
+</ul>
+<% include bottom.ejs %>
+
+<script type="text/javascript">
+function getInquerySheet(restruantId,material_id){
+    var url='fetchInqSheetList?restId='+restruantId+'&materalId='+material_id ;
+    pageLoad(url);
+}
+
+
+
+</script>

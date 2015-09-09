@@ -1,0 +1,28 @@
+
+<dl class="template">
+    <dt>
+    <ul   style="height: 40px;">
+        <li style="height: 30px;margin-top: 10px;">模版名</li>
+        <li style="height: 30px;margin-top: 10px;">创建时间</li>
+    </ul>
+    </dt>
+    <dd style="margin-bottom: 55px">
+
+        <ul>
+            <% templates.forEach(function(template){ %>
+            <li id="li_<%= template._id %>" onclick="templateMaterialList('<%= template._id %>')">
+                <div><%= template.name %></div>
+                <div><%= template.createdAt %></div>
+            </li>
+            <% }) %>
+        </ul>
+    </dd>
+</dl>
+
+<script type="text/javascript">
+
+    function templateMaterialList(templateId){
+        pageLoad('templateMaterialList?templateId='+templateId);
+    }
+
+</script>

@@ -1,0 +1,36 @@
+
+<ul class="myq">
+    <li>
+        <img src="images/index_q.png">&nbsp;&nbsp;&nbsp;我的订单
+    </li>
+    <li>
+        <div onclick="javascript:pageLoad('/supMyOrder?anchor=0')"><img src="images/index_e.png" style="width: 18px"><br>已下单</div>
+        <div onclick="javascript:pageLoad('/supMyOrder?anchor=1')"><img src="images/index_r.png"><br>已配送</div>
+        <div onclick="javascript:pageLoad('/supMyOrder?anchor=2')"><img src="images/index_t.png"><br>已验收</div>
+    </li>
+</ul>
+<div class="myw" style="width: 100%">
+    <!--<div><img src="images/index_u.png" style="width: 35px" onclick="javascript:pageLoad('/myfriend')"><br>我的好友</div>-->
+    <% if(userAuth == '1'){ %>
+    <div><img src="images/index_i.png" style="width: 40px" onclick="javascript:pageLoad('/queryMechanismByuser?type=0')"><br>我的组员</div>
+    <% } %>
+    <div ><img src="images/index_o.png" style="width: 44px;margin-top: -7px" onclick="javaScript:pageLoad('/supContacts')"><br>我的餐厅</div>
+    <div><a href="javascript:pageLoad('/myTempalte')"><img src="images/index_a.png"></a><br>我的模板</div>
+    <!--
+    <div><img src="images/index_f.png" onclick="javaScript:pageLoad('/getFavMaterial')"><br>我的关注</div>
+    <div ><img src="images/index_s.png"><br>我的推荐</div>
+    -->
+    <div><img onclick="javascript:pageLoad('/queryMechanismByuser?type=1')" src="images/index_d.png " style="width: 23px"><br>我的供应商</div>
+   <!--
+    <div><img src="images/index_g.png" onclick="javaScript:pageLoad('/selectMaterialPT')"><br>价格走势</div>
+    -->
+    <div class=""><img onclick="javascript:pageLoad('/userSetting')" src="images/index_h.png" style="width: 35px"><br>个人设置</div>
+    <div><img src="images/index_j.png" onclick="javaScript:pageLoad('/contactUs')"><br>联系我们</div>
+    <div><img src="images/index_k.png" style="width: 37px" onclick="javaScript:pageLoad('/addDistributionChoose')"><br>配送</div>
+
+</div>
+<% include ../template/bottom.ejs %>
+
+<script>
+    document.title = '<%=title%>';
+</script>

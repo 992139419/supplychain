@@ -1,0 +1,162 @@
+<div class="bj" style="background-image: none;background-color: #F7F7F7; z-index: -1" id="start">
+
+</div>
+
+<div class="new_price new_price_inquery new_order_list new_swiper_wrapper">
+    <div class="swiper-container">
+        <div class="swiper-wrapper" style="margin-bottom: 55px">
+
+            <div class="swiper-slide blue-slide">
+                <div class="price_inqueryq order_listq">
+
+                    <ul class="price_list_copy">
+
+                        <li>
+                            <div>订单编号</div>
+                            <div>订单名</div>
+                            <div>日期</div>
+                        </li>
+                        <% if(sendOrder.length == 0){
+                        %>
+                        <li>
+                            <div>当前没有订单</div>
+                        </li>
+                        <% } %>
+
+                        <% for(var i = 0;i < sendOrder.length;i++){
+                            var order = sendOrder[i];
+                            var oid = order._id.toString();
+                        %>
+                        <a href="javascript:getOrderDetials('<%= oid %>')">
+                            <li onclick="getOrderDetials('<%= oid %>')">
+                                <div style="word-break:break-all;"><%= order.orderNo %></div>
+                                <div style="word-break:break-all;"><%= order.restruantName %></div>
+                                <div style="word-break:break-all;"><%= order.createdAt %></div>
+                            </li>
+                        </a>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+            <div class="swiper-slide orange-slide">
+                <div class="price_inqueryq order_listq">
+                    <ul class="price_list_copy">
+                        <li>
+                            <div>订单编号</div>
+                            <div>订单名</div>
+                            <div>日期</div>
+                        </li>
+
+                        <% if(deliveryOrders.length == 0){
+                        %>
+                        <li>
+                            <div>当前没有订单</div>
+                        </li>
+                        <% } %>
+                        <% for(var i = 0;i < deliveryOrders.length;i++){
+                            order = deliveryOrders[i];
+                            var oid = order._id.toString();
+                        %>
+                        <a href="javascript:getOrderDetials('<%= oid %>')">
+                            <li onclick="getOrderDetials('<%= order.oid %>')">
+                                <div style="word-break:break-all;"><%= order.orderNo %></div>
+                                <div style="word-break:break-all;"><%= order.restruantName %></div>
+                                <div style="word-break:break-all;"><%= order.createdAt %></div>
+                            </li>
+                        </a>
+                        <% } %>
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="swiper-slide orange-slide">
+                <div class="price_inqueryq order_listq">
+                    <ul class="price_list_copy">
+                        <li>
+                            <div>订单编号</div>
+                            <div>订单名</div>
+                            <div>日期</div>
+                        </li>
+                        <% if(receivedOrders.length == 0){
+                        %>
+                        <li>
+                            <div>当前没有订单</div>
+                        </li>
+                        <% } %>
+
+                        <% for(var i = 0;i < receivedOrders.length;i++){
+                            order = receivedOrders[i];
+                            var oid = order._id.toString();
+                        %>
+                        <a href="javascript:getOrderDetials('<%= oid %>')">
+                            <li onclick="getOrderDetials('')">
+                                <div style="word-break:break-all;"><%= order.orderNo %></div>
+                                <div style="word-break:break-all;"><%= order.restruantName %></div>
+                                <div style="word-break:break-all;"><%= order.createdAt %></div>
+                            </li>
+                        </a>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="swiper-pagination swiper-pagination-clickable"></div>
+    </div>
+</div>
+
+<% include ../template/bottom.ejs %>
+
+<script>
+
+    document.body.scrollTop = 0
+var anchor= parseInt('<%=anchor%>');
+var swiper = new Swiper('.swiper-container', {
+
+onSlideChangeStart: function (swiper) {
+        document.body.scrollTop = 0
+    },
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        initialSlide: anchor,
+        paginationBulletRender: function (index, className) {
+            switch (index) {
+                case 0:
+                    name = '<span><span  class="dingdan" style="margin-left: 10px">已下单</span></span>';
+                    break;
+                case 1:
+                    name = '<span><span  class="dingdan">已配送</span></span>';
+                    break;
+                default:
+                    name = '<span><span  class="dingdan">已验收</span></span>';
+            }
+            return '<span class="' + className + '">' + name + '</span>';
+        }
+    });
+
+    var li = document.querySelectorAll("li")
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            var clas = this.getAttribute('class')
+            if (clas == 'li_q') {
+                this.className = ''
+            } else {
+                this.className = 'li_q'
+
+            }
+        }
+    }
+    var dingdan = document.querySelectorAll(".dingdan")
+    var wi = dingdan[0].offsetWidth
+    for (var i = 0; i < dingdan.length; i++) {
+        dingdan[i].style.margin = "0 0 0 " + ((document.body.clientWidth - 3) / 3 - wi) / 2 + "px"
+    }
+
+    function getOrderDetials(orderNo) {
+        var url = "/getOrderDetail?ordId=" + orderNo;
+        pageLoad(url);
+    }
+
+
+</script>

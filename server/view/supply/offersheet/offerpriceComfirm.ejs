@@ -1,0 +1,322 @@
+<div class="newpage">
+    <div class="newpage_q">
+    </div>
+</div>
+<div class="new_price_copuy">
+    <div class="new_price_copuy_q" style="line-height:20px;padding-top: 11px ">
+        <%= JSON.parse(offerSheetData).name %>
+        <% if( JSON.parse(offerSheetData).isPublic == '1'){ %>
+        <br><span style="font-size:13px">
+            (公开报价单)
+        </span>
+        <% }else if(JSON.parse(offerSheetData).isPublic == '0' && JSON.parse(offerSheetData).start == '1'){ %>
+        <br><span style="font-size:13px">
+            (给<%= JSON.parse(offerSheetData).restruantdName %>餐厅的报价单)
+        </span>
+        <% } %>
+    </div>
+</div>
+<ul class="price_list_copy list_copy_4" style="line-height: 12px;moz-user-select: -moz-none;
+-moz-user-select: none;
+-o-user-select:none;
+-khtml-user-select:none;
+-webkit-user-select:none;
+-ms-user-select:none;
+user-select:none;
+margin-bottom: 21px;
+float: left;
+width: 100%">
+
+    <li class="title">
+        <div style="width: 33.3333333%"> 菜名</div>
+        <div style="width: 33.3333333%">单位</div>
+        <div style="width: 33.3333333%">单价<sub>(元)</sub></div>
+        <div></div>
+    </li>
+    <% JSON.parse(offerSheetData).materials.forEach(function(offerMaterial){ %>
+    <li name='material' id="<%= offerMaterial.material_id %>" style="padding-top: 20px;padding-right: 50px;float: left;width: 100%">
+        <div style="width: 33.333333%;padding-left:15px;text-align: left; " class="icon">
+            <span class="pingm"
+                  style=""> <%= offerMaterial.material_name %></span>
+        </div>
+        <div style="height: 20px;line-height: 20px;width:  33.333333%">
+            <div class="number danw" style="margin-top: -7px"> <%= offerMaterial.unit %></div>
+        </div>
+        <div style="width:  33.333333%;  height: 20px; line-height: 20px;">
+            <div class="number danjia" style="margin: auto; margin-top: -6px;"><%= offerMaterial.price %></div>
+        </div>
+        <div>
+            <div class="check" style="position: absolute!important;top:10px ;right: 15px;"></div>
+        </div>
+        <div class="c"></div>
+        <div class="beizhu" style="font-size: 12px;
+  line-height: 14px;
+  margin-top: 7px;
+  color: #7B7A7A;overflow : hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+text-align: left;
+padding-left: 10px;
+-webkit-box-orient: vertical;"><%= offerMaterial.remark %>
+        </div>
+    </li>
+
+    <div class="new_template"
+         style="width: auto;margin-bottom: 10px;  height: 250px;border-bottom: 1px solid #979797; display: none;padding: 3px 15px;width: 100%;float: left">
+        <div class="keyboard_q"
+             style="margin-bottom: 10px; margin-left:-15px; margin-right: -15px; width: auto!important;">
+
+            <div>
+                <div>1</div>
+            </div>
+            <div>
+                <div>2</div>
+            </div>
+            <div>
+                <div>3</div>
+            </div>
+            <div>
+                <div>4</div>
+            </div>
+            <div>
+                <div>5</div>
+            </div>
+            <div>
+                <div>6</div>
+            </div>
+            <div>
+                <div>7</div>
+            </div>
+            <div>
+                <div>8</div>
+            </div>
+            <div>
+                <div>9</div>
+            </div>
+            <div>
+                <div>0</div>
+            </div>
+            <div>
+                <div>.</div>
+            </div>
+            <div style="width: 12%">
+                <div class="dele_qq">⬅️</div>
+            </div>
+        </div>
+        <div style="width: 20%; text-align: center;height:30px;float: left;line-height: 30px">单位</div>
+        <input type="text" style="height: 30px;width: 75%;text-align:left; border-radius:10px "
+               value="<%= offerMaterial.unit %>">
+
+        <div class="c" style="height: 10px"></div>
+        <div style="width: 20%; text-align: center;height:30px;float: left;line-height: 30px">备注</div>
+        <textarea style="width: 75%; border-radius:10px; line-height: 20px" name="textarea" cols="10" rows="3"
+                  placeholder="<%= offerMaterial.remark %>"></textarea>
+
+    </div>
+    <input name="checkbox" type="checkbox" id="input_<%= offerMaterial.material_id %>"
+           style="display: none" <%= offerMaterial.isOffer === '1' ? 'checked' : '' %>>
+    <% }) %>
+
+</ul>
+<!--未报价-->
+<% if( JSON.parse(offerSheetData).start == '0'){ %>
+<div class="add_w" style="margin-bottom: 5px;clear: both">
+    <a href="javascript:commit()" class="add_w_w_q">
+        提供报价
+    </a>
+</div>
+<label for="switch" style="width: 100%;margin-bottom: 100px">
+    <div class="user_defined_copy_q" id="isPublic">
+        <div class="switchq">
+            <div class="switch_q">
+            </div>
+        </div>
+        &nbsp;是否公开
+    </div>
+</label>
+<input type="checkbox" style="display: none" id="switch">
+<!--已报价-->
+<% }else if(( JSON.parse(offerSheetData).start == '1' || JSON.parse(offerSheetData).start == '2')){ %>
+
+<div style="font-size: 20px; padding: 10px 15px;color: red;moz-user-select: -moz-none;
+-moz-user-select: none;
+-o-user-select:none;
+-khtml-user-select:none;
+-webkit-user-select:none;
+-ms-user-select:none;
+user-select:none;">
+    已报价
+</div>
+<div style="width: 100%;height: 55px">
+</div>
+<% } %>
+<script type="text/javascript">
+    var biaoji = 1
+    var li = document.querySelectorAll("li")
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            biaoji = 2
+            var inpu = this.querySelectorAll('.danw')[0].innerHTML;
+            this.nextElementSibling.querySelectorAll('input')[0].value = inpu
+            if (this.nextElementSibling.style.display == 'block') {
+                var new_template = document.querySelectorAll(".new_template")
+                for (var a = 0; a < new_template.length; a++) {
+                    new_template[a].style.display = 'none'
+                }
+            } else {
+                var new_template = document.querySelectorAll(".new_template")
+                for (var a = 0; a < new_template.length; a++) {
+                    new_template[a].style.display = 'none'
+                }
+                this.nextElementSibling.style.display = "block"
+            }
+        }
+    }
+    var boot = document.querySelectorAll("input")
+    for (var a = 0; a < boot.length; a++) {
+        boot[a].oninput = function () {
+            var inpu = this.value;
+            this.parentElement.previousElementSibling.querySelectorAll('.danw')[0].innerHTML = inpu
+        }
+    }
+
+    var boot = document.querySelectorAll("textarea")
+    for (var a = 0; a < boot.length; a++) {
+        boot[a].oninput = function () {
+            var inpu = this.value;
+            this.parentElement.previousElementSibling.querySelectorAll('.beizhu')[0].innerHTML = inpu
+        }
+    }
+
+    var li = document.getElementsByName("material");
+    for (var a = 0; a < li.length; a++) {
+        var checkbox = document.getElementById('input_' + li[a].id);
+        if (checkbox.checked) {
+            li[a].className = 'li_q';
+        } else {
+            li[a].className = '';
+        }
+    }
+
+    var as = document.querySelectorAll("li .check")
+    for (var a = 0; a < li.length; a++) {
+        as[a].onclick = function () {
+            var clas = this.parentNode.parentNode.getAttribute('class')
+            if (clas == 'li_q') {
+                this.parentNode.parentNode.className = ''
+                document.getElementById('input_' + this.parentNode.parentNode.id).checked=false;
+            } else {
+                this.parentNode.parentNode.className = 'li_q'
+                document.getElementById('input_' + this.parentNode.parentNode.id).checked=true;
+            }
+            event.stopPropagation();
+        }
+    }
+    if (JSON.parse('<%-offerSheetData%>').start == '0') {
+        var user = document.querySelectorAll('.user_defined_copy_q');
+        var offerSheetData = JSON.parse('<%-offerSheetData%>');
+        var isPublic = offerSheetData.isPublic;
+        if (isPublic == '1') {
+            user[0].className = 'user_defined_copy_q';
+        } else {
+            user[0].className = 'user_defined_copy_q switchq_we'
+        }
+        user[0].onclick = function () {
+
+            var clas = this.getAttribute('class')
+            if (clas == 'user_defined_copy_q') {
+                this.className = 'user_defined_copy_q switchq_we'
+            } else {
+                this.className = 'user_defined_copy_q'
+            }
+        }
+    }
+    function commit() {
+        var offerSheetData = JSON.parse('<%-offerSheetData%>');
+        var checkboxs = document.getElementsByName('checkbox');
+        var isPublic = document.getElementById('isPublic');
+        for (var i = 0, size = checkboxs.length; i < size; i++) {
+            var id = (checkboxs[i].id).replace('input_', '');
+            for (var j = 0, size = offerSheetData.materials.length; j < size; j++) {
+                if (offerSheetData.materials[j].material_id == id) {
+                    if (checkboxs[i].checked) {
+                        offerSheetData.materials[j].isOffer = '1';
+                    }else{
+                        offerSheetData.materials[j].isOffer = '0';
+                    }
+                    break;
+                }
+            };
+        }
+
+        var materials = document.getElementsByName('material');
+        for (var i = 0; i < materials.length; i++) {
+            for (var j = 0, size = offerSheetData.materials.length; j < size; j++) {
+                if (offerSheetData.materials[j].material_id == materials[i].id) {
+                    offerSheetData.materials[j].unit = materials[i].querySelectorAll('.danw')[0].innerText;
+                    offerSheetData.materials[j].remark = materials[i].querySelectorAll('.beizhu')[0].innerText;
+                    offerSheetData.materials[j].price = materials[i].querySelectorAll('.danjia')[0].innerText;
+                    break;
+                }
+            };
+        }
+
+        if (isPublic.className == 'user_defined_copy_q') {
+            offerSheetData.isPublic = '1';
+            offerSheetData.restruantds = [];
+            var url = '/updatePublicOffer'
+            var data = {
+                offerSheetData: JSON.stringify(offerSheetData)
+            }
+            pageLoadPost(url, data, '公开报价单报价', true, 'post');
+        } else {
+            offerSheetData.isPublic = '0';
+            var url = '/supChooseContacts'
+            var data = {
+                offerSheetData: JSON.stringify(offerSheetData)
+            }
+            pageLoadPost(url, data, '常用联系人选择', true, 'post');
+        }
+    }
+
+    var input = document.querySelectorAll(".keyboard_q div div")
+    for (var a = 0; a < input.length; a++) {
+        input[a].onclick = function (e) {
+            if(biaoji == 2){
+                this.parentNode.parentNode.parentNode.previousElementSibling.querySelectorAll('.number.danjia')[0].innerHTML = "0.00"
+            }
+            var fu = this.parentNode.parentNode.parentNode.previousElementSibling.querySelectorAll('.number.danjia')[0].innerHTML
+            var clas = this.getAttribute('class')
+            if (clas == 'dele_qq') {
+                if (fu == '0.00') {
+
+                } else {
+                    if (fu.length == 1) {
+                        var zi = '0.00'
+                    } else {
+                        var zi = fu.substring(0, fu.length - 1)
+                    }
+                    this.parentNode.parentNode.parentNode.previousElementSibling.querySelectorAll('.number.danjia')[0].innerHTML = zi
+                }
+            }
+            else {
+                if (fu == '0.00') {
+                    var zi = this.innerHTML
+                    this.parentNode.parentNode.parentNode.previousElementSibling.querySelectorAll('.number.danjia')[0].innerHTML = zi
+                } else {
+                    var zi = fu + this.innerHTML
+                    this.parentNode.parentNode.parentNode.previousElementSibling.querySelectorAll('.number.danjia')[0].innerHTML = zi
+                }
+            }
+            biaoji = 1
+        }
+    }
+    for (var i = 0; i < li.length; i++) {
+        changan(li[i], li[i].querySelectorAll(".pingm")[0].innerHTML)
+    }
+
+
+</script>
+<script src="js/common.js" type="text/javascript"></script>
+

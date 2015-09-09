@@ -1,0 +1,30 @@
+
+<div class="price_offer">
+    共<%=offerSheetList.length%>个报价单
+</div>
+<ul class="price_offerw">
+    <li class="title">
+        <div style="width: 50%">报价单名称</div>
+        <div style="width: 50%">日期</div>
+    </li>
+    <%for(var i=0;i<offerSheetList.length;i++){
+        var offerSheet=offerSheetList[i];
+    %>
+    <li class="tan" onclick="preparingOffer('<%=offerSheet._id.toString()%>')">
+        <div class="name" style="width: 50%"><%=offerSheet.name%></div>
+        <div style="width: 50%"><%=offerSheet.createdAt%></div>
+    </li>
+    <%}%>
+</ul>
+<script>
+    var tan = document.querySelectorAll(".tan")
+    for(var i =0;i<tan.length;i++){
+        changan(tan[i],tan[i].querySelectorAll(".name")[0].innerHTML)
+    }
+    //准备下单
+    function preparingOffer(offerId){
+        pageLoad('/getOfferDetails?offerId='+offerId);
+    }
+
+</script>
+<% include template/bottom.ejs %>

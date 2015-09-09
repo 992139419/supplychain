@@ -1,0 +1,150 @@
+<style>
+
+</style>
+<div class="template_copy" style="position: fixed;
+background-color: #fff;
+z-index: 1;
+width: 100%;" >
+    <div>
+        <div class="icon icon-search" onclick="onClickSerchMaterial()">
+            </div>
+        <input id="search" class="form-control" placeholder="请输入要查找的物料名称" type="search"
+               onkeydown="searchMaterialAjax()">
+    </div>
+</div>
+<div class="new_add_templat">
+    <div class="template_copy_w">
+        <div class="content">
+            <div class="content-inner">
+                <div class="container">
+                    <nav class="tab-nav" style="bottom: 100px">
+                        <ul id="category" class="nav nav-justified">
+                            <li class="active" onclick="getMaterial('0',this)">
+                                <a class="waves-effect" data-toggle="tab"
+                                   id="category0">全部类别</a>
+                            </li>
+                            <% categorys.forEach(function(category){ %>
+                            <li onclick="getMaterial('<%= category._id %>',this)">
+                                <a class="waves-effect" data-toggle="tab"
+                                   id="category<%= category._id %>"><%= category.name %></a>
+                            </li>
+                            <% }) %>
+                            <li id="1" onclick="getMaterial('1',this)">
+                                <a class="waves-effect" data-toggle="tab"
+                                   id="category-1">自定义</a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="tab-content" style="margin-top: 32px">
+                        <div class="tab-pane fade active in" id="material">
+                            <% materials.forEach(function(material){ %>
+                            <div id="select_<%= material._id %>">
+                                <div class="vegetables" style="moz-user-select: -moz-none;
+-moz-user-select: none;
+-o-user-select:none;
+-khtml-user-select:none;
+-webkit-user-select:none;
+-ms-user-select:none;
+user-select:none;"><%= material.name %></div>
+                            </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                    <div style="clear: both;height: 120px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    //食材选择模板对象
+    var materialTemp = new MaterialsTemp();
+
+    var selectArraystr = '<%-selectArray%>';
+
+    var selectArray = JSON.parse(selectArraystr);
+
+    materialTemp.setSelectArray(selectArray);
+
+    clickMaterial();
+
+    function getMaterial(id, ths) {
+        materialTemp.getMaterialAjax(id);
+        document.querySelectorAll(".active")[0].className = "";
+        ths.className = "active";
+    }
+
+    function clickMaterial() {
+        var divs = document.getElementById("material").getElementsByTagName("div");
+        for (var i = 0; i < divs.length; i++) {
+            if (divs[i].id != '') {
+                var id = divs[i].id.replace("select_", "");
+                var elem_child = divs[i].childNodes;
+                var name = elem_child[1].innerText;
+                materialTemp.clickMaterial(id, name);
+            }
+        }
+    }
+    //食材搜索
+    function searchMaterialAjax(e) {
+        var theEvent = e || window.event;
+        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+        if (code == 13) {
+            if (e && e.preventDefault) {
+//阻止默认浏览器动作(W3C)
+                e.preventDefault();
+            } else {
+//IE中阻止函数器默认动作的方式
+                window.event.returnValue = false;
+            }
+            var name = document.getElementById('search').value;
+            materialTemp.searchMaterialAjax(name);
+        }
+    }
+
+    function onClickSerchMaterial(){
+        var name = document.getElementById('search').value;
+        materialTemp.searchMaterialAjax(name);
+    }
+
+    //
+    //    var vegetables = document.querySelectorAll(".vegetables")
+    //    alert(vegetables.length)
+    //    for(var i = 0; i<vegetables.length; i++){
+    //        vegetables[i].ondblclick = function(){
+    //            alert(this.innerText);
+    //        }
+    //    }
+
+//function qery(){
+//    var js
+//    var di = document.querySelectorAll(".vegetables")
+//    for (var i = 0; i < di.length; i++) {
+//        di[i].addEventListener('touchstart', chstart, false)
+//        di[i].addEventListener('touchmove', function () {
+//            js = 0
+//        }, false)
+//        di[i].addEventListener('touchend', function () {
+//            js = 0
+//        }, false)
+//        di[i].addEventListener('touchcancel', function () {
+//
+//            if(js>1&&document.querySelectorAll(".active")[0].id != "1" ){
+//                alert(this.innerText)
+//            }else{
+//                alert(this.innerText)
+//            }
+//            js = 0
+//        }, false)
+//    }
+//    function jsq() {
+//        js++
+//    }
+//    function chstart(e) {
+//        js = 1
+//        setInterval(jsq, 100);
+//    }
+//}
+</script>

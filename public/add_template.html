@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, width=device-width" name="viewport">
+    <title>Material</title>
+    <!-- css -->
+    <link href="css/base.min.css" rel="stylesheet">
+    <link href="css/wo.css" rel="stylesheet">
+    <script src="js/jquery-2.1.1.js" type="text/javascript"></script>
+    <script src="js/base.min.js" type="text/javascript"></script>
+    <!-- favicon -->
+    <!-- ... -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- ie -->
+    <!--[if lt IE 9]>
+    <script src="material/js/html5shiv.js" type="text/javascript"></script>
+    <script src="material/js/respond.js" type="text/javascript"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="template_copy">
+    <div>
+        <div class="icon icon-search">
+
+        </div>
+        <input class="form-control" placeholder="请输入要查找的物料名称" type="text">
+    </div>
+</div>
+<div class="new_add_templat">
+    <div class="template_copy_w">
+        <div class="content">
+            <div class="content-inner">
+                <div class="container">
+                    <nav class="tab-nav">
+                        <ul class="nav nav-justified">
+                            <li class="active">
+                                <a class="waves-effect" data-toggle="tab" href="#first-tab">全部类别</a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" data-toggle="tab" href="#second-tab">蔬菜</a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" data-toggle="tab" href="#third-tab">肉类</a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" data-toggle="tab" href="#third-tab">海鲜</a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" data-toggle="tab" href="#third-tab">调味品</a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" data-toggle="tab" href="#third-tab">冻品</a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" data-toggle="tab" href="#third-tab">果品</a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" data-toggle="tab" href="#third-tab">乳制品</a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" data-toggle="tab" href="#third-tab">饮料</a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" data-toggle="tab" href="#third-tab">酒类</a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" data-toggle="tab" href="#third-tab">奶制品类</a>
+                            </li>
+                            <li>
+                                <a class="waves-effect" data-toggle="tab" href="#third-tab">杂粮类</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="first-tab">
+                            <div>
+                                <div>大白菜</div>
+                            </div>
+                            <div>
+                                <div>香菜</div>
+                            </div>
+                            <div class="green">
+                                <div>小青菜</div>
+                            </div>
+                            <div>
+                                <div>娃娃菜</div>
+                            </div>
+                            <div>
+                                <div>土豆</div>
+                            </div>
+                            <div style="clear: both;padding-top: 20px; width: 80%!important;height: 44px!important;">
+                                <div class="add_w" style="height: 44px">
+
+                                    <a class="add_w_w_q">
+                                        生成模版
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="second-tab">
+                            <div>
+                                <div>大白菜</div>
+                            </div>
+                            <div>
+                                <div>香菜</div>
+                            </div>
+                            <div class="green">
+                                <div>小青菜</div>
+                            </div>
+                            <div>
+                                <div>娃娃菜</div>
+                            </div>
+                            <div>
+                                <div>土豆</div>
+                            </div>
+                            <div style="clear: both;padding-top: 20px; width: 80%!important;height: 44px!important;">
+                                <div class="add_w" style="height: 44px">
+
+                                    <a class="add_w_w_q">
+                                        生成模版
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="third-tab" style="clear: both">
+                            <div>
+                                <div>大白菜</div>
+                            </div>
+                            <div>
+                                <div>香菜</div>
+                            </div>
+                            <div class="green">
+                                <div>小青菜</div>
+                            </div>
+                            <div>
+                                <div>娃娃菜</div>
+                            </div>
+                            <div>
+                                <div>土豆</div>
+                            </div>
+                            <div style="clear: both;padding-top: 20px; width: 80%!important;height: 44px!important;">
+                                <div class="add_w" style="height: 44px">
+
+                                    <a class="add_w_w_q">
+                                        生成模版
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    var div = document.querySelectorAll(".tab-pane div")
+    for (var a = 0; a < div.length; a++) {
+        div[a].onclick = function () {
+            var clas = this.getAttribute('class')
+            if(clas =='green'){
+                this.className = ''
+            }else{
+                this.className = 'green'
+            }
+        }
+
+    }
+
+</script>
+</body>
+</html>

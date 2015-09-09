@@ -1,0 +1,89 @@
+
+
+<div class="zhangkai" style="height: 40px;line-height: 40px;padding: 0 15px;border-bottom:1px solid #979797 ">
+    我的餐厅
+</div>
+<div>
+    <ul class="price_list_copy nweprice_list_copy">
+        <%for(var i=0;i<data.length;i++){%>
+        <li id='<%=data[i][0]._id+''%>' style="padding:0 15px; height:50px;">
+            <div class = "aad" style="color:#696969;width: 75%!important;text-align:left!important"><%=data[i][0].name%></div>
+
+            <div>
+                <div class="check"></div>
+            </div>
+        </li>
+        <%}%>
+    </ul>
+</div>
+<div style=" font-size: 12px;color: #b6b6b6; padding: 0 15px;margin-top: 10px;margin-bottom: 10px;margin-bottom: 55px">
+   提示:&nbsp;餐厅管理员，如需要为旗下餐厅添加组员，需先在下面选择餐厅。然后点击右上角的分享按钮，分享给你说需要添加的成员。
+</div>
+
+<script>
+    var id;
+    var name;
+    var hrefUrl;
+    var wx=wx;
+    if (/iP(hone|od|ad)/.test(navigator.userAgent)) {
+        hrefUrl=hrefLocation;
+    }else{
+        hrefUrl=location.href.split('#')[0];
+    }
+    var li = document.querySelectorAll("li")
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            if (this.className == "li_q") {
+                for (var b = 0; b < li.length; b++) {
+                }
+                id = ''
+            } else {
+                for (var b = 0; b < li.length; b++) {
+                    li[b].className = ''
+                }
+                this.className = 'li_q'
+                id = this.id
+                name = this.querySelectorAll(".aad")[0].innerHTML;
+            }
+            $.post('http://www.idabaicai.com/getQMData', {
+                url:hrefUrl
+            }, function (data) {
+                wx.config({
+                    debug: false,
+                    appId: data.appId,
+                    timestamp: data.timestamp,
+                    nonceStr: data.nonceStr,
+                    signature: data.signature,
+                    jsApiList: [
+                        'checkJsApi',
+                        'onMenuShareAppMessage'
+                    ]
+                });
+            });
+            alert('你确定要添加吗？');
+            // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
+            var _url_='http://www.idabaicai.com/getUserInfo?userType=1&mid='+id+'&name='+name+'&headMechanismId=<%=headMechanismId%>&headMechanismName=<%=headMechanismName%>&invitId=<%=openId%>';
+            var desc=name+'餐厅管理员邀请你成为他们餐厅的成员';
+            wx.onMenuShareAppMessage({
+                title: '大白菜食材供应系统',
+                desc: desc,
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa1915b3016eef8ac&redirect_uri='+encodeURIComponent(_url_)+'&response_type=code&scope=snsapi_userinfo&state=12354#wechat_redirect',
+                imgUrl: 'http://www.idabaicai.com/images/dabaicai.jpg',
+                type: 'link',
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                    //alert('用户确认分享后执行的回调函数');
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                   // alert('用户取消分享后执行的回调函数');
+                }
+            });
+            wx.error(function (res) {
+                alert(res.errMsg);
+            });
+
+        }
+    }
+
+</script>

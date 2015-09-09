@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, width=device-width" name="viewport">
+    <title>Material</title>
+    <!-- css -->
+    <link href="css/base.min.css" rel="stylesheet">
+    <link href="css/wo.css" rel="stylesheet">
+    <!--<script src="js/base.min.js" type="text/javascript"></script>-->
+    <!-- favicon -->
+    <!-- ... -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- ie -->
+    <!--[if lt IE 9]>
+    <script src="material/js/html5shiv.js" type="text/javascript"></script>
+    <script src="material/js/respond.js" type="text/javascript"></script>
+    <![endif]-->
+</head>
+<body>
+<dl class="template">
+    <dt>
+    <ul>
+        <li>模版名</li>
+        <li>创建时间</li>
+    </ul>
+    </dt>
+    <dd>
+        <ul>
+            <li>
+                <div class="template_new_q">
+                    <div>模版一</div>
+                    <div>2015.05.15
+                        <div class="icon icon-keyboard-arrow-right"></div>
+                        <a class="dele">删除</a></div>
+                </div>
+            </li>
+            <li>
+                <div class="template_new_q">
+
+                    <div>模版二</div>
+                    <div>2015.05.15
+                        <div class="icon icon-keyboard-arrow-right"></div>
+                        <a class="dele">删除</a></div>
+                </div>
+
+            </li>
+            <li>
+                <div class="template_new_q">
+
+                    <div>模版三</div>
+                    <div>2015.05.15
+                        <div class="icon icon-keyboard-arrow-right"></div>
+                        <a class="dele">删除</a></div>
+                </div>
+            </li>
+        </ul>
+    </dd>
+
+</dl>
+<div class="add_w">
+
+    <a class="add_w_w_q">
+        添加分店
+    </a>
+</div>
+<div class="bottom">
+    <a>
+        <div><img src="images/bottom_q.png"><br>首页</div>
+    </a>
+    <a>
+        <div><img src="images/bottom_w.png"><br>询价</div>
+    </a>
+    <a>
+        <div><img src="images/bottom_e.png"><br>订单
+        </div>
+    </a>
+    <a href="my.html">
+        <div style="color: #2ecc70; "><img src="images/bottom_r_q.png"><br>我的</div>
+    </a>
+</div>
+<script type="text/javascript">
+    var start;
+    var end;
+    var li = document.querySelectorAll("li .template_new_q")
+    for (var a = 0; a < li.length; a++) {
+        li[a].addEventListener('touchstart', chstart, false);
+        li[a].addEventListener('touchmove', function (ev) {
+            var move = ev.changedTouches[0].clientX
+            var x = start - move
+            this.style.transform = 'translateX(' + -x + 'px)';
+            end = x
+        }, false);
+        li[a].addEventListener('touchend', end, false);
+    }
+    function chstart(ev) {
+        end = 0
+        start = ev.changedTouches[0].clientX
+    }
+    function end(ev) {
+        var en = parseInt(end)
+        if (en > 50) {
+            this.style.transform = 'translateX(-50px)';
+        } else if(en == 0){
+
+        }else{
+            this.style.transform = 'translateX(0px)';
+        }
+    }
+
+    var suoyou = document.querySelectorAll("*")
+    for (var a = 0; a < suoyou.length; a++) {
+        suoyou[a].onclick = function (event) {
+            var al = this.querySelectorAll('a')[0].getAttribute('class')
+            var f = this.parentNode.style.transform
+            if (al == 'dele'&&f =='translateX(-50px)') {
+                if (window.confirm('你确定要删除吗？')) {
+                    alert("确定");
+                    return true;
+                } else {
+                    alert("取消");
+                    return false;
+                }
+            } else {
+                for (var a = 0; a < li.length; a++) {
+                    li[a].style.transform = 'translateX(0px)'
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>

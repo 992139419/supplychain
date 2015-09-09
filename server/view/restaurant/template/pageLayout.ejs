@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <% include ../../common/head.ejs %>
+    <!--<script>-->
+    <!--window.history.pushState({url: '/resIndex', title: '首页'}, '首页', '/resIndex');-->
+    <!--</script>-->
+</head>
+<body style="height: 100%;">
+<div id="pageContent" style="height: 100%;width: 100%">
+    <div id="qubie" style="display: none"></div>
+    <div class="index_qq">
+        <div class="template_copy" style="padding-left: 60px">
+            <div style="  width: 36px;
+  height: 43px;
+  line-height: 43px;
+  position: absolute;
+  top: 0;
+  border: none;
+  left: 15px;">
+                上海
+            </div>
+            <div>
+                <div class="icon icon-search">
+
+                </div>
+                <form action="">
+                    <input id='sMetiralId' class="form-control" placeholder="请输入要查找的物料名称" type="search"
+                           onkeydown="searchMaterial()">
+                </form>
+            </div>
+        </div>
+        <div class="template_copy_w">
+            <div class="content">
+                <div class="content-inner">
+                    <div id="cateColl" class="container">
+                        <nav class="tab-nav" style="background-color:#F7F7F7 ;">
+                            <ul class="nav nav-justified">
+                                <li class="active">
+                                    <a id="0" class="waves-effect" data-toggle="tab" href="#first-tab"
+                                       onclick="getMetrails(this)">全部类别</a>
+                                </li>
+                                <% for(var i = 0;i < category.length;i++){
+
+                                    var pCate = category[i];
+                                %>
+                                <li>
+                                    <a class="waves-effect" data-toggle="tab" href="#first-tab"
+                                       onclick="getMetrails(this)" id=<%= String(pCate._id) %>><%= pCate['name'] %></a>
+                                </li>
+                                <% } %>
+
+                            </ul>
+                        </nav>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active in" id="first-tab">
+
+                                <div class="swiper-container">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide blue-slide">
+                                            <ul id="hotMetiral" class="user_defined_copy">
+
+                                                <% for(var j = 0; j < materials.length;j++){
+                                                    var material = materials[j];
+                                                %>
+                                                <li id='<%= material._id %>'>
+
+                                                    <div class="content">
+                                                        <div class="content_new_q"
+                                                             style="width: 100%;padding-right: 25px"
+                                                             onclick="getSupplyDetails(this.id)"
+                                                             id='<%= material._id %>'><%= material.name %></div>
+                                                        <div id="live_<%= material._id %>">
+                                                            <% if(followedMa.indexOf(material) != -1){ %>
+                                                            <img src=" images/live-q.png"
+                                                                 onclick="updateFavMetrial('<%= material._id %>',false,this)"
+                                                                 style="  width: 22px; position: absolute; right: 10px; top: 12px;">
+                                                            <% }else{ %>
+                                                            <img src="images/live.png"
+                                                                 onclick="updateFavMetrial('<%= material._id %>',true,this)"
+                                                                 style="  width: 22px; position: absolute; right: 10px; top: 12px;">
+                                                            <% } %>
+                                                        </div>
+                                                        <div class="content_q">
+                                                            共<%= material.supplyNum ? material.supplyNum : '0' %>家供应商报价
+
+                                                            <% if(material.minPrice){ %>
+                                                            <span class="content_q" style="float: right;margin-top: 0">￥：<%= material.minPrice %>
+                                                                /<%= material.unit %></span>
+                                                            <% } %>
+                                                            <br>
+                                                            本地指导价 ￥<%= material.price ? material.price : '0' %>
+                                                            /<%= material.unit %>
+
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <% } %>
+                                            </ul>
+                                        </div>
+                                        <div class="swiper-slide red-slide">
+                                            <ul id="reqMetiral" class="user_defined_copy">
+                                                <% for(var j = 0; j < requiredMa.length;j++){
+                                                    var material = requiredMa[j];
+                                                %>
+                                                <li onclick="getSupplyDetails(this.id)" id='<%= material._id %>'>
+
+                                                    <div class="content">
+                                                        <div class="content_new_q"
+                                                             style="width: 100%;padding-right: 25px"><%= material.name %></div>
+                                                        <div id="live_<%= material._id %>">
+                                                            <% if(followedMa.indexOf(material) != -1){ %>
+
+                                                            <img src=" images/live-q.png"
+                                                                 onclick="updateFavMetrial('<%= material._id %>',false)"
+                                                                 style="  width: 22px; position: absolute; right: 10px; top: 12px;">
+                                                            <% }else{ %>
+                                                            <img src="images/live.png"
+                                                                 onclick="updateFavMetrial('<%= material._id %>',true)"
+                                                                 style="  width: 22px; position: absolute; right: 10px; top: 12px;">
+                                                            <% } %>
+                                                        </div>
+                                                        <div class="content_q">
+
+                                                            共<%= material.supplyNum ? material.supplyNum : '0' %>家供应商报价
+                                                            <% if(material.minPrice){ %>
+                                                            <span class="content_q" style="float: right;margin-top: 0">￥：<%= material.minPrice %>
+                                                                /<%= material.unit %></span>
+                                                            <% } %>
+                                                            <br>
+
+                                                            本地指导价 ￥<%= material.price ? material.price : '0' %>
+                                                            /<%= material.unit %>
+
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <% } %>
+                                            </ul>
+                                        </div>
+                                        <div class="swiper-slide orange-slide">
+                                            <ul id="followMetiral" class="user_defined_copy">
+                                                <% for(var j = 0; j < followedMa.length;j++){
+                                                    var material = followedMa[j];
+                                                %>
+                                                <li onclick="getSupplyDetails(this.id)" id='a<%= material._id %>'>
+
+                                                    <div class="content">
+                                                        <div class="content_new_q"
+                                                             style="width: 100%;padding-right: 25px"><%= material.name %></div>
+                                                        <div id="live_<%= material._id %>">
+                                                            <% if(followedMa.indexOf(material) != -1){ %>
+                                                            <img src=" images/live-q.png"
+                                                                 onclick="updateFavMetrial('<%= material._id %>',false)"
+                                                                 style="  width: 22px; position: absolute; right: 10px; top: 12px;">
+                                                            <% }else{ %>
+                                                            <img src="images/live.png"
+                                                                 onclick="updateFavMetrial('<%= material._id %>',true)"
+                                                                 style="  width: 22px; position: absolute; right: 10px; top: 12px;">
+                                                            <% } %>
+                                                        </div>
+                                                        <div class="content_q">
+                                                            共<%= material.supplyNum ? material.supplyNum : '0' %>家供应商报价
+                                                            <% if(material.minPrice){ %>
+                                                            <span class="content_q" style="float: right;margin-top: 0">￥：<%= material.minPrice %>
+                                                                /<%= material.unit %></span>
+                                                            <% } %>
+                                                            <br>
+                                                            本地指导价 ￥<%= material.price ? material.price : '0' %>
+                                                            /<%= material.unit %>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <% } %>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                    <div class="swiper-pagination swiper-pagination-clickable"></div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="second-tab">
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+
+        </div>
+
+
+    </div>
+
+    <script>
+        document.body.scrollTop = 0
+        var qubie = document.getElementById('qubie')
+        function searchMaterial(e) {
+            // 兼容FF和IE和Opera
+            var theEvent = e || window.event;
+            var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+            if (code == 13) {
+                if (e && e.preventDefault) {
+//阻止默认浏览器动作(W3C)
+                    e.preventDefault();
+                } else {
+//IE中阻止函数器默认动作的方式
+                    window.event.returnValue = false;
+                }
+                var materialName = document.getElementById('sMetiralId').value;
+                pageLoad("/getMaterialByName?materialName=" + materialName);
+            }
+        }
+
+        var pageNo = 1, vCatetory = 0;//默认是第一页  默认是全部类别，全局变量；
+        var swiper = new Swiper('.swiper-container', {
+            onSlideChangeStart: function (swiper) {
+                document.body.scrollTop = 0
+            },
+
+            pagination: '.swiper-pagination',
+            paginationClickable: true,
+
+            paginationBulletRender: function (index, className) {
+                switch (index) {
+                    case 0:
+                        name = '热门食材';
+                        break;
+                    case 1:
+                        name = '必备食材';
+                        break;
+                    case 2:
+                        name = '关注食材';
+                        break;
+                    default:
+                        n
+                }
+                return '<span class="' + className + '">' + name + '</span>';
+            }
+        });
+        window.onscroll = function () {
+            if (qubie) {
+//alert(1)
+                //获取滚动条当前的位置
+                function getScrollTop() {
+                    var scrollTop = 0;
+                    if (document.documentElement && document.documentElement.scrollTop) {
+                        scrollTop = document.documentElement.scrollTop;
+                    }
+                    else if (document.body) {
+                        scrollTop = document.body.scrollTop;
+                    }
+                    return scrollTop;
+                }
+
+//获取当前可是范围的高度
+                function getClientHeight() {
+                    var clientHeight = 0;
+                    if (document.body.clientHeight && document.documentElement.clientHeight) {
+                        clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight);
+                    }
+                    else {
+                        clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);
+                    }
+                    return clientHeight;
+                }
+
+//获取文档完整的高度
+                function getScrollHeight() {
+                    return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+                }
+
+                var merColl = document.getElementById('hotMetiral');
+                if (merColl) {
+                    if (getScrollTop() + getClientHeight() == getScrollHeight()) {
+                        pageNo++;
+                        var requestUrl = "/resIndex";
+                        requestUrl += "?categoryId=" + vCatetory;
+                        requestUrl += "&numPage=9&pageIdx=" + pageNo;
+                        $.get(requestUrl, function (feed) {
+                            var append = '', categoryStr = "";
+                            var merColl = document.getElementById('hotMetiral');
+                            var metrials = feed.materials, reqMetrials = feed.requiredMa, followMetrials = feed.followedMa;
+                            if (metrials && metrials.length > 0) {
+                                append = buildContentForMetirals(metrials);
+                                for (var i = 0; i < append.length; i++) {
+                                    merColl.appendChild(append[i]);
+                                }
+                            }
+                            var merColl = document.getElementById('reqMetiral');
+                            if (reqMetrials && reqMetrials.length > 0) {
+                                append = buildContentForMetirals(metrials);
+                                for (var i = 0; i < append.length; i++) {
+                                    merColl.appendChild(append[i]);
+                                }
+                            }
+
+                            var merColl = document.getElementById('followMetiral');
+                            if (followMetrials && followMetrials.length > 0) {
+                                append = buildContentForMetirals(metrials);
+                                for (var i = 0; i < append.length; i++) {
+                                    merColl.appendChild(append[i]);
+                                }
+                            }
+                        });
+                    }
+                }
+//                $('.spinner').css('display', 'block')
+                //            添加方法
+
+            }
+        }
+        //        window.addEventListener('touchmove', function (ev) {
+        //            //获取滚动条当前的位置
+        //            function getScrollTop() {
+        //                var scrollTop = 0;
+        //                if (document.documentElement && document.documentElement.scrollTop) {
+        //                    scrollTop = document.documentElement.scrollTop;
+        //                }
+        //                else if (document.body) {
+        //                    scrollTop = document.body.scrollTop;
+        //                }
+        //                return scrollTop;
+        //            }
+        //
+        ////获取当前可是范围的高度
+        //            function getClientHeight() {
+        //                var clientHeight = 0;
+        //                if (document.body.clientHeight && document.documentElement.clientHeight) {
+        //                    clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight);
+        //                }
+        //                else {
+        //                    clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);
+        //                }
+        //                return clientHeight;
+        //            }
+        //
+        ////获取文档完整的高度
+        //            function getScrollHeight() {
+        //                return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        //            }
+        //
+        //            if (getScrollTop() + getClientHeight() == getScrollHeight()) {
+        ////            添加方法
+        //            }
+        //        })
+
+        function getMetrails(para) {
+            var id = para.id;//获取物料类别
+            vCatetory = id; //获取category
+            //重置pageNo
+            pageNo = 1;
+            var requestUrl = "/resIndex";
+            if (id && id != 0) {
+                requestUrl += "?categoryId=" + id;
+            } else {
+                requestUrl += "?categoryId=" + 0;
+                //加载全部物料和食材。当加载全部食材时
+            }
+            requestUrl += "&numPage=9&pageIdx=" + pageNo;
+
+
+            $.get(requestUrl, function (feed) {
+
+                var append = '', categoryStr = "";
+                var merColl = document.getElementById('hotMetiral');
+                var metrials = feed.materials, reqMetrials = feed.requiredMa, followMetrials = feed.followedMa;
+                if (metrials && metrials.length > 0) {
+
+                    merColl.innerHTML = '';
+                    append = buildContentForMetirals(metrials, followMetrials);
+                    for (var i = 0; i < append.length; i++) {
+                        merColl.appendChild(append[i]);
+                    }
+
+                } else {
+
+                    merColl.innerHTML = '<li>找不到该类别食材</li>';
+                }
+
+                merColl = document.getElementById('reqMetiral');
+
+                if (reqMetrials && reqMetrials.length > 0) {
+
+                    merColl.innerHTML = '';
+
+                    append = buildContentForMetirals(reqMetrials, followMetrials);
+                    for (var i = 0; i < append.length; i++) {
+                        merColl.appendChild(append[i]);
+                    }
+
+                } else {
+                    merColl.innerHTML = '<li>找不到该类别食材</li>';
+                }
+
+
+                merColl = document.getElementById('followMetiral');
+                if (followMetrials && followMetrials.length > 0) {
+
+                    merColl.innerHTML = '';
+                    append = buildContentForMetirals(followMetrials, followMetrials,'follow');
+                    for (var i = 0; i < append.length; i++) {
+                        merColl.appendChild(append[i]);
+                    }
+
+                } else {
+                    merColl.innerHTML = '<li id="fNone">找不到该类别食材</li>';
+                }
+            });
+            document.querySelectorAll(".active")[0].className = ""
+            para.className = "active"
+
+        }
+        //获取供应商价格列表
+        function getSupplyDetails(para) {
+            var oId = para;
+            var url = "getSupplyPrice?id=" + oId.toString();
+            pageLoad(url);
+        }
+
+
+        function buildContentForMetirals(metrials, followMetrials, isFollow) {
+            var append, LiElem = [];
+            for (var i = 0; i < metrials.length; i++) {
+                append = '';
+                var para = {};
+                var elem = metrials[i];
+                var subLi = document.createElement('li');
+                subLi.id = elem._id;
+                if(isFollow){
+                    subLi.id = "a"+elem._id;
+                }
+
+
+//                    subLi.onclick=getInqueryRes;
+//                    subLi.attachEvent('onclick',getInqueryRes(subLi));
+                para.id = elem._id.toString();
+                var live = '<div id="live_' + elem._id + '">';
+
+                if (_.indexOfId(followMetrials, elem) != -1) {
+                    live = live + '<img src="images/live-q.png" onclick="updateFavMetrial(\'' + elem._id + '\',false,this)" style="  width: 22px; position: absolute; right: 10px; top: 12px;">'
+                } else {
+                    live = live + '<img src="images/live.png" onclick="updateFavMetrial(\'' + elem._id + '\',true,this)" style="  width: 22px; position: absolute; right: 10px; top: 12px;">'
+                }
+                live = live + '</div>';
+                if (!elem.price) {
+                    elem.price = '0'
+                }
+//                append += '<a href="javascript:getInqueryRes(\'' + para.id + '\')">';
+                append += '<div  class="icon" onclick="getSupplyDetails(this)" > ' +
+                        '</div><div class="content"><div class="content_new_q" style="width: 100%;padding-right: 25px">' + elem.name + '</div> ' + live;
+                append += ' <div class="content_q">共';
+                append += (elem.supplyNum ? elem.supplyNum : '0') + '家供应商报价<br>';
+                append += '   本地指导价 ￥' + elem.price + '/' + elem.unit;
+                append += '</div>';
+                append += '</div>';
+//              append += '</a>';
+
+                subLi.innerHTML = append;
+                LiElem.push(subLi);
+            }
+
+            return LiElem;
+        }
+
+        function mergeOrders() {
+
+            var ids = [];
+            var elem = document.getElementsByName("mergedOrders");
+            for (var i = 0; i < elem.length; i++) {
+
+                if (elem[i].checked) {
+                    ids.push(elem[i].id.substring(1));
+                }
+            }
+            if (!ids.length > 0) {
+                alert('请选择至少一个订单');
+                return;
+            }
+
+            $.post("/mergeOrders", {ids: ids, orderStatus: 'N'}, function (data) {
+                if (data.status == 100) {
+                    pageLoad('/myorder');
+                } else if (data.status == 500) {
+                    alert('系统出错');
+
+                }
+            });
+
+
+        }
+        nav()
+        function updateFavMetrial(materialId, isFav, a) {
+
+            var url = '/updateFavMetrial';
+            var data = {
+                materialId: materialId,
+                isFav: isFav
+            }
+            $.post(url, data, function (result) {
+                if (result.code == 100) {
+
+                    var b = a.src.split("/");
+                    if (b[4] == "live-q.png") {
+//                        alert(1)
+                        a.src = " images/live.png"
+//                        var d = document.querySelectorAll("#a"+materialId)[0]
+                        document.getElementById('followMetiral').removeChild(document.querySelectorAll("#a" + materialId)[0])
+
+
+
+                    } else {
+
+                        if(document.getElementById("fNone")){
+                            document.getElementById('followMetiral').removeChild(document.getElementById("fNone"));
+                        }
+//                        alert(2)
+                        a.src = " images/live-q.png"
+                        var d = a.parentNode.parentNode.parentNode
+                       var dd = d;
+
+//                        dd.id = "a"+materialId;
+
+
+                        var subLi = document.createElement('li');
+                        subLi.innerHTML = dd.innerHTML;
+//                        alert(subLi.innerHTML);
+                        subLi.id="a"+materialId;
+//                        document.getElementById('hotMetiral').insertBefore(d,dd);
+                        document.getElementById('followMetiral').appendChild(subLi)
+                    }
+
+
+//                window.location.reload();
+                }
+            });
+            window.event.stopPropagation();
+
+        }
+    </script>
+    <!--wx.hideOptionMenu();-->
+</div>
+
+<% include bottom_q.ejs %>
+<script type='text/javascript' id="__bs_script__">//<![CDATA[
+    document.write("<script async src='http://HOST:3002/browser-sync/browser-sync-client.2.8.2.js'><\/script>".replace("HOST", location.hostname));
+    //]]></script>
+</body>
+<script>
+
+    window.onload = getPendingOrders;
+
+</script>
+
+</html>

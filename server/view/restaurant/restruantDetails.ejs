@@ -1,0 +1,70 @@
+
+<ul class="add_q new_add_q_q" style="margin-bottom: 55px">
+    <li style="padding-center: 15px">
+        <label class="add_q_q" for="name" style="width:40%;">
+            餐厅状态:
+        </label>
+
+        <div class="add_q_q" for='name' style="text-align: right;width: 60%!important;">
+                <%if(restaurant.isAvab===false){%>
+                禁用
+                <%}else{%>
+                正常
+                <%}%>
+        </div>
+    </li>
+    <li style="padding-center: 15px">
+        <label class="add_q_q" for="name" style="width: 40%">
+            餐厅名称:
+        </label>
+
+        <div class="add_q_q" for='name' style="text-align: right;width: 60%!important;">
+            <%=restaurant.name%>
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="header" style="width:40%;">
+            餐厅负责人：
+        </label>
+
+        <div class="add_q_q" for='header' style="text-align: right;width: 60%!important;">
+           <%=restaurant.header%>
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="telephone" style="width: 40%">
+            餐厅电话：
+        </label>
+
+        <div class="add_q_q" style="text-align: right;width: 60%!important;">
+            <%=restaurant.telephone%>
+        </div>
+    </li>
+    <li >
+        <label class="add_q_q" for="area" style="width: 40%">
+            地区：
+        </label>
+
+        <div class="add_q_q" style="text-align: right;width: 60%!important;">
+            <%=restaurant.area%>
+        </div>
+    </li>
+    <li >
+        <label class="add_q_q" for="address" style="width: 40%">
+            餐厅地址：
+        </label>
+
+        <div class="add_q_q" style="text-align: right;width: 60%!important;">
+            <%=restaurant.address%>
+        </div>
+    </li>
+    <li >
+        <label class="add_q_q" for="remarks" style="width: 40%">
+            备注：
+        </label>
+
+        <div class="add_q_q" style="text-align: left;width: 60%!important;">
+            <%=restaurant.remark?restaurant.remark:''%>
+        </div>
+    </li>
+</ul>

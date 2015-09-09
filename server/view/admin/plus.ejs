@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, width=device-width" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Material</title>
+    <!-- css -->
+    <link id="q" rel="stylesheet">
+    <link id="w" rel="stylesheet">
+    <link id="e" rel="stylesheet">
+    <script type="text/javascript">
+        if (/iP(hone|od|ad)/.test(navigator.userAgent)) {
+            var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/),
+                    version = parseInt(v[1], 10);
+            if (version >= 8) {
+                document.querySelectorAll("#q")[0].href = 'css/base.min.css?<%=new Date().getTime()%>'
+                document.querySelectorAll("#w")[0].href = 'css/wo.css?<%=new Date().getTime()%>'
+                document.querySelectorAll("#e")[0].href = 'css/swiper.min.css?<%=new Date().getTime()%>'
+            }else{
+                document.querySelectorAll("#q")[0].href = 'css/base_q.min.css?<%=new Date().getTime()%>'
+                document.querySelectorAll("#w")[0].href = 'css/wo_q.css?<%=new Date().getTime()%>'
+                document.querySelectorAll("#e")[0].href = 'css/swiper_q.min.css?<%=new Date().getTime()%>'
+            }
+        }else{
+            document.querySelectorAll("#q")[0].href = 'css/base_q.min.css?<%=new Date().getTime()%>'
+            document.querySelectorAll("#w")[0].href = 'css/wo_q.css?<%=new Date().getTime()%>'
+            document.querySelectorAll("#e")[0].href = 'css/swiper_q.min.css?<%=new Date().getTime()%>'
+        }
+        var _openId = '<%=openId%>';
+        window.history.pushState({url: '/resIndex', title: '首页'}, '首页', '/resIndex');
+    </script>
+    <script src="js/base.js?<%=new Date().getTime()%>" type="text/javascript"></script>
+    <script src="js/tu.js?<%=new Date().getTime()%>" type="text/javascript"></script>
+    <script src="js/swiper.min.js?<%=new Date().getTime()%>" type="text/javascript"></script>
+    <script src="js/underscore.js?<%=new Date().getTime()%>" type="text/javascript"></script>
+    <script src="js/common.js?<%=new Date().getTime()%>" type="text/javascript"></script>
+</head>
+<body class="choose">
+      <h1>欢迎使用XXX平台！如果想加入餐厅或者是供货商单位必须是由餐厅或者是供货商单位的管理员主动邀请你才行！！</h1>
+      <a href="/look">进入系统随便看看</a>
+</body>
+</html>

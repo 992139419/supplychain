@@ -1,0 +1,70 @@
+
+<ul class="add_q new_add_q_q" style="margin-bottom: 55px">
+    <li style="padding-center: 15px">
+        <label class="add_q_q" for="name">
+            供应商状态:
+        </label>
+
+        <div class="add_q_q" for='name' style="text-align: right;width: 70%!important;">
+            <%if(supply.isAvab===false){%>
+            禁用
+            <%}else{%>
+            正常
+            <%}%>
+        </div>
+    </li>
+    <li style="padding-center: 15px">
+        <label class="add_q_q" for="name">
+            供应商名称:
+        </label>
+
+        <div class="add_q_q" for='name' style="text-align: right;width: 70%!important;">
+            <%=supply.name%>
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="header">
+            供应商负责人：
+        </label>
+
+        <div class="add_q_q" for='header' style="text-align: right;width: 70%!important;">
+            <%=supply.header%>
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="telephone">
+            供应商电话：
+        </label>
+
+        <div class="add_q_q" style="text-align: right;width: 70%!important;">
+            <%=supply.telephone%>
+        </div>
+    </li>
+    <li >
+        <label class="add_q_q" for="area">
+            地区：
+        </label>
+
+        <div class="add_q_q" style="text-align: right;width: 70%!important;">
+            <%=supply.area%>
+        </div>
+    </li>
+    <li >
+        <label class="add_q_q" for="address">
+            供应商地址：
+        </label>
+
+        <div class="add_q_q" style="text-align: right;width: 70%!important;">
+            <%=supply.address%>
+        </div>
+    </li>
+    <li >
+        <label class="add_q_q" for="remarks">
+            备注：
+        </label>
+
+        <div class="add_q_q" style="text-align: left;width: 70%!important;">
+            <%=supply.remark?supply.remark:''%>
+        </div>
+    </li>
+</ul>

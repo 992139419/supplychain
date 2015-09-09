@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, width=device-width" name="viewport">
+    <title>Material</title>
+    <!-- css -->
+    <link href="css/base.min.css" rel="stylesheet">
+    <link href="css/wo.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+</head>
+<body>
+<div class="vag_price_tendacy">
+    当前日期：最近3天
+</div>
+<div class="vag_price_tendacy_q">
+    <div class="vag_price_tendacy_q_q">
+        1天
+    </div>
+    <div class="vag_price_tendacy_q_w">
+        <div class="vag_price_tendacy_q_w_q">
+            <div class="vag_price_tendacy_q_w_w"></div>
+        </div>
+
+        <div id="3" class="vag_price_tendacy_q_w_e">
+            <div class="vag_price_tendacy_q_w_e_q"></div>
+            <div class="vag_price_q">
+                <div class="vag_price_q_q"></div>
+                最近3天
+            </div>
+        </div>
+    </div>
+    <div class="vag_price_tendacy_q_e">
+        7天
+    </div>
+</div>
+<div class="vag_price_tendacy_w">
+    <div></div>
+</div>
+<script type="text/javascript">
+    var priceq = document.querySelectorAll('.vag_price_tendacy_q_w_e');
+    var start;
+    var end;
+    var id;
+    var da = 3
+    var wi = document.body.clientWidth;
+    var day = Math.round((wi * 0.9 - 80) / 6)
+    priceq[0].style.left = (da-1) * day + 'px'
+    document.querySelectorAll('.vag_price_tendacy_q_w_w')[0].style.left = -(6-(da-1))*day+12+'px';
+    for (var a = 0; a < priceq.length; a++) {
+        var price = priceq[a]
+        price.addEventListener('touchstart', function (ev) {
+            id = parseFloat(this.id)
+            start = ev.changedTouches[0].clientX
+        }, false)
+        price.addEventListener('touchmove', function (ev) {
+            var move = ev.changedTouches[0].clientX
+            if (move >= (wi * 0.05) + 40 && move <= (wi * 0.95) - 40) {
+                var dayq = Math.round((move - (wi * 0.05) - 40) / day) + 1;
+                this.id=dayq
+                document.querySelectorAll('.vag_price_q')[0].innerHTML = "<div class='vag_price_q_q'></div>最近" + dayq + "天"
+                var x = start - move
+                document.querySelectorAll('.vag_price_tendacy_q_w_w')[0].style.transform = 'translateX(' + -x + 'px)';
+                this.style.transform = 'translateX(' + -x + 'px)';
+                end = x
+            }
+
+        }, false)
+    }
+    price.addEventListener('touchend', function (ev) {
+        var idd= parseFloat(this.id)
+        priceq[0].style.left = ((idd-1) * day)-12 + 'px'
+        document.querySelectorAll('.vag_price_tendacy_q_w_w')[0].style.left = -(6-(idd-1))*day+'px';
+        document.querySelectorAll('.vag_price_tendacy_q_w_w')[0].style.transform = 'translateX(' + 0 + 'px)';
+        this.style.transform = 'translateX(' + 0 + 'px)';
+    }, false)
+</script>
+</body>
+</html>

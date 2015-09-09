@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, width=device-width" name="viewport">
+    <title>Material</title>
+    <!-- css -->
+    <script src="js/base.js" type="text/javascript"></script>
+    <script src="js/tu.js" type="text/javascript"></script>
+    <script src="js/swiper.min.js" type="text/javascript"></script>
+    <script src="js/underscore.js" type="text/javascript"></script>
+    <script src="js/common.js" type="text/javascript"></script>
+    <link id="q" rel="stylesheet">
+    <link id="w" rel="stylesheet">
+    <link id="e" rel="stylesheet">
+    <script type="text/javascript">
+        if (/iP(hone|od|ad)/.test(navigator.userAgent)) {
+            var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/),
+                    version = parseInt(v[1], 10);
+            if (version >= 8) {
+                document.querySelectorAll("#q")[0].href = 'css/base.min.css'
+                document.querySelectorAll("#w")[0].href = 'css/wo.css'
+                document.querySelectorAll("#e")[0].href = 'css/swiper.min.css'
+            }else{
+                document.querySelectorAll("#q")[0].href = 'css/base_q.min.css'
+                document.querySelectorAll("#w")[0].href = 'css/wo_q.css'
+                document.querySelectorAll("#e")[0].href = 'css/swiper_q.min.css'
+            }
+        }else{
+            document.querySelectorAll("#q")[0].href = 'css/base_q.min.css'
+            document.querySelectorAll("#w")[0].href = 'css/wo_q.css'
+            document.querySelectorAll("#e")[0].href = 'css/swiper_q.min.css'
+        }
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+<body>
+<div class="newpage">
+    <div class="newpage_q">
+
+    </div>
+</div>
+<div id="pageContent" style="height: 100%;width: 100%">
+    模版名称<input type="text" id="templateName">
+
+    <div class="template_copy_w">
+        <div class="content">
+            <div class="content-inner">
+                <div class="container">
+                    <nav class="tab-nav">
+                        <ul id="category" class="nav nav-justified">
+                            <li class="active" onclick="getMaterial('0')">
+                                <a class="waves-effect" data-toggle="tab"
+                                   id="category0">全部类别</a>
+                            </li>
+                            <% categorys.forEach(function(category){ %>
+                            <li onclick="getMaterial('<%= category._id %>')">
+                                <a class="waves-effect" data-toggle="tab"
+
+                                   id="category<%= category._id %>"><%= category.name %></a>
+                            </li>
+                            <% }) %>
+                        </ul>
+                    </nav>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="material">
+                            <% materials.forEach(function(material){ %>
+                            <div id="select_<%= material._id %>">
+                                <div><%= material.name %></div>
+                            </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="add_tem">
+        <div class="add_w">
+            <a class="add_w_w_q" href="javascript:templateConfirm()">
+                保存为模版
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+
+    //食材选择模板对象
+    var materialTemp = new MaterialsTemp();
+    clickMaterial();
+
+    function getMaterial(id) {
+        materialTemp.getMaterialAjax(id);
+    }
+
+    function clickMaterial() {
+        var divs = document.getElementById("material").getElementsByTagName("div");
+        for (var i = 0; i < divs.length; i++) {
+            if (divs[i].id != '') {
+                var id = divs[i].id.replace("select_", "");
+                var elem_child = divs[i].childNodes;
+                var name = elem_child[1].innerText;
+                materialTemp.clickMaterial(id, name);
+            }
+        }
+
+    }
+    //添加模版确认
+    function templateConfirm() {
+        var name = document.getElementById('templateName').value;
+        if (!name) {
+            alert('请输入模版名称');
+            return;
+        }
+        var materialData = {materials: materialTemp.getSelectArray(), name: name};
+        $.post('/cmsAddTemplate', {materialsString: JSON.stringify(materialData)}, function (data) {
+            if (data.status == 100) {
+                parent.cancelPrice();
+            }
+        });
+    }
+
+</script>
+</html>

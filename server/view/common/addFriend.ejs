@@ -1,0 +1,31 @@
+<div class="new_add_templateq">
+
+    <div class="new_add_templateq_q">
+        <input id="userName" class="form-control" placeholder="请输入要添加的用户名" type="text">
+    </div>
+    <div class="new_add_templateq_w">
+        <div><a href="javascript:addFriend()">确定</a></div>
+        <div><a href="javascript:cancelFriend()" class="new_add_templateq_q_qw">取消</a></div>
+    </div>
+</div>
+<script>
+    function addFriend() {
+        var userName = document.getElementById('userName').value;
+        $.post('/addFriend', {userName: userName,openId:_openId}, function (data) {
+            if (data && data.status == 100) {
+                pageLoad('/myfriend');
+            } else if (data && data.status == 500) {
+                alert('系统错误');
+            } else if (data && data.status == 101) {
+                alert('输入的用户名不能为空');
+            } else if (data && data.status == 102) {
+                alert('用户已在好友列表中');
+            }
+        });
+    }
+
+    function cancelFriend() {
+        pageLoad('/myfriend');
+    }
+
+</script>

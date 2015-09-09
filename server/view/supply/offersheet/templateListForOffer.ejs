@@ -1,0 +1,29 @@
+<dl class="template" style="margin-bottom: 55px">
+    <dt>
+    <ul>
+        <li style="height: 44px;line-height: 44px">模版名</li>
+        <li style="height: 44px;line-height: 44px">创建时间</li>
+    </ul>
+    </dt>
+    <dd>
+
+        <ul id="template">
+            <% templates.forEach(function(template){ %>
+            <li id="li_<%= template._id %>" type="<%= template.type %>" mechanismId="<%= template.mechanism_id %>"
+                onclick="templateMaterialList('<%= template._id %>')">
+                <div><%= template.name %></div>
+                <div><%= template.tiem %>
+                </div>
+            </li>
+            <% }) %>
+        </ul>
+    </dd>
+</dl>
+<div id="templ" style="display: none"></div>
+<script type="text/javascript">
+    function templateMaterialList(templateId) {
+        pageLoad('/temMaterialForOffer?templateId=' + templateId);
+    }
+    feiyeer()
+
+</script>

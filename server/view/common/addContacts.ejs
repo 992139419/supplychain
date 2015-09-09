@@ -1,0 +1,60 @@
+<div class="zhangkai" style="height: 40px;line-height: 40px;padding: 0 15px;border-bottom:1px solid #979797 ">
+    添加我的<%= branchName %><span class="icon icon-unfold-more" style="float: right;height: 40px;line-height: 40px;">
+    </span>
+</div>
+<div style=" font-size: 12px;color: #b6b6b6; padding: 0 15px;margin-top: 10px;margin-bottom: 55px">
+    提示:&nbsp;食材供应商机构管理员，如需要添加<%= branchName %>，请点击右上角的分享按钮，分享给你需要添加的<%= branchName %>成为你的常用联系人。
+</div>
+
+<script>
+
+    var hrefUrl;
+    if (/iP(hone|od|ad)/.test(navigator.userAgent)) {
+        hrefUrl = hrefLocation;
+    } else {
+        hrefUrl = location.href.split('#')[0];
+    }
+    $.post('http://www.idabaicai.com/getQMData', {
+        url: hrefUrl
+    }, function (data) {
+        wx.config({
+            debug: false,
+            appId: data.appId,
+            timestamp: data.timestamp,
+            nonceStr: data.nonceStr,
+            signature: data.signature,
+            jsApiList: [
+                'checkJsApi',
+                'onMenuShareAppMessage'
+            ]
+        });
+    });
+
+    confirm('确认添加？');
+    wx.ready(function () {
+        var _url_ = 'http://www.idabaicai.com/addContactCallBack?sender=<%=sender%>&senderMid=<%=senderMid%>&senderHMid=<%=senderHMid%>&senderType=<%=senderType%>&invitId=<%=openId%>';
+        var mechanism_name = '<%=mechanism_name%>';
+        var desc = mechanism_name + '管理员邀请你成为他们机构的常用联系人';
+        wx.onMenuShareAppMessage({
+            title: '大白菜食材供应系统',
+            desc: desc,
+            link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa1915b3016eef8ac&redirect_uri=' + encodeURIComponent(_url_) + '&response_type=code&scope=snsapi_userinfo&state=12354#wechat_redirect',
+            imgUrl: 'http://www.idabaicai.com/images/dabaicai.jpg',
+            type: 'link',
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                console.log('用户确认分享后执行的回调函数');
+                //alert('用户确认分享后执行的回调函数');
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+                //alert('用户取消分享后执行的回调函数');
+            }
+        });
+        wx.error(function (res) {
+            //alert(res.errMsg);
+        });
+    });
+
+
+</script>

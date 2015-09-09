@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    @@include('../formation/head.html')
+</head>
+<body>
+<div class="template_copy index">
+    <div>
+        <div class="icon icon-search">
+
+        </div>
+        <input class="form-control" placeholder="请输入要查找的物料名称" type="text">
+    </div>
+</div>
+<div class="indexq">
+    物料分类
+    <div class="indexq_q">
+        <a href=""><div><img src="images/check.png"></div></a>
+        <div><img src="images/check.png"></div>
+        <div><img src="images/check.png"></div>
+        <div><img src="images/check.png"></div>
+        <div><img src="images/check.png"></div>
+        <div><img src="images/check.png"></div>
+    </div>
+</div>
+<div class="clear"></div>
+<ul class="price_list_copy indexw">
+    <li class="titleq">
+        <a href="index_p01.html"> <div>  热门食材</div></a><a href="index_p01_1.html"> <div class="titleq_q">必备食材</div></a><a href="index_p01_2.html"><div>关注食材</div></a>
+    </li>
+</ul>
+<ul class="user_defined_copy">
+    <a href="price_offer_p02.html"><li>
+        <div class="icon">
+            <img src="images/icon.png">
+        </div>
+        <div class="content">
+            猪肉 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span class="content_q">￥：2元/斤</span>
+            <div class="content_q">
+                共30家供应商报价
+            </div>
+        </div>
+        <div class="check_q"></div>
+    </li>
+    </a>
+</ul>
+@@include('../formation/bottom.html')
+
+<script  type="text/javascript">
+    $('li').click(function(){
+        $(this).toggleClass('li_w')
+    })
+</script>
+</body>
+
+</html>

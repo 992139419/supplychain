@@ -1,0 +1,48 @@
+<div class="tab-pane fade active in" id="first-tab">
+    <ul class="user_defined_copy">
+        <% for(var i = 0;i < material.length;i++){ %>
+        <li onclick="getInqueryRes('<%= material[i]._id %>')" id='<%= material[i]._id %>'>
+
+            <div class="content">
+
+                <div class="content_new_q"><%= material[i].name %></div>
+                <img src="images/live.png" style="  width: 22px; margin-top: -4px;">
+
+                <div class="content_q">
+                    共<%= material[i].restaurantNum %>家餐厅询价<br>
+
+                </div>
+            </div>
+        </li>
+        <% } %>
+    </ul>
+    <!--<ul class="user_defined_copy">-->
+    <!--<li onclick="getInqueryRes(this.id)" id='<%= material._id %>'>-->
+    <!--<div class="icon">-->
+    <!--<img src="images/icon.png">-->
+    <!--</div>-->
+    <!--<div class="content">-->
+
+    <!--<div class="content_new_q"><%= material.name %></div>-->
+    <!--<img src="images/live.png" style="  width: 22px; margin-top: -4px;">-->
+
+    <!--<div class="content_q">-->
+    <!--共<%= material.restaurantNum %>家餐厅询价<br>-->
+
+    <!--</div>-->
+    <!--</div>-->
+    <!--</li>-->
+
+    <!--</ul>-->
+</div>
+
+<script type="text/javascript">
+
+    //获取询价餐厅
+    function getInqueryRes(id) {
+        var url = "/getInqueryRest?mid=" + id;
+        pageLoad(url);
+    }
+
+
+</script>

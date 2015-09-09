@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+    
+    <head lang="en">
+        <% include ../common/head.ejs %>
+    </head>
+    
+    <body class="loginwe">
+        <div class="newpage">
+            <div class="newpage_q"></div>
+        </div>
+        <div class="bj"></div>
+        <div class="longin" style="line-height: 30px;font-size: 15px;width: 80%">欢迎使用XX食材
+            <br><span style="font-size: 13px">第一次登录该系统，请输入你的用户名</span></div>
+        <form action="/loginModifyName" method="get">
+            <div class="longinq">
+                <input class="form-control" placeholder="用户名" id="userName" name="userName" type="text">
+                <input name="openId" value="<%=openId%>" type="hidden">
+                <input type="submit" class="" value="确定提交" style = "margin-top: 20px; width: 100%; border-radius: 20px; border: none; background-color: #2ECC71;outline: none;">
+            </div>
+        </form>
+    </body>
+    <script>
+        document.title="<%=title%>";
+    </script>
+
+</html>

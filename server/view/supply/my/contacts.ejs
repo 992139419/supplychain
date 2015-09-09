@@ -1,0 +1,130 @@
+<div class="new_price_copuy">
+
+    <div class="new_price_copuy_q" style="line-height:20px;padding-top: 11px ">
+        常联系餐厅
+    </div>
+</div>
+<div class="hei" style="min-height: 100%;width: 100%;margin-bottom: 120px">
+    <div class="tavq">
+        <ul class="user_defined_copy">
+            <% for(var i = 0;i < contacts.length;i++){
+                if (contacts[i].length == 0)break
+            %>
+            <li>
+                <div class="new_tavq" style="position: relative">
+                    <div class="content" style="line-height: 50px">
+                        <%= contacts[i][0].name %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span style="float: right;"><a href='tel://<%= contacts[i][0].telephone %>'><img width="40px" height="40px"  src="images/telephone.png"></a></span>
+                    </div>
+                    <a id="<%= contacts[i][0]._id %>" style="font-size: 14px; right: -4px" class="dele">删除</a>
+                </div>
+            </li>
+            <% } %>
+        </ul>
+    </div>
+</div>
+<div class="new_add_template_7" onclick="javaScript:pageLoad('/addContactsPage')">
+    <div class="new_add_template_7_q">
+    </div>
+    <div class="new_add_template_7_w">
+    </div>
+</div>
+<% include ../template/bottom.ejs %>
+<script type="text/javascript">
+    document.title = '<%=title%>';
+
+    var start;
+    var end;
+    var li = document.querySelectorAll("li .new_tavq");
+    var dele = document.querySelectorAll(".dele");
+    var hei = document.querySelectorAll("html")[0].offsetHeight - 50;
+    document.querySelectorAll(".hei")[0].style.minHeight = hei + 'px'
+    document.querySelectorAll(".hei")[0].onclick = function () {
+        for (var a = 0; a < li.length; a++) {
+            li[a].style.left = '0px'
+        }
+    }
+    for (var a = 0; a < li.length; a++) {
+
+        li[a].addEventListener('touchstart', chstart, false);
+        li[a].addEventListener('touchmove', function (ev) {
+            this.className = "new_tavq"
+            if (ad == 1) {
+                for (var a = 0; a < li.length; a++) {
+                    li[a].style.left = '0px'
+                }
+            }
+            ad = 2
+            var move = ev.changedTouches[0].clientX
+            var x = start - move
+            if (x < 68&&x>5) {
+                ev.returnValue = false;
+                this.style.left = -x + 'px';
+            }
+            end = x
+        }, false);
+        li[a].addEventListener('touchend', end, false);
+    }
+    function chstart(ev) {
+        this.className = "new_tavq"
+        ad = 1;
+        end = 0
+        start = ev.changedTouches[0].clientX
+    }
+
+    function end(ev) {
+        this.className = "new_tavq template_new_q_q"
+        var en = parseInt(end)
+        if (en > 58) {
+            this.style.left = '-58px';
+        } else if (en == 0) {
+
+        } else {
+            this.style.left = '0px';
+        }
+    }
+    for (var a = 0; a < dele.length; a++) {
+        dele[a].onclick = function () {
+
+            if (window.confirm('你确定要删除吗？')) {
+//                修改 可能有错
+                var id = this.getAttribute('id');
+                var dom = this;
+                $.get('/supDelContacts?id=' + id, function (data) {
+                    pageLoad('/supContacts');
+                });
+                return true;
+
+            } else {
+                for (var a = 0; a < li.length; a++) {
+                    li[a].style.transform = 'translateX(0px)'
+                }
+                return false;
+            }
+        }
+    }
+
+    //    var suoyou = document.querySelectorAll("*")
+    //    for (var a = 0; a < suoyou.length; a++) {
+    //        suoyou[a].onclick = function (event) {
+    //            var al = this.querySelectorAll('a')[0].getAttribute('class');
+    //            var f = this.style.transform;
+    //            if (al == 'dele' && f == 'translateX(-60px)') {
+    //                if (window.confirm('你确定要删除吗？')) {
+    //                    var id = this.querySelectorAll('a')[0].getAttribute('id');
+    //                    var dom = this;
+    //                    $.get('/supDelContacts?id=' + id, function (data) {
+    //                        pageLoad('/supContacts');
+    //                    });
+    //                    return true;
+    //                } else {
+    //                    return false;
+    //                }
+    //            } else {
+    //                for (var a = 0; a < li.length; a++) {
+    //                    li[a].style.transform = 'translateX(0px)'
+    //                }
+    //            }
+    //        }
+    //    }
+</script>

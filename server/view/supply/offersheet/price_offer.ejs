@@ -1,0 +1,53 @@
+<div class="price_inquery">
+    <div class="price_inquery_q">
+        <a href="javascript:pageLoad('/qryOfferSheet')">
+            <div class="price_inquery_w_q" style="color: #30cd85;border-right: none">报价单</div>
+        </a>
+        <a href="javascript:pageLoad('/supPriceInquery')">
+            <div class="price_inquery_q_w">询价单</div>
+        </a>
+    </div>
+
+</div>
+<div class="c"></div>
+<div class="price_inqueryq" style="margin-bottom: 110px">
+    <dl class="template">
+
+        <dd>
+            <ul>
+                <li>
+                    <div>报价单</div>
+                    <div>日期</div>
+                </li>
+                <% JSON.parse(offerSheets).forEach(function(offerSheet){ %>
+                <a href="javascript:pageLoad('/showOfferSheetInfo?offerSheet=<%= JSON.stringify(offerSheet) %>')">
+                    <li>
+                        <div><%= offerSheet.name %></div>
+                        <div ><%= offerSheet.createdAt %>
+                        </div>
+                    </li>
+                </a>
+                <% }); %>
+            </ul>
+        </dd>
+    </dl>
+</div>
+
+<div class="add_tem">
+    <div class="add_w" style="margin-bottom: 55px">
+        <a href="javascript:pageLoad('/addOfferSheetchoose')" class="add_w_w_q">
+            新建报价单
+        </a>
+    </div>
+</div>
+<script>
+    var hei = document.querySelectorAll(".add_tem")[0]
+    guding(hei,100)
+var da = document.querySelectorAll(".da")
+    for(var i = 0;i<da.length;i++){
+        var a = ''+time(da[i].innerText).y+'-'+time(da[i].innerText).f+'-'+time(da[i].innerText).d
+        da[i].innerHTML = a
+    }
+
+</script>
+<% include ../template/bottom.ejs %>

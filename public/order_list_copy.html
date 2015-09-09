@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, width=device-width" name="viewport">
+    <title>Material</title>
+    <!-- css -->
+    <link href="css/base.min.css" rel="stylesheet">
+    <link href="css/wo.css" rel="stylesheet">
+    <link href="css/swiper.min.css" rel="stylesheet">
+    <!-- favicon -->
+    <!-- ... -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- ie -->
+</head>
+<body style="background-color: #F7F7F7;height: 100%">
+
+<div class="c"></div>
+
+
+<div class="new_price new_price_inquery new_order_list new_swiper_wrapper">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+
+            <div class="swiper-slide blue-slide">
+                <div class="price_inqueryq order_listq">
+
+                    <ul class="price_list_copy">
+
+                        <li>
+                            <div>订单编号</div>
+                            <div>订单名</div>
+                            <div>日期</div>
+                        </li>
+                        <a href="new_order_list_copy.html">  <li>
+                            <div>SN001</div>
+                            <div>订单名一</div>
+                            <div>5.5</div>
+                        </li>
+                        </a>
+                    </ul></div>
+            </div>
+            <div class="swiper-slide orange-slide">
+                <div class="price_inqueryq order_listq">
+
+                    <ul class="price_list_copy">
+
+                        <li>
+                            <div>订单编号</div>
+                            <div>订单名</div>
+                            <div>日期</div>
+                        </li>
+                        <a href="new_order_list_copy.html">  <li>
+                            <div>SN001</div>
+                            <div>订单名一</div>
+                            <div>5.5</div>
+                        </li>
+                        </a>
+                    </ul></div>
+            </div>
+            <div class="swiper-slide orange-slide">
+                <div class="price_inqueryq order_listq">
+
+                    <ul class="price_list_copy">
+
+                        <li>
+                            <div>订单编号</div>
+                            <div>订单名</div>
+                            <div>日期</div>
+                        </li>
+                        <a href="new_order_list_copy.html">  <li>
+                            <div>SN001</div>
+                            <div>订单名一</div>
+                            <div>5.5</div>
+                        </li>
+                        </a>
+                    </ul></div>
+            </div>
+
+
+
+        </div>
+        <div class="swiper-pagination swiper-pagination-clickable"></div>
+    </div>
+</div>
+<div class="bottom">
+    <a>
+        <div><img src="images/bottom_q.png"><br>首页</div>
+    </a>
+    <a>
+        <div><img src="images/bottom_w.png"><br>询价</div>
+    </a>
+    <a>
+        <div  style="color: #2ecc70; "><img src="images/bottom_w_q.png"><br>订单
+        </div>
+    </a>
+    <a href="my.html">
+        <div><img src="images/bottom_r.png"><br>我的</div>
+    </a>
+</div>
+<script src="js/base.min.js" type="text/javascript"></script>
+<script src="material/js/html5shiv.js" type="text/javascript"></script>
+<script src="material/js/respond.js" type="text/javascript"></script>
+<script src="js/base.min.js" type="text/javascript"></script>
+<script src="js/swiper.min.js" type="text/javascript"></script>
+<!--[if lt IE 9]>
+<script src="material/js/html5shiv.js" type="text/javascript"></script>
+<script src="material/js/respond.js" type="text/javascript"></script>
+<![endif]-->
+<script>
+
+    var swiper = new Swiper('.swiper-container', {
+
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+
+        paginationBulletRender: function (index, className) {
+            switch (index) {
+                case 0:
+                    name = '<span><span>新订单</span></span>';
+                    break;
+
+                case 1:
+                    name = '<span><span>已下单</span></span>';
+                    break;
+                case 2:
+                    name = '<span><span>已配送</span></span>';
+                    break;
+                default:
+                    name = '<span><span>已验收</span></span>';
+            }
+            return '<span class="' + className + '">' + name + '</span>';
+        }
+    });
+    var li = document.querySelectorAll("li")
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            var clas = this.getAttribute('class')
+            if (clas == 'li_q') {
+                this.className = ''
+            } else {
+                this.className = 'li_q'
+
+            }
+        }
+    }
+
+
+</script>
+</body>
+</html>

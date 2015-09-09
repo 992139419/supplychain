@@ -1,0 +1,103 @@
+<div style="margin-top: 0" class="price_inqueryq price_inqueryqw">
+    <dl class="template">
+        <dd>
+            <ul>
+                <a>
+                    <li>
+                        <div>&nbsp;&nbsp;&nbsp;用户名：<%= userInfo.userName %></div>
+                    </li>
+                </a>
+                <a>
+                    <li>
+                        <div>真实姓名：<input class="form-new" id="realName" type="text" value="<%= userInfo.realName %>">
+                        </div>
+                    </li>
+                </a>
+                <a>
+                    <li>
+                        <div>手机号码：<input class="form-new" id="mobileNo" type="text" value="<%= userInfo.mobileNo %>">
+                        </div>
+                    </li>
+                </a>
+                <a>
+                    <li>
+                        <div>邮箱地址：<input id="emailAddress" class="form-new" type="text"
+                                         value="<%= userInfo.emailAddress %>"></div>
+                    </li>
+                </a>
+                <a>
+                    <li>
+                        <div>重置密码：<input id="password" class="form-new" type="password"
+                                         alt="需要重置密码，在此填写新密码" value=""></div>
+                    </li>
+                </a>
+            </ul>
+        </dd>
+
+
+        <div class="add_tem aad">
+            <div class="add_w">
+                <a href="javascript:saveUserInfoSetting();" class="add_w_w_q">
+                    保存修改
+                </a>
+            </div>
+        </div>
+        <div class="add_tem bbd">
+            <div class="add_w">
+                <a href="javascript:logout();" class="add_w_w_q">
+                    退出登录
+                </a>
+            </div>
+        </div>
+    </dl>
+</div>
+<% include ../template/bottom.ejs %>
+
+<script>
+var aad = document.querySelectorAll(".aad")[0]
+var bbd = document.querySelectorAll(".bbd")[0]
+guding(aad,150)
+guding(bbd,100)
+
+    function saveUserInfoSetting() {
+        var realName = document.getElementById('realName').value;
+        var mobileNo = document.getElementById('mobileNo').value;
+        var emailAddress = document.getElementById('emailAddress').value;
+        var password = document.getElementById('password').value;
+        if (document.getElementById('realName').value.indexOf('\'') > 0 || document.getElementById('realName').value.indexOf('\"') > 0) {
+            document.getElementById('realName').focus();
+            alert('真实姓名不能包含非法字符！');
+            return false;
+        }
+
+        if(mobileNo){
+            if ( !/^(1[0-9])\d{9}$/.test(mobileNo)) {
+                document.getElementById('mobileNo').focus();
+                alert("请填写正确的手机号码");
+                return false;
+            }
+        }
+
+        $.post('/saveuserInfo', {
+            realName: realName,
+            mobileNo: mobileNo,
+            emailAddress: emailAddress,
+            password:password
+        }, function (data) {
+            if (data.status == 100) {
+                if(data.userType==='1'){
+                    pageLoad('/my');
+                }else if(data.userType==='2'){
+                    pageLoad('/myForsupply');
+                }
+            } else if (data.status == 200) {
+                alert('用户名存在，请重新输入。');
+                document.getElementById('userName').value = '';
+            } else if (data.status == 500) {
+                alert('系统错误');
+            }
+        });
+    }
+
+</script>
+

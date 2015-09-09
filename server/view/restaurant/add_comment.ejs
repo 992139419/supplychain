@@ -1,0 +1,47 @@
+
+<div class="add_comment">
+    请输入您的评论内容：
+</div>
+<div class="add_commentq">
+<textarea  id="my_comments" class="add_comment_q">
+</textarea>
+</div>
+<div class="add_w">
+    <a class="add_w_w_q" href="javascript:publishComments('<%=id%>')">
+        发布
+    </a>
+ </div>
+
+
+<script type="text/javascript">
+
+
+    function publishComments(id){
+        var comments=document.getElementById("my_comments").value;
+
+        //校验评论字符长度
+//            if(comments.length>200){
+//
+//                alert("字符过长。请减少字符长度！");
+//            }
+
+
+
+
+
+        var requestUrl="/saveComments?id="+id;
+        requestUrl+="&comments="+comments;
+
+        $.get(requestUrl,function(feed){
+
+            if(feed>0){
+
+                alert("发表评论成功！");
+                pageLoad("/my")
+            }
+        });
+
+
+    }
+
+</script>

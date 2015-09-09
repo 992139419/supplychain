@@ -1,0 +1,62 @@
+<div class="bj" style="background-image: none;background-color: #F7F7F7">
+
+</div>
+
+<div class="price_inquery price_inquer">
+
+    <div class="price_inquery_w">
+        <a href="javascript:pageLoad('/qryOfferSheetforInquery')">
+            <div class="price_inquery_w_w">
+                <div>报价单</div>
+            </div>
+        </a>
+        <a href="javascript:pageLoad('/priceInquery','询价',true)">
+            <div class="price_inquery_w_q" style="border-left: 1px solid #979797;border-right: none">
+                <div>询价单</div>
+                <div class="price_inquery_w_q_qw"></div>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="c"></div>
+<div class="price_inqueryq price_inqueryqw" style="">
+    <dl class="template">
+        <dd>
+            <ul>
+                <% var sheets = JSON.parse(inquerySheets);
+                        sheets.forEach(function(inquerySheet){
+                %>
+                <a href="javascript:qryInSheet('<%= inquerySheet._id %>')">
+                    <li style="height: auto;">
+                        <div style="width: 50%!important;text-align: center!important;"><%= inquerySheet.name %>
+                        </div>
+                        <div style="width: 50%!important;text-align: center!important;"><%= inquerySheet.createdAt %>
+                        </div>
+                    </li>
+                </a>
+                <% }) %>
+            </ul>
+        </dd>
+    </dl>
+</div>
+<div style="width: 100%;height: 110px;clear: both">
+
+</div>
+<div class="add_tem">
+    <div class="add_w" style="margin-bottom: 55px">
+        <a href="javascript:pageLoad('/addIqrySheetchoose')" class="add_w_w_q">
+            新建询价单
+        </a>
+    </div>
+</div>
+
+
+<% include ../template/bottom.ejs %>
+
+<script>
+    var hei = document.querySelectorAll(".add_tem")[0]
+    guding(hei, 100)
+    function qryInSheet(id) {
+        pageLoad('/qryInSheet?inSheetId=' + id);
+    }
+</script>

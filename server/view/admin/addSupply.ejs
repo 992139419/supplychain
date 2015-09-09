@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head lang="en">
+    <% include ../common/head.ejs %>
+</head>
+<body>
+<div class="newpage">
+    <div class="newpage_q">
+
+    </div>
+</div>
+<ul class="add_q">
+    <li>
+        <label class="add_q_q" for="name" style = "width:45%">
+            供货商公司名称：
+        </label>
+
+        <div class="add_q_w" for='name' style = "width: 55%;">
+            <input class="form-control" id="name" name="name" placeholder="请输入您供货商单位名称" type="text">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="header" style = "width: 45%;">
+            联系人：
+        </label>
+
+        <div class="add_q_w" style = "width: 55%;">
+            <input class="form-control" id="header" name="header" placeholder="请输入联系人姓名" type="text">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="telephone" style = "width: 45%;">
+            联系电话：
+        </label>
+
+        <div class="add_q_w" style = "width: 55%;">
+            <input class="form-control inputBlue" id="telephone" name="telephone" placeholder="请输入联系人电话" type="text">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="area" style = "width: 45%;">
+            区域：
+        </label>
+
+        <div class="add_q_w" style = "width: 55%;">
+            <label class="form-control" id="area">上海</label>
+            <!--<input class="form-control" id="area" name="area" placeholder="请输入餐厅所在区域城市" type="text">-->
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="address" style = "width: 45%;">
+            单位地址：
+        </label>
+
+        <div class="add_q_w" style = "width: 55%;">
+            <input class="form-control" id="address"  name="address" placeholder="请输入想关的配送地址" type="text">
+        </div>
+    </li>
+</ul>
+<div class="add_w">
+    <div class="add_w_q icon icon-add">
+
+    </div>
+    <a class="add_w_w" onclick="addSupply()">
+        确认添加供货商
+    </a>
+</div>
+
+</body>
+</html>

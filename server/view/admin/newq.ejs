@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, width=device-width" name="viewport">
+    <title>Material</title>
+    <!-- css -->
+    <link href="css/base.min.css" rel="stylesheet">
+    <link href="css/wo.css" rel="stylesheet">
+    <!--<script src="js/base.min.js" type="text/javascript"></script>-->
+    <!-- favicon -->
+    <!-- ... -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+<body>
+<div class="newpage">
+    <div class="newpage_q">
+    </div>
+</div>
+<div>
+    <div class="zhangkai" style="height: 40px;line-height: 40px;padding: 0 15px;border-bottom:1px solid #979797 ">
+        总餐厅：总餐厅<span
+            class="icon icon-unfold-less" style="float: right;height: 40px;line-height: 40px;"></span></div>
+    <div class="new_add_q_e" style="display: none;">
+        <ul class="add_q" style="border-bottom: 1px solid #979797">
+            <li><div class="add_q_q">餐厅名称:</div>
+
+                <div class="add_q_w add_we" id="name" style="color: #333;font-size: 13px">1</div>
+            </li>
+            <li><div class="add_q_q">联系人：</div>
+
+                <div class="add_q_w add_we" id="header" style="color: #333;font-size: 13px">1</div>
+            </li>
+            <li><div class="add_q_q"> 联系电话：</div>
+
+                <div class="add_q_w add_we" id="telephone" style="color: #333;font-size: 13px">15202263809</div>
+            </li>
+            <li><div class="add_q_q">区域：</div>
+
+                <div class="add_q_w add_we" id="qwqwq" style="color: #333;font-size: 13px">1</div>
+            </li>
+            <li><div class="add_q_q">地址：</div>
+
+                <div class="add_q_w add_we" id="address" style="color: #333;font-size: 13px">1</div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="fendian">
+
+</div>
+<ul class="add_q new_add_q_w" style="margin-top: 20px;display: none">
+    <li>
+        <label class="add_q_q" for="nameq">
+            餐厅名称:
+        </label>
+
+        <div class="add_q_w new_add_q_w">
+            <input class="form-control" id="nameq" name="name" placeholder="请输入您的餐厅名称" type="text">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="headerq">
+            联系人：
+        </label>
+
+        <div class="add_q_w">
+            <input class="form-control" id="headerq" name="header" placeholder="请输入联系人姓名" type="text">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="telephoneq">联系电话：</label>
+
+        <div class="add_q_w">
+            <input class="form-control inputBlue" id="telephoneq" name="telephone" placeholder="请输入联系人电话" type="text">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="qwqw">
+            区域：
+        </label>
+
+        <div class="add_q_w">
+            <input class="form-control" id="qwqw" name="address" placeholder="请输入餐厅所在区域城市" type="text">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="addressq">
+            配送地址：
+        </label>
+
+        <div class="add_q_w">
+            <input class="form-control" id="addressq" name="address" placeholder="请输入餐厅所在区域城市" type="text">
+        </div>
+    </li>
+</ul>
+<div class="add_w new_add_w">
+    <div class="add_w_q icon icon-add">
+
+    </div>
+    <a class="add_w_w">
+        添加分餐厅信息
+    </a>
+</div>
+<div style="position: fixed;bottom: 15px;right: 15px;text-align: center; line-height: 30px; width: 74px; height: 30px; border-radius:15px; border: 1px solid #3498db; color: #3498db">
+    下一步
+</div>
+<script>
+    function xiugai() {
+        var add_we = document.querySelectorAll(".add_we")
+        for (var a = 0; a < add_we.length; a++) {
+            add_we[a].onclick = function () {
+                if (this.className == 'add_q_w add_we') {
+                    this.innerHTML = '<input class="form-control" name="name" placeholder="请输入修改内容" type="text" style=" width:70%;float: left"><a style="  float: right; width: 28%; margin: 0; clear: none; height: 30px; line-height: 30px;  font-size: 13px; margin-top: 6px; border-radius: 3px; margin-right: 2%;" class="queding button_l">确定</a> '
+                    queding()
+                    this.className = 'add_q_w add_we aa'
+                    this.querySelectorAll('input')[0].focus()
+                }
+            }
+        }
+    }
+    xiugai()
+    function queding() {
+        var queding = document.querySelectorAll('.queding')
+        for (var a = 0; a < queding.length; a++) {
+            queding[a].onclick = function () {
+                if (this.previousSibling.value !== '') {
+                    if (this.parentNode.previousSibling.previousSibling.innerText == '联系电话：') {
+                        if (!/^(1[0-9])\d{9}$/.test(this.previousSibling.value)) {
+                            alert('请填写正确的手机号码')
+                        } else {
+                            var par = this.parentNode;
+                            par.innerHTML = this.previousSibling.value
+                            window.setTimeout(show,300);
+                            function show(){
+                                par.className = 'add_q_w add_we'
+                            }
+                        }
+                    } else {
+                        var par = this.parentNode;
+                        par.innerHTML = this.previousSibling.value
+                        window.setTimeout(show,300);
+                        function show(){
+                            par.className = 'add_q_w add_we'
+                        }
+                    }
+                } else {
+                    alert('请添加修改内容')
+                }
+            }
+        }
+    }
+    var addw = document.querySelectorAll(".add_w")
+    for (var a = 0; a < addw.length; a++) {
+        addw[a].onclick = function () {
+            if (this.className == "add_w new_add_w") {
+                if (document.querySelectorAll(".new_add_q_w")[0].style.display == "block") {
+
+                    if (document.getElementById('nameq').value == '') {
+                        alert('请添加餐厅名称！')
+                        return false;
+                    }
+                    if (document.getElementById('headerq').value == '') {
+                        alert('请添加联系人姓名！')
+                        return false;
+                    }
+                    if (document.getElementById('telephoneq').value == '') {
+                        alert('请添加联系电话！')
+                        return false;
+                    }
+                    if (!/^(1[0-9])\d{9}$/.test(document.getElementById('telephoneq').value)) {
+                        alert("请填写正确的手机号码");
+                        return false;
+                    }
+                    if (document.getElementById('addressq').value == '') {
+                        alert('请添加配送地址！')
+                        return false;
+                    }
+                    if (document.getElementById('qwqw').value == '') {
+                        alert('请添加所在区域！')
+                        return false;
+                    }
+                    var name = document.getElementById('nameq').value
+                    var header = document.getElementById('headerq').value
+                    var telephone = document.getElementById('telephoneq').value
+                    var address = document.getElementById('addressq').value
+                    var area = document.getElementById('qwqw').value
+                    var di = document.createElement('div');
+                    var htm = '<div class="zhangkai" style="height: 40px;line-height: 40px;padding: 0 15px;border-bottom:1px solid #979797 ">'
+                    htm += document.getElementById('nameq').value + '<span class="icon icon-unfold-more" style="float: right;height: 40px;line-height: 40px;"></span>'
+                    htm += '</div>'
+                    htm += '<div class="new_add_q_e" style="display: none">'
+                    htm += '<ul class="add_q" style="border-bottom: 1px solid #979797">'
+                    htm += '<li>'
+                    htm += '<label class="add_q_q" for="name">'
+                    htm += '餐厅名称:'
+                    htm += '</label>'
+                    htm += '<div class="add_q_w add_we" style="color: #333;font-size: 13px">'
+                    htm += document.getElementById('nameq').value
+                    htm += '</div>'
+                    htm += '</li>'
+                    htm += '<li>'
+                    htm += '<label class="add_q_q" for="header">'
+                    htm += '联系人：'
+                    htm += '</label>'
+                    htm += '<div class="add_q_w add_we" style="color: #333;font-size: 13px">'
+                    htm += document.getElementById('headerq').value
+                    htm += '</div>'
+                    htm += '</li>'
+                    htm += '<li>'
+                    htm += ' <label class="add_q_q" for="telephone">联系电话：</label > '
+                    htm += '<div class="add_q_w add_we" style="color: #333;font-size: 13px">'
+                    htm += document.getElementById('telephoneq').value
+                    htm += '</div>'
+                    htm += '</li>'
+                    htm += '<li>'
+                    htm += '<label class="add_q_q" for="address">'
+                    htm += '区域：'
+                    htm += '</label>'
+                    htm += '<div class="add_q_w add_we" style="color: #333;font-size: 13px">'
+                    htm += document.getElementById('qwqw').value
+                    htm += '</div>'
+                    htm += '</li>'
+                    htm += '<li>'
+                    htm += '<label class="add_q_q" for="address">'
+                    htm += '地址：'
+                    htm += '</label>'
+                    htm += '<div class="add_q_w add_we" style="color: #333;font-size: 13px">'
+                    htm += document.getElementById('addressq').value
+                    htm += '</div>'
+                    htm += '</li>'
+                    htm += '</ul>'
+                    htm += '</div>'
+                    di.innerHTML = htm
+                    document.querySelectorAll(".fendian")[0].appendChild(di)
+                    xiugai()
+                    zhankai()
+                    shousuo()
+                    document.getElementById('nameq').value = ''
+                    document.getElementById('headerq').value = ''
+                    document.getElementById('telephoneq').value = ''
+                    document.getElementById('addressq').value = ''
+                    document.getElementById('qwqw').value = ''
+                } else {
+                    shousuo()
+                    document.querySelectorAll(".new_add_q_w")[0].style.display = "block"
+//                    document.querySelectorAll(".new_add_q_q")[0].style.display = "none"
+                }
+            } else {
+                if (document.querySelectorAll(".new_add_q_q")[0].style.display == "block") {
+
+                    if (document.getElementById('name').value == '') {
+                        alert('请添加餐厅名称！')
+                        return false;
+                    }
+                    if (document.getElementById('header').value == '') {
+                        alert('请添加联系人姓名！')
+                        return false;
+                    }
+                    if (document.getElementById('telephone').value == '') {
+                        alert('请添加联系电话！')
+                        return false;
+                    }
+                    if (!/^(1[0-9])\d{9}$/.test(document.getElementById('telephone').value)) {
+                        alert("请填写正确的手机号码");
+                        return false;
+                    }
+                    if (document.getElementById('address').value == '') {
+                        alert('请添加配送地址！')
+                        return false;
+                    }
+                    if (document.getElementById('area').value == '') {
+                        alert('请添加所在区域！')
+                        return false;
+                    }
+                    addResturant()
+                } else {
+                    shousuo()
+                    document.querySelectorAll(".new_add_q_w")[0].style.display = "none"
+                    document.querySelectorAll(".new_add_q_q")[0].style.display = "block"
+                }
+            }
+        }
+    }
+
+    zhankai()
+    function zhankai() {
+        var zhangkai = document.querySelectorAll(".zhangkai");
+        for (var a = 0; a < zhangkai.length; a++) {
+            zhangkai[a].onclick = function () {
+                if (this.nextElementSibling.style.display == "block") {
+                    shousuo()
+                    this.querySelectorAll("span")[0].className = "icon icon-unfold-more"
+
+                } else {
+                    shousuo()
+                    this.nextElementSibling.style.display = "block"
+                    this.querySelectorAll("span")[0].className = "icon icon-unfold-less"
+
+                }
+            }
+        }
+    }
+    function shousuo() {
+        var new_add_q_e = document.querySelectorAll(".new_add_q_e");
+        var icon = document.querySelector(".icon")
+        for (var a = 0; a < new_add_q_e.length; a++) {
+            new_add_q_e[a].style.display = "none"
+        }
+        for (var a = 0; a < icon.length; a++) {
+            icon[a].className = 'icon icon-unfold-more'
+        }
+    }
+</script>
+</body>
+</html>

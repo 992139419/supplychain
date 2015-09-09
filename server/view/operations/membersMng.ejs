@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include template/head.ejs %>
+</head>
+<body>
+<div id="wrapper">
+    <% include template/menu.ejs %>
+
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <% include template/nav.ejs %>
+        <div class="row  border-bottom white-bg dashboard-header">
+            <div class="col-sm-12">
+                <div class="row">
+
+                </div>
+                <div class="row">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+
+                        </div>
+                        <form role="form" class="form-inline" method="get"
+                              action="/cmsGetMembers?name=<%= name %>&startIdx=<%= parseInt(currentIdx - 1) * 10 %>">
+                            <% if(userInfo.userType === '1'){ %>
+                            <div class="form-group"><label for="exampleInputEmail2" class="sr-only">餐厅名称</label>
+                                <input type="text" placeholder="餐厅名称" id="name" class="form-control" name="name" value="<%=name%>"></div>
+                            <% }else if(userInfo.userType === '2'){ %>
+                            <div class="form-group"><label for="exampleInputEmail2" class="sr-only">供应商名称</label>
+                                <input type="text" placeholder="供应商名称" id="name" class="form-control" name="name" value="<%=name%>"></div>
+                            <% } %>
+                            <div class="checkbox m-l m-r-xs"></div>
+                            <button class="btn btn-danger" type="submit">查询</button>
+                        </form>
+                        <br/>
+                        <br/>
+
+                        <div class="ibox-content">
+
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>用户名</th>
+                                    <th width="500px">所属单位</th>
+                                    <th>时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <%
+                                for(var i = 0;i < data.length;i++, startIdx++){ %>
+                                <tr>
+                                    <td><%= data[i].userName %></td>
+                                    <td><%= data[i].mechanism_name %>
+                                    </td>
+                                    <td><%= data[i].createdAt %></td>
+                                    <td>
+
+                                        <% if(data[i].isAvab == 'false'){ %>
+                                        <a href="javascript:enbUser('<%= data[i]._id %>')"
+                                           class="btn btn-sm btn-primary pull-right m-t-n-xs">激活</a>
+                                        <% }else { %>
+
+                                        <a href="javascript:disUser('<%= data[i]._id %>')"
+                                           class="btn btn-sm btn-primary pull-right m-t-n-xs">禁用</a></td>
+                                    <% } %>
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                            <div id="pageIdx" class="pagination">
+                                <% var pageNum = sum / 10; %>
+                                <span style="float: left; line-height: 28px;">共有 <%= sum %> 条记录　</span>
+                                <% if(parseInt(sum) > 10){ %>
+                                <% if(currentIdx > 1){ %>
+                                <a href="/cmsGetRestaurant?name=<%= name %>" class="pagination-q"
+                                   style="width:4rem">首页</a>
+                                <a href="/cmsGetRestaurant?name=<%= name %>&startIdx=<%= parseInt(currentIdx - 2) * 10 %>"
+                                   class="pagination-q"><img
+                                            src="img/left.jpg" alt="" style="position:relative;top:-2px;">上一页</a>
+                                <% } %>
+                                <span style="float: left; line-height: 28px;padding: 0 0.5rem"> 第 <%= currentIdx %>
+                                    页 </span>
+                                <% if(parseInt(currentIdx * 10) < sum + 1){ %>
+                                <a href="/cmsGetRestaurant?name=<%= name %>&startIdx=<%= currentIdx * 10 %>"
+                                   class="pagination-q">下一页<img
+                                            src="img/right.jpg" alt="" style="position:relative;top:-2px;"></a>
+                                <% } %>
+                                <% if(pageNum > 10){ %>
+                                <span style="float: left; line-height: 28px;">... 共有 <%= Math.ceil(pageNum) %> 页
+                                <span>跳转到</span>
+                                <input id="pageSkippedTo" type="Number" min="1" style="width:4rem; height:28px;"/>
+                                <span>页</span>
+                                <a class="btn btn-default" onclick="skipHandler()"
+                                   href="javascript:void(0)" role="button" style="float:right;height:28px;">
+                                    <span style="position: relative; top: -8px;">go</span></a>
+                            </span>
+                                <% } %>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog " style="width: 80%!important;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">餐厅信息</h4>
+
+                <div style="width: 100%; height: 2px;margin-top: 10px; background-color: #F8F8F8"></div>
+                <div class="modal-body">
+
+                    <div style=" width: 100%;border-radius: 5px">
+
+                        <div style="width: 100%;padding: 10px 10px; border-bottom: 1px solid #F8F8F8">
+
+                            <div style="clear: both;width: 100%"></div>
+                            餐厅名字：<span id="name">王林海</span><br>
+                            地&nbsp;&nbsp;址：<span id="add">上海长宁区</span><br>
+                            联系方式：<span id="phone">123456</span><br>
+                            区域：<span id="area">123456</span><br>
+                        </div>
+                        <div style="width: 100%;padding: 10px 10px; border-bottom: 1px solid #F8F8F8">
+                            <span style="font-size: 15px;float: left;margin-bottom: 5px ">分店信息</span>
+                            <br>
+
+                            <div id='chainStoreList' style="clear: both;width: 100%">
+                                分店地址：<br>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">-->
+<!--<div class="modal-dialog modal-lg">-->
+<!--<div class="modal-content">-->
+<!--<div style=" width: 100%;border: 3px solid #f8f8f8;border-radius: 5px">-->
+<!--<div style="width: 100%; height: 30px;background-color: #F8F8F8;color: #000; padding: 0 30px;line-height: 30px">-->
+<!--订单信息-->
+<!--</div>-->
+<!--<div style="width: 100%;padding: 20px 20px; border-bottom: 1px solid #F8F8F8">-->
+<!--<span style="font-size: 15px">收货人信息</span><br>-->
+<!--收获人：<span id = "name">王林海</span><br>-->
+<!--地&nbsp;&nbsp;址：<span id = "add">上海长宁区</span><br>-->
+<!--手机号码：<span id = "phone">123456</span><br>-->
+<!--</div>-->
+
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<% include template/footer.ejs %>
+</body>
+<script>
+    function skipHandler() {
+        var nextPage = $('#pageSkippedTo').val();
+        if ($.trim(nextPage) == '') {
+            return;
+        }
+        nextPage = parseInt(nextPage);
+        if (!isNaN(nextPage)) {
+            if (nextPage <= parseInt(<%=Math.ceil(pageNum)%>)) {
+                window.location.href = '/cmsGetMembers?&startIdx=' + ((nextPage - 1) * 10);
+            }
+        }
+    }
+
+    function disUser(id) {
+        $.post('/cmsDisMember', {id: id, isAvab: false}, function (data) {
+            if (data.status == 100) {
+                alert('操作成功');
+                window.location.reload();
+            }
+        });
+    }
+
+    function enbUser(id) {
+        $.post('/cmsDisMember', {id: id, isAvab: true}, function (data) {
+            if (data.status == 100) {
+                alert('操作成功');
+                window.location.reload();
+            }
+        });
+    }
+
+    function showRest(id) {
+
+        $.post('/cmsGetResDetails', {id: id}, function (data) {
+            if (data) {
+
+
+                $("#name").text(data.name);
+                $("#add").text(data.address);
+                $("#phone").text(data.telephone);
+                $("#area").text(data.area);
+                $("#chainStoreList").html('');
+                for (var i = 0; i < data.chainStores.length; i++) {
+                    var obj = data.chainStores[i];
+                    $("#chainStoreList").append("分店地址：<br>");
+                    $("#chainStoreList").append("餐厅名字：<span>" + obj.name + "</span><br>");
+                    $("#chainStoreList").append("地&nbsp;&nbsp;址：<span>" + obj.address + "</span><br>");
+                    $("#chainStoreList").append("联系方式：<span >" + obj.telephone + "</span><br>");
+                    $("#chainStoreList").append("区域：<span>" + obj.area + "</span><br>");
+                }
+
+                if (data.chainStores.length <= 0) {
+                    $("#chainStoreList").append("无分店信息 <br>");
+                }
+//                $("#chainStoreList").append("<span >不开</span><br>");
+//                $("#chainStoreList").append("<span >不开</span><br>");
+
+
+//                $("#name").text(data.name);
+//                $("#name").text(data.name);
+
+            }
+
+
+        });
+
+
+    }
+
+</script>
+</html>

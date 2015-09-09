@@ -1,0 +1,37 @@
+
+<dl class="template" style="margin-bottom: 55px">
+    <dt>
+    <ul>
+        <li>模版名</li>
+        <li>创建时间</li>
+    </ul>
+    </dt>
+    <dd>
+
+        <ul>
+            <% templates.forEach(function(template){ %>
+            <li id="li_<%= template._id %>">
+                <div><%= template.name %></div>
+                <div><%= template.createdAt %>
+                    <div class="icon icon-keyboard-arrow-right"></div>
+                    <a class="dele" id="delete_<%= template._id %>">删除</a></div>
+            </li>
+            <% }) %>
+        </ul>
+    </dd>
+</dl>
+
+<div class="add_tem">
+    <div class="add_w"  >
+        <a href="javascript:pageLoad('/addTemplate')" class="add_w_w_q">
+            添加模版
+        </a>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+var hei = document.querySelectorAll(".add_tem")[0];
+    guding(hei,100);
+
+</script>

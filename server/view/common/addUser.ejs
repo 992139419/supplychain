@@ -1,0 +1,84 @@
+<!--<div class="new_add_templateq">-->
+
+<!--<div class="new_add_templateq_q">-->
+<!--<input id="userName" class="form-control" placeholder="请输入要添加的用户名" type="text">-->
+<!--</div>-->
+<!--<div class="new_add_templateq_w">-->
+<!--<div><a href="javascript:addUser()">确定</a></div>-->
+<!--<div><a href="javascript:cancelUser()" class="new_add_templateq_q_qw">取消</a></div>-->
+<!--</div>-->
+<!--</div>-->
+<div style=" font-size: 12px;color: #333; padding: 0 15px;margin-top: 10px">
+    提示:餐厅管理员，如需要为旗下餐厅添加组员，需先在下面选择餐厅。然后点击右上角的分享按钮，分享给你说需要添加的成员。
+</div>
+<div class="zhangkai" style="height: 40px;line-height: 40px;padding: 0 15px;border-bo:1px solid #979797 ">
+    我的餐厅<span class="icon icon-expand-more" style="float: right;height: 40px;line-height: 40px;">
+
+    </span>
+</div>
+<div>
+    <ul class="price_list_copy nweprice_list_copy" style="display: none;">
+
+
+        <li id='12444' style="padding: 0 15px">
+            <div style="width: 75%!important;text-align:left!important">分店一</div>
+
+            <div>
+                <div class="check"></div>
+            </div>
+        </li>
+        <li id='12445' style="padding: 0 15px">
+            <div style="width: 75%!important;text-align:left!important">分店二</div>
+            <div>
+                <div class="check"></div>
+            </div>
+        </li>
+
+    </ul>
+</div>
+
+<script>
+    function addUser() {
+        var userName = document.getElementById('userName').value;
+        $.post('/adduser', {userName: userName, openId: _openId}, function (data) {
+            if (data && data.status == 100) {
+                pageLoad('/myteamMember');
+            } else if (data && data.status == 500) {
+                alert('系统错误');
+            } else if (data && data.status == 101) {
+                alert('输入的用户名不能为空');
+            }
+        });
+    }
+
+    function cancelUser() {
+        pageLoad('/myteamMember');
+    }
+    var id;
+    var li = document.querySelectorAll("li")
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            if (this.className == "li_q") {
+                for (var b = 0; b < li.length; b++) {
+                    li[b].className = ''
+                }
+                id = ''
+            } else {
+                for (var b = 0; b < li.length; b++) {
+                    li[b].className = ''
+                }
+                this.className = 'li_q'
+                id = this.id
+            }
+        }
+    }
+    var zhangkai = document.querySelectorAll(".zhangkai")[0];
+    zhangkai.onclick = function () {
+        if (document.querySelectorAll(".price_list_copy")[0].style.display == 'block') {
+            document.querySelectorAll(".price_list_copy")[0].style.display = 'none'
+
+        } else {
+            document.querySelectorAll(".price_list_copy")[0].style.display = 'block'
+        }
+    }
+</script>

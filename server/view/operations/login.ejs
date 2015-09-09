@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<%include template/head.ejs%>
+</head>
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">H+</h1>
+
+            </div>
+            <h3>餐厅供应系统后台</h3>
+            <p>请登录</p>
+            <form class="m-t" role="form" action="/cmsLogin" method="post">
+                <div class="form-group">
+                    <input  class="form-control" placeholder="请输入手机号" name="userName">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="请输入密码" name="passWord">
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b">登录</button>
+
+                <!--<a href="/cmsresetPassord" style="text-align: left"><small>修改密码</small></a>-->
+                <!--<p class="text-muted text-center"><small>Do not have an account?</small></p>-->
+                <!--<a class="btn btn-sm btn-white btn-block" href="#">Create an account</a>-->
+            </form>
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <%include template/footer.ejs%>
+</body>
+
+
+</html>

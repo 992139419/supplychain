@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head lang="en">
+    <% include ../../common/head.ejs %>
+    <!--<script>-->
+    <!--window.history.pushState({url: '/supIndex', title: '首页'}, '首页', '/supIndex');-->
+    <!--</script>-->
+</head>
+<body style="height: 100%">
+<div id="qubie"></div>
+<div class="newpage">
+    <div class="newpage_q">
+
+    </div>
+</div>
+<div id="pageContent" style="height: 100%;width: 100%">
+
+
+    <div id="qubie"></div>
+    <div class="index_qq" style="margin-bottom: 0px">
+        <div class="template_copy" style="padding-left: 60px">
+            <div>
+                <div class="icon icon-search">
+                </div>
+                <form action="">
+                    <input class="form-control" placeholder="请输入要查找的物料名称" type="search" id='sMetiralId'
+                           onkeydown="searchMaterial()">
+                </form>
+            </div>
+        </div>
+        <div class="template_copy_w">
+            <div class="content">
+                <div class="content-inner">
+                    <div id="cateColl" class="container">
+                        <nav class="tab-nav" style="background-color: #F7F7F7">
+                            <ul class="nav nav-justified">
+                                <li class="active">
+                                    <a class="waves-effect" data-toggle="tab" href="#first-tab"
+
+                                       onclick="getMetrails('0',this)">全部类别
+
+                                    </a>
+                                </li>
+                                <% for(var i = 0;i < category.length;i++){
+
+                                    var pCate = category[i];
+                                %>
+                                <li>
+                                    <a class="waves-effect" data-toggle="tab" href="#first-tab"
+                                       onclick="getMetrails('<%= String(pCate._id) %>',this)"
+                                       id=<%= String(pCate._id) %>><%= pCate['name'] %></a>
+                                </li>
+                                <% } %>
+
+                            </ul>
+                        </nav>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active in" id="first-tab">
+
+                                <div class="swiper-container">
+                                    <div class="swiper-wrapper">
+                                        <div id="hotMetiral" class="swiper-slide blue-slide">
+                                            <ul id='MetrialsColl' class="user_defined_copy">
+
+                                                <% for(var j = 0; j < materials.length;j++){
+                                                    var material = materials[j];
+                                                %>
+                                                <li onclick="getInqueryRes(this.id)" id='<%= material._id %>'>
+
+                                                    <div class="content">
+
+                                                        <div class="content_new_q" style="  width: 100%;
+  padding-right: 25px;
+  margin-top: -4px;"><%= material.name %></div>
+                                                        <img src="images/live.png"
+                                                             style="  width: 22px;position:absolute;top: 10px;right: 15px">
+
+                                                        <div class="content_q">
+                                                            <br>共<%= material.restaurantNum ? material.restaurantNum : '0' %>
+                                                            家餐厅询价<br>
+
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <% } %>
+                                            </ul>
+                                        </div>
+                                        <div id="reqMetiral" class="swiper-slide red-slide">
+                                            <ul class="user_defined_copy">
+                                                <% for(var j = 0; j < materials.length;j++){
+                                                    var material = materials[j];
+                                                %>
+                                                <li onclick="getInqueryRes(this.id)" id='<%= material._id %>'>
+                                                    <!--<div class="icon">-->
+                                                        <!--<img src="images/icon.png">-->
+                                                    <!--</div>-->
+                                                    <div class="content">
+                                                        <div class="content_new_q" style="width: 100%;
+  padding-right: 25px;
+  margin-top: -4px;"><%= material.name %></div>
+                                                        <img src="images/live.png"
+                                                             style="  width: 22px;position:absolute;top: 10px;right: 15px">
+                                                        <div class="content_q">
+                                                            <br>共<%= material.restaurantNum ? material.restaurantNum : '0' %>
+                                                            家餐厅询价<br>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <% } %>
+                                            </ul>
+                                        </div>
+                                        <div id="followMetiral" class="swiper-slide orange-slide">
+                                            <ul class="user_defined_copy">
+                                                <% for(var j = 0; j < materials.length;j++){
+                                                    var material = materials[j];
+                                                %>
+                                                <li onclick="getInqueryRes(this.id)" id='<%= material._id %>'>
+
+                                                    <div class="content">
+                                                        <div class="content_new_q" style="  width: 100%;
+  padding-right: 25px;
+  width: 100%;
+
+  margin-top: -4px;"><%= material.name %></div>
+                                                        <img src="images/live.png"
+                                                             style="width: 22px;position:absolute;top: 10px;right: 15px">
+
+                                                        <div class="content_q">
+                                                            <br>共<%= material.restaurantNum ? material.restaurantNum : '0' %>
+                                                            家餐厅询价<br>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <% } %>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                    <div class="swiper-pagination swiper-pagination-clickable"></div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="second-tab">
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 100%;height: 60px">
+
+        </div>
+
+
+    </div>
+
+    <script>
+        var qubie = document.getElementById('qubie')
+
+        var pageNo = 1, vCatetory = 0;//默认是第一页  全局变量；
+        var swiper = new Swiper('.swiper-container', {
+
+            onSlideChangeStart: function (swiper) {
+                document.body.scrollTop = 0
+            },
+            pagination: '.swiper-pagination',
+            paginationClickable: true,
+
+            paginationBulletRender: function (index, className) {
+                switch (index) {
+                    case 0:
+                        name = '热门食材';
+                        break;
+                    case 1:
+                        name = '必备食材';
+                        break;
+                    case 2:
+                        name = '关注食材';
+                        break;
+                    default:
+                        name = '';
+                }
+                return '<span class="' + className + '">' + name + '</span>';
+            }
+        });
+
+
+        window.onscroll = function () {
+            if (qubie) {
+                //获取滚动条当前的位置
+                function getScrollTop() {
+                    var scrollTop = 0;
+                    if (document.documentElement && document.documentElement.scrollTop) {
+                        scrollTop = document.documentElement.scrollTop;
+                    }
+                    else if (document.body) {
+                        scrollTop = document.body.scrollTop;
+                    }
+                    return scrollTop;
+                }
+
+//获取当前可是范围的高度
+                function getClientHeight() {
+                    var clientHeight = 0;
+                    if (document.body.clientHeight && document.documentElement.clientHeight) {
+                        clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight);
+                    }
+                    else {
+                        clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);
+                    }
+                    return clientHeight;
+                }
+
+//获取文档完整的高度
+                function getScrollHeight() {
+                    return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+                }
+
+                if (getScrollTop() + getClientHeight() == getScrollHeight()) {
+                    pageNo++;
+
+                    var requestUrl = "/supIndex?categoryId=" + vCatetory;
+                    requestUrl += "&numPage=9&pageIdx=" + pageNo;
+                    $.get(requestUrl, function (feed) {
+                        var append = '', categoryStr = "";
+//                append += "<ul class='user_defined_copy'>";
+                        var merColl = document.getElementById('MetrialsColl');
+                        if (merColl) {
+                            var metrials = feed.materials;
+                            if (metrials.length > 0) {
+                                append = buildContentForMetirals(metrials);
+                                for (var i = 0; i < append.length; i++) {
+                                    merColl.appendChild(append[i]);
+                                }
+
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        function getMetrails(para, thi) {
+            var id = para;//获取物料类别
+            vCatetory = id; //获取category
+            //重置pageNo
+            pageNo = 1;
+            var requestUrl = "/supIndex";
+            if (id && id != 0) {
+                requestUrl += "?categoryId=" + id;
+            } else {
+                requestUrl += "?categoryId=" + 0;
+                //加载全部物料和食材。当加载全部食材时
+            }
+            requestUrl += "&numPage=9&pageIdx=" + pageNo;
+            $.get(requestUrl, function (feed) {
+
+                var append = '', categoryStr = "";
+//                append += "<ul class='user_defined_copy'>";
+                var merColl = document.getElementById('MetrialsColl');
+                var metrials = feed.materials;
+                if (metrials.length > 0) {
+                    merColl.innerHTML = '';
+                    append = buildContentForMetirals(metrials);
+                    for (var i = 0; i < append.length; i++) {
+                        merColl.appendChild(append[i]);
+                    }
+
+                } else {
+                    append += '<li>找不到该类别食材</li>';
+                    merColl.innerHTML = append;
+                }
+                //加载热门食材
+            });
+            document.querySelectorAll(".active")[0].className = ""
+            thi.className = "active"
+
+        }
+        function searchMaterial(e) {
+            // 兼容FF和IE和Opera
+            var theEvent = e || window.event;
+            var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+            if (code == 13) {
+                if (e && e.preventDefault) {
+//阻止默认浏览器动作(W3C)
+                    e.preventDefault();
+                } else {
+//IE中阻止函数器默认动作的方式
+                    window.event.returnValue = false;
+                }
+                var materialName = document.getElementById('sMetiralId').value;
+                pageLoad("/getMaterialByName?materialName=" + materialName);
+            }
+        }
+        //获取询价餐厅
+        function getInqueryRes(para) {
+            var oId = para;
+            var url = "/getInqueryRest?mid=" + oId.toString();
+            pageLoad(url);
+        }
+        function buildContentForMetirals(metrials) {
+            var append, LiElem = [];
+            for (var i = 0; i < metrials.length; i++) {
+                append = '';
+                var para = {};
+                var elem = metrials[i];
+                var subLi = document.createElement('li');
+                subLi.id = elem._id;
+//                    subLi.onclick=getInqueryRes;
+//                    subLi.attachEvent('onclick',getInqueryRes(subLi));
+                para.id = elem._id.toString();
+                var elem = metrials[i];
+                append += '<a href="javascript:getInqueryRes(\'' + para.id + '\')">';
+                append += '<div id="' + elem._id + ' " class="icon" onclick="getInqueryRes(this)" > ' +
+                '</div><div class="content"><div class="content_new_q" style="width: 100%">' + elem.name + '</div> <img src="images/live.png" style="  width: 22px;position:absolute;top: 10px;right: 15px;">';
+                append += ' <div class="content_q"><br>共';
+                append += (elem.restaurantNum ? elem.restaurantNum : '0') + '家餐厅询价<br>';
+                append += '</div>';
+                append += '</div>';
+                append += '</a>';
+                subLi.innerHTML = append;
+                LiElem.push(subLi);
+            }
+            return LiElem;
+        }
+        function getOrderDetials(orderNo) {
+
+            var url = "/getOrderDetail?ordId=" + orderNo;
+            pageLoad(url);
+        }
+        function sendOrder(para) {
+            $.post("/sendingOrder", {orderId: para, orderStatus: 'S'}, function (data) {
+                if (data.status == 100) {
+                    alert('配送成功');
+                    pageLoad('/supMyOrder');
+                } else if (data.status == 500) {
+                    alert('系统出错');
+                    //s
+                }
+            });
+
+        }
+        //        document.querySelectorAll("body")[0].style.height =document.body.scrollHeight+ "px"
+
+
+        nav()
+    </script>
+</div>
+<% include bottom_q.ejs %>
+<script type='text/javascript' id="__bs_script__">//<![CDATA[
+    document.write("<script async src='http://HOST:3002/browser-sync/browser-sync-client.2.8.2.js'><\/script>".replace("HOST", location.hostname));
+    //]]></script>
+</body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include template/head.ejs %>
+</head>
+<body>
+<div id="wrapper">
+    <% include template/menu.ejs %>
+
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <% include template/nav.ejs %>
+        <div class="row  border-bottom white-bg dashboard-header">
+            <div class="col-sm-12">
+                <div class="row">
+
+                </div>
+                <div class="row">
+                    <div class="ibox float-e-margins">
+                        <form class="form-inline" action="/data2Excel" method="post">
+                            <span id="errorSup"
+                                  style="color: #aa1111; float: left; margin-top: -20px;margin-bottom: 13px">请选择供应商或餐厅</span>
+
+                            <div class="col-sm-12">
+                                <% if(userInfo.userType == '2'){ %>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-4 control-label"
+                                           style="padding: 0;margin-top: 7px">餐厅列表</label>
+
+                                    <div class="col-sm-8" style="padding: 0">
+                                        <div class="input-group m-b" style="float: left;width: 100%">
+                                            <div class="input-group-btn">
+                                                <button style="width: 100%" data-toggle="dropdown"
+                                                        class="btn btn-white dropdown-toggle"
+                                                        type="button"><span class="caret"></span></button>
+                                                <ul class="dropdown-menu" style="left: 0">
+                                                    <li style="  height: 30px; line-height: 30px; ">
+                                                        <div onclick="getValue(this,'all')"
+                                                             type="button">全部
+                                                        </div>
+                                                        <% for(var i = 0;i < restData.length;i++){
+                                                            var orderObj = restData[i];
+                                                        %>
+
+                                                    <li style="  height: 30px; line-height: 30px;">
+                                                        <div onclick="getValueFen(this,'<%= orderObj.id %>')"
+                                                             type="button"><%= orderObj.name %></div>
+                                                    </li>
+                                                    <% } %>
+                                                </ul>
+                                            </div>
+                                            <input type="text" name="resName" id="resName" class="form-control"
+                                                   readonly>
+                                            <input type="text" name="resId" id="resId" class="form-control-id" readonly
+                                                   style="display: none">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-4 control-label"
+                                           style="padding: 0;margin-top: 7px">分餐厅列表</label>
+
+                                    <div class="col-sm-8" style="padding: 0">
+                                        <div class="input-group m-b" style="float: left;width: 100%">
+                                            <div class="input-group-btn">
+                                                <button style="width: 100%" data-toggle="dropdown"
+                                                        class="btn btn-white dropdown-toggle"
+                                                        type="button"><span class="caret"></span></button>
+                                                <ul class="dropdown-menu" id="fenResUI" style="left: 0">
+
+                                                </ul>
+                                            </div>
+                                            <input type="text" name="fenResName" id="fenResName" class="form-control"
+                                                   readonly>
+                                            <input type="text" name="fenResId" id="fenResId" class="form-control-id"
+                                                   readonly style="display: none">
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } else if(userInfo.userType == '1'){ %>
+                                <div class="col-sm-4">
+
+                                    <label style="padding: 0px;margin-top: 7px"
+                                           class="col-sm-4 control-label">餐厅列表</label>
+
+                                    <div class="col-sm-8" style="padding: 0">
+                                        <div class="input-group m-b" style="float: left;width: 100%">
+                                            <div class="input-group-btn">
+                                                <button data-toggle="dropdown" style="width: 100%"
+                                                        class="btn btn-white dropdown-toggle"
+                                                        type="button"><span class="caret"></span></button>
+                                                <ul class="dropdown-menu" style="left:0;">
+                                                    <li style="  height: 30px; line-height: 30px; ">
+                                                        <div onclick="getValue(this,'all')"
+                                                             type="button">全部
+                                                        </div>
+                                                        <% for(var i = 0;i < restData.length;i++){
+                                                            var orderObj = restData[i];
+                                                        %>
+                                                    <li style="  height: 30px; line-height: 30px; ">
+                                                        <div onclick="getValue(this,'<%= orderObj.id %>')"
+                                                             type="button"><%= orderObj.name %></div>
+                                                    </li>
+                                                    <% } %>
+                                                </ul>
+                                            </div>
+                                            <input type="text" name="resName" id="resName" class="form-control"
+                                                   readonly>
+                                            <input type="text" name="resId" id="resId" class="form-control-id" readonly
+                                                   style="display: none">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+
+                                    <label style="padding: 0px;margin-top: 7px"
+                                           class="col-sm-4 control-label">对应供应商列表</label>
+
+                                    <div class="col-sm-8" style="padding: 0">
+                                        <div class="input-group m-b" style="float: left;width: 100%">
+                                            <div class="input-group-btn">
+                                                <button data-toggle="dropdown" style="width: 100%"
+                                                        class="btn btn-white dropdown-toggle"
+                                                        type="button"><span class="caret"></span></button>
+                                                <ul class="dropdown-menu" style="left:0;">
+                                                    <li style="  height: 30px; line-height: 30px; ">
+                                                        <div onclick="getValue(this,'all')"
+                                                             type="button">全部
+                                                        </div>
+                                                        <% for(var i = 0;i < supData.length;i++){
+                                                            var orderObj = supData[i];
+                                                        %>
+                                                    <li style="  height: 30px; line-height: 30px; ">
+                                                        <div onclick="getValue(this,'<%= orderObj.id %>')"
+                                                             type="button"><%= orderObj.name %></div>
+                                                    </li>
+                                                    <% } %>
+                                                </ul>
+                                            </div>
+                                            <input type="text" name="supName" id="supName" class="form-control"
+                                                   readonly>
+                                            <input type="text" name="supId" id="supId" class="form-control-id" readonly
+                                                   style="display: none">
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }else{ %>
+                                <div class="col-sm-4">
+                                    <label class="col-sm-4 control-label"
+                                           style="padding: 0;margin-top: 7px">餐厅列表</label>
+
+                                    <div class="col-sm-8" style="padding: 0">
+                                        <div class="input-group m-b" style="float: left;width: 100%">
+                                            <div class="input-group-btn">
+                                                <button style="width: 100%" data-toggle="dropdown"
+                                                        class="btn btn-white dropdown-toggle"
+                                                        type="button"><span class="caret"></span></button>
+                                                <ul class="dropdown-menu" style="left: 0">
+                                                    <li style="  height: 30px; line-height: 30px; ">
+                                                        <div onclick="getValue(this,'')"
+                                                             type="button">不选择
+                                                        </div>
+                                                        <% for(var i = 0;i < restData.length;i++){
+                                                            var orderObj = restData[i];
+                                                        %>
+
+                                                    <li style="  height: 30px; line-height: 30px;">
+                                                        <div onclick="getValue(this,'<%= orderObj.id %>')"
+                                                             type="button"><%= orderObj.name %></div>
+                                                    </li>
+                                                    <% } %>
+                                                </ul>
+                                            </div>
+                                            <input type="text" name="resName" id="resName" class="form-control"
+                                                   readonly>
+                                            <input type="text" name="resId" id="resId" class="form-control-id" readonly
+                                                   style="display: none">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+
+                                    <label style="padding: 0px;margin-top: 7px"
+                                           class="col-sm-4 control-label">供应商列表</label>
+
+                                    <div class="col-sm-8" style="padding: 0">
+                                        <div class="input-group m-b" style="float: left;width: 100%">
+                                            <div class="input-group-btn">
+                                                <button data-toggle="dropdown" style="width: 100%"
+                                                        class="btn btn-white dropdown-toggle"
+                                                        type="button"><span class="caret"></span></button>
+                                                <ul class="dropdown-menu" style="left:0;">
+                                                    <li style="  height: 30px; line-height: 30px; ">
+                                                        <div onclick="getValue(this,'')"
+                                                             type="button">不选择
+                                                        </div>
+                                                    </li>
+                                                    <% for(var i = 0;i < supData.length;i++){
+                                                        var orderObj = supData[i];
+                                                    %>
+                                                    <li style="  height: 30px; line-height: 30px; ">
+                                                        <div onclick="getValue(this,'<%= orderObj.id %>')"
+                                                             type="button"><%= orderObj.name %></div>
+                                                    </li>
+                                                    <% } %>
+                                                </ul>
+                                            </div>
+                                            <input type="text" name="supName" id="supName" class="form-control"
+                                                   readonly>
+                                            <input type="text" name="supId" id="supId" class="form-control-id" readonly
+                                                   style="display: none">
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+                                <div class="col-sm-4">
+                                    <label style="padding: 0px;margin-top: 7px"
+                                           class="col-sm-4 control-label">订单状态</label>
+
+                                    <!--<span class="col-sm-4" style="margin-left: 20px;margin-right: 15px;">订单状态</span>-->
+
+                                    <div class="col-sm-8" style="padding: 0">
+                                        <select class="form-control m-b col-sm-8" id="orderStatus" name="orderStatus"
+                                                value="All"
+                                                style="margin-right: 10px;width: 100%">
+                                            <% if(!orderStatus || orderStatus === 'All'){ %>
+                                            <option value="All" selected>全部</option>
+                                            <% if(userInfo.userType === '1'){ %>
+                                            <option value="P">新订单</option>
+                                            <% } %>
+                                            <option value="N">已下单</option>
+                                            <option value="S">配送中</option>
+                                            <option value="R">已验收</option>
+                                            <% }else if(orderStatus === 'P'){ %>
+                                            <option value="All">全部</option>
+                                            <% if(userInfo.userType === '1'){ %>
+                                            <option value="P" selected> 新订单</option>
+                                            <% } %>
+                                            <option value="N">已下单</option>
+                                            <option value="S">配送中</option>
+                                            <option value="R">已验收</option>
+                                            <% }else if(orderStatus === 'N'){ %>
+                                            <option value="All">全部</option>
+                                            <% if(userInfo.userType === '1'){ %>
+                                            <option value="P">新订单</option>
+                                            <% } %>
+                                            <option value="N" selected>已下单</option>
+                                            <option value="S">配送中</option>
+                                            <option value="R">已验收</option>
+                                            <% }else if(orderStatus === 'S'){ %>
+                                            <option value="All">全部</option>
+                                            <% if(userInfo.userType === '1'){ %>
+                                            <option value="P">新订单</option>
+                                            <% } %>
+                                            <option value="N">已下单</option>
+                                            <option value="S" selected>配送中</option>
+                                            <option value="R">已验收</option>
+                                            <% }else if(orderStatus === 'R'){ %>
+                                            <option value="All">全部</option>
+                                            <% if(userInfo.userType === '1'){ %>
+                                            <option value="P">新订单</option>
+                                            <% } %>
+                                            <option value="N">已下单</option>
+                                            <option value="S">配送中</option>
+                                            <option value="R" selected>已验收</option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="checkbox m-l m-r-xs"></div>
+                                <div style="clear: both"></div>
+                                <div class="col-sm-4" id="data_1">
+                                    <label class="col-sm-4" style="padding: 0;margin-top: 7px;">起始日期</label>
+
+                                    <div class="input-group date col-sm-8">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
+                                                id="startdate" name='startDate' type="text" class="form-control">
+                                    </div>
+                                    <div style=" margin-left: 54px; "><span id="errStarDate" style="color: #aa1111">请输入起始日期</span>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-4" id="data_1">
+                                    <label class="col-sm-4" style="padding: 0;margin-top: 7px;">截止日期</label>
+
+                                    <div class="input-group date col-sm-8">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
+                                                id="enddate" name='endDate' type="text" class="form-control">
+                                    </div>
+                                    <div style=" margin-left: 54px; "><span id="errEndDate" style="color: #aa1111">请输入截止日期</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-danger" type="button" onclick="getItemByPageIdx(0)">查询</button>
+                                <button class="btn btn-danger" id='sumbit' type="submit">打印清单</button>
+                                <!--<a class="btn btn-danger" id='sumbit' href="/data2Excel">打印清单</a>-->
+                            </div>
+                            <br/>
+                            <br/>
+
+                            <div class="ibox-content" id="itemColl">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include template/footer.ejs %>
+</body>
+<script>
+    var currentIdx = 0;
+    $(document).ready(function () {
+        $('#data_1 .input-group.date').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+        $('#errorSup').hide();
+        $('#errEndDate').hide();
+        $('#errStarDate').hide();
+    });
+
+    function getValue(obj, id) {
+        if (!id) {
+            $(obj).parent().parent().parent().parent().children('.form-control').val('');
+            $(obj).parent().parent().parent().parent().children('.form-control-id').val('');
+            return;
+        } else if (id == 'all') {
+            $(obj).parent().parent().parent().parent().children('.form-control').val('全部');
+            $(obj).parent().parent().parent().parent().children('.form-control-id').val('');
+            return;
+        } else {
+            $(obj).parent().parent().parent().parent().children('.form-control').val(obj.innerHTML);
+            $(obj).parent().parent().parent().parent().children('.form-control-id').val(id);
+            return;
+        }
+
+    }
+
+    function getValueFen(obj, id) {
+        $(obj).parent().parent().parent().parent().children('.form-control').val(obj.innerHTML);
+        $(obj).parent().parent().parent().parent().children('.form-control-id').val(id);
+        var url = '/querychainStored';
+        var data = {id: id}
+        $.post(url, data, function (data) {
+            if (data.code == 100) {
+                var restruantArray = data.restruantArray;
+                var fenResUI = document.getElementById('fenResUI');
+                document.getElementById('fenResId').value = '';
+                document.getElementById('fenResName').value = '';
+                var htmlStr = '';
+                htmlStr += ' <li style="  height: 30px; line-height: 30px;">';
+                htmlStr += ' <div onclick="getValue(this,\'all\')" type="button">全部</div>';
+                htmlStr += ' </li>';
+                restruantArray.forEach(function (restruant) {
+                    var id = restruant.id;
+                    var name = restruant.name;
+                    htmlStr += ' <li style="  height: 30px; line-height: 30px;">';
+                    htmlStr += ' <div onclick="getValue(this,\'' + id + '\')" type="button">' + name + '</div>';
+                    htmlStr += ' </li>';
+                })
+                fenResUI.innerHTML = htmlStr;
+            }
+        })
+    }
+
+    function getItemByPageIdx(currentIdx) {
+
+        var data = $('#supName').val();
+        var startDate = $('#startdate').val();
+        var endDate = $('#enddate').val();
+        var restName = $('#resName').val();
+        var resId = $('#resId').val();
+        var supId = $('#supId').val();
+        var orderStatus = $("#orderStatus").val();
+        var fenResId;
+        if ($('#fenResId')) {
+            fenResId = $('#fenResId').val();
+        }
+        data = $.trim(data);
+        if (data.length < 1 && restName.length < 1) {
+            $('#errorSup').show();
+            return;
+//        } else if (data && restName && data.length >= 1 && restName.length >= 1) {
+//            $('#errorSup').text('供应商和餐厅只能选一个');
+//            $('#errorSup').show();
+//            return;
+//        }
+        } else if (startDate.length < 1) {
+            $('#errStarDate').text('请输入开始时间时间');
+            $('#errStarDate').show();
+            return;
+
+        } else if (endDate.length < 1) {
+            $('#errEndDate').text('请输入截至时间');
+            $('#errEndDate').show();
+            return;
+        } else if (endDate < startDate) {
+            $('#errEndDate').text('截至时间不能小于开始时间');
+            $('#errEndDate').show();
+            return;
+        } else {
+            $('#errEndDate').hide();
+            $('#errStarDate').hide();
+            $('#errorSup').hide();
+            var numberForPage = 10, pageCount = 0;
+            $("#itemColl").html('');
+
+            $.post("/getOrderItem", {
+                supName: data,
+                pEndDate: endDate,
+                pStartDate: startDate,
+                resName: restName,
+                resId: resId,
+                supId: supId,
+                fenResId: fenResId,
+                orderStatus: orderStatus
+            }, function (respObj) {
+                if (!currentIdx) {
+                    currentIdx = 0;
+
+                }
+                data = respObj.orderItemList;
+                currentIdx = parseInt(currentIdx)
+                var nextPageIdx = currentIdx + 1;
+                var prevPageIdx = currentIdx - 1;
+                var startIdx = numberForPage * currentIdx;
+                var pageIdx = parseInt(currentIdx) + 1;
+                var endIdx = numberForPage * (currentIdx + 1) - 1;
+                var seq = 0, result = "", totalAmt = 0;
+                var paidIn_totalAmt = 0;
+
+                result += '<table class="table">';
+                result += '<thead>';
+                result += '<tr>';
+                result += '<th>#</th>';
+                result += '<th>商品名称</th>';
+                result += '<th>商品单位</th>';
+                result += '<th>备注说明</th>';
+                result += '<th>平均单价</th>';
+                result += '<th>数量</th>';
+                result += '<th>实收数量</th>';
+                result += '<th>订购总金额</th>';
+                result += '<th>实收总金额</th>';
+                result += '</tr>';
+                result += '</thead>';
+                result += '<tbody>';
+                for (var i = 0; i < numberForPage && i + startIdx < data.length; i++) {
+                    pageCount = data.length / numberForPage;
+                    seq++
+                    var obj = data[i + startIdx];
+
+                    var price = !obj.price ? 0 : obj.price;
+                    obj.count = !obj.count.toString() ? 0 : obj.count.toString();
+                    obj.paidIn = !obj.paidIn ? 0 : obj.paidIn.toString();
+                    var sum = new Decimal(obj.price).times(new Decimal(obj.count));
+                    var paidIn_subSum = new Decimal(obj.price).times(new Decimal(obj.paidIn));
+                    result += '<tr>';
+                    result += '<td>' + seq + '</td>';
+                    result += '<td>' + obj.materialName + '</td>';
+                    result += '<td>' + obj.unit + '</td>';
+                    result += '<td>' + obj.remark + '</td>';
+                    result += '<td>' + price + '</td>';
+                    result += '<td>' + obj.count + '</td>';
+                    result += '<td>' + obj.paidIn + '</td>';
+                    result += '<td>' + sum + '</td>';
+                    result += '<td>' + paidIn_subSum + '</td>';
+                    totalAmt = new Decimal(totalAmt).plus(new Decimal(sum));
+                    paidIn_totalAmt = new Decimal(paidIn_totalAmt).plus(new Decimal(paidIn_subSum));
+                }
+                result += '</tbody>'
+                result += '</table>'
+
+                result += '<div id="pageIdx" class="pagination" style="width:100%">' +
+                        '<span style="float: left; line-height: 28px;">共有' + data.length + '条记录　</span>' +
+                        '<span style="float: right; line-height: 28px; padding-right: 80px;">订购总金额:' + totalAmt + '</span>';
+                result += '<div id="pageIdx" class="pagination" style="width:100%">' +
+                        '<span style="float: left; line-height: 28px;">共有' + data.length + '条记录　</span>' +
+                        '<span style="float: right; line-height: 28px; padding-right: 80px;">实收总金额:' + paidIn_totalAmt + '</span>';
+
+                result += '<a href="javascript:getItemByPageIdx(0)" class="pagination-q" style="width:4rem">首页</a>';
+                if (currentIdx > 0) {
+                    result += '<a href="javascript:getItemByPageIdx(\'' + prevPageIdx + '\')" class="pagination-q">上一页</a>'
+                }
+                result += '<span style="float: left; line-height: 28px;padding: 0 0.5rem"> 第' + pageIdx + '页 </span>'
+                if (nextPageIdx < pageCount) {
+
+                    result += '<a href="javascript:getItemByPageIdx(\'' + nextPageIdx + '\')" class="pagination-q">下一页</a>';
+                }
+                result += '<span style="float: left; line-height: 28px;">... 共有' + Math.ceil(pageCount) + '页';
+//                result += '<span>跳转到</span>';
+//                result += '<input id="pageSkippedTo" type="Number" min="1" style="width:4rem; height:28px;"/>';
+//                result += '<span>页</span>';
+//                result += '<a class="btn btn-default" href="javascript:getItemByPageIdx(\"' + currentIdx + '\")" role="button" style="float:right;height:28px;">';
+//                result += '<span style="position: relative; top: -8px;">go</span></a>';
+
+                $('#itemColl').append(result);
+            });
+
+        }
+    }
+
+    $('#sumbit').click(function () {
+//        var dateArr=$("input[name$='Date']");
+        var data = $('#supName').val();
+        var startDate = $('#startdate').val();
+        var endDate = $('#enddate').val();
+        if (data && data.length < 1) {
+            $('#error').show();
+//            event.preventDefault();
+            return false;
+        } else if (startDate.length < 1) {
+
+            $('#errStarDate').show();
+            return false;
+
+        } else if (endDate.length < 1) {
+            $('#errEndDate').show();
+            return false;
+
+
+        } else {
+            $('form').submit();
+//        $.get("/data2Excel", {supName:data,pEndDate:endDate,pStartDate:startDate}) ;
+        }
+    });
+</script>
+</html>

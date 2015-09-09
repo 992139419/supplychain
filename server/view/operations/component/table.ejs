@@ -1,0 +1,64 @@
+
+
+<div class="row">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>当前供应商列表</h5>
+        </div>
+        <div class="ibox-content">
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th width="500px">供应商名称</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <%
+                for(var i = 0;i < data.length;i++, startIdx++){ %>
+                <tr>
+                    <td><%= startIdx %></td>
+                    <td><%= data[i].title %></td>
+                    <td><%= data[i].createdAt %></td>
+                    <td><a href="#" class="btn btn-sm btn-primary pull-right m-t-n-xs">编辑</a>
+                        <a href="javascript:delUser('<%= data[i]._id %>')"
+                           class="btn btn-sm btn-primary pull-right m-t-n-xs">删除</a></td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+            <div id="pageIdx" class="pagination">
+                <% var pageNum = sum / 10; %>
+                <span style="float: left; line-height: 28px;">共有 <%= sum %> 条记录　</span>
+                <% if(parseInt(sum) > 10){ %>
+                <% if(currentIdx > 1){ %>
+                <a href="/cmsGetSupply?" class="pagination-q" style="width:4rem">首页</a>
+                <a href="/cmsGetSupply?startIdx=<%= parseInt(currentIdx - 2) * 10 %>"
+                   class="pagination-q"><img
+                            src="img/left.jpg" alt="" style="position:relative;top:-2px;">上一页</a>
+                <% } %>
+                <span style="float: left; line-height: 28px;padding: 0 0.5rem"> 第 <%= currentIdx %>
+                    页 </span>
+                <% if(parseInt(currentIdx * 10) < sum + 1){ %>
+                <a href="/cmsGetSupply?startIdx=<%= currentIdx * 10 %>"
+                   class="pagination-q">下一页<img
+                            src="img/right.jpg" alt="" style="position:relative;top:-2px;"></a>
+                <% } %>
+                <% if(pageNum > 10){ %>
+                <span style="float: left; line-height: 28px;">... 共有 <%= Math.ceil(pageNum) %> 页
+                                <span>跳转到</span>
+                                <input id="pageSkippedTo" type="Number" min="1" style="width:4rem; height:28px;"/>
+                                <span>页</span>
+                                <a class="btn btn-default" onclick="skipHandler()"
+                                   href="javascript:void(0)" role="button" style="float:right;height:28px;">
+                                    <span style="position: relative; top: -8px;">go</span></a>
+                            </span>
+                <% } %>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

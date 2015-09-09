@@ -1,0 +1,28 @@
+<% include template.ejs %>
+<div class="add_tem">
+    <a> </a>
+    <div class="add_w">
+
+        <a class="add_w_w_q" href="javascript:updateConfirm()">
+            下一步
+        </a>
+    </div>
+
+</div>
+<script type="text/javascript">
+
+var hei = document.querySelectorAll(".add_tem")[0]
+guding(hei,100);
+    //修改模版确认
+    function updateConfirm(){
+        var url ='/templateConfirmUpdate';
+        var selectMaterials = materialTemp.getSelectArray();
+        var templateId = '<%=templateId%>';
+        var data={
+            selectMaterial:JSON.stringify(selectMaterials),
+            templateId:templateId
+        }
+        pageLoadPost(url,data,'修改模版',true,'post');
+    }
+</script>
+

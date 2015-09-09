@@ -1,0 +1,60 @@
+<div class="template_copy">
+    <div>
+        <div class="icon icon-search">
+
+        </div>
+        <input class="form-control" placeholder="请输入要查找的物料名称" type="text">
+    </div>
+</div>
+<div class="new_add_templat">
+
+<div class="template_copy_w">
+    <div class="content">
+        <div class="content-inner">
+            <div class="container">
+                <nav class="tab-nav">
+                    <ul id="category" class="nav nav-justified">
+                        <li class="active" onclick="getMaterial('0')">
+                            <a class="waves-effect" data-toggle="tab"
+                               id="category0">全部类别</a>
+                        </li>
+                        <% categorys.forEach(function(category){ %>
+                        <li onclick="getMaterial('<%= category._id %>')">
+                            <a class="waves-effect" data-toggle="tab"
+
+                               id="category<%= category._id %>"><%= category.name %></a>
+                        </li>
+                        <% }) %>
+                    </ul>
+                </nav>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="material">
+                        <% materials.forEach(function(material){ %>
+                        <div onclick="selectMaterial('<%= material._id %>')">
+                            <div><%= material.name %></div>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+<script type="text/javascript">
+
+    var materialTemp = new MaterialsTemp();
+    //食材选择模板对象
+
+    function getMaterial(id) {
+        materialTemp.getMaterialAjax(id);
+    }
+
+    //食材选择确认
+
+    function selectMaterial(id) {
+        pageLoad('/viewMaterialPT?id=' + id);
+    }
+</script>
+

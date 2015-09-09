@@ -1,0 +1,196 @@
+<div class="bj" style="background-image: none;background-color: #F7F7F7; z-index: -1" id="start">
+
+</div>
+<div class="new_price new_price_inquery new_order_list" style="margin-bottom: 55px">
+    <div class="swiper-container" style="margin-bottom: 55px">
+        <div class="swiper-wrapper" >
+            <div class="swiper-slide blue-slide">
+                <ul class="price_list_copy" style="float: left;width:100%;margin-bottom: 20px;">
+                    <% if(pendingOrders.length == 0){
+                    %>
+                    <li style="height: 44px;padding-top: 0px;text-align: left!important;">
+                        <div style="height: 44px;line-height: 44px">当前没有订单</div>
+                    </li>
+                    <% } %>
+                    <% for(var i = 0;i < pendingOrders.length;i++){
+                        order = pendingOrders[i];
+                        var id = order._id.toString();
+                    %>
+                    <li style="" id='<%= id %>' onclick="getOrderDetials(this.id)">
+                        <div  style="width:25%;word-break:break-all"><%= order.orderNo %></div>
+                        <div style="width:25%;word-break:break-all"><%= order.receiverAddress %></div>
+                        <div style="width:25%;word-break:break-all"><%= order.createdAt %></div>
+
+                        <div style="width:25%;height: 44px;line-height: 44px">
+                            <label style="width: 100%" for="a<%= id %>">
+
+                                <div class="check"></div>
+                            </label>
+                        </div>
+                    </li>
+                    <input type="checkbox" name='mergedOrders' id="a<%= id %>" style="display: none">
+                    <% } %>
+                </ul>
+                    <div class="add_w" style="margin-bottom: 0px;clear: both;clear: both;" onclick="mergeOrders()">
+                        <a class="add_w_w_q">
+                            合并下单
+                        </a>
+                    </div>
+
+            </div>
+            <div class="swiper-slide orange-slide">
+                <ul class="price_list_copy nweprice_list_copy">
+
+                    <% if(sendOrder.length == 0){
+                    %>
+                    <li style="">
+                        <div style="height: 44px;line-height: 44px;width: 100%!important;text-align: left!important;">当前没有订单</div>
+                    </li>
+                    <% } %>
+
+                    <% for(var i = 0;i < sendOrder.length;i++){
+                        order = sendOrder[i];
+                        var id = order._id.toString();
+                    %>
+                    <li style="" id='<%= id %>' onclick="getOrderDetials(this.id)">
+                        <div style="width:33.3333%!important;word-break:break-all"><%= order.orderNo %></div>
+                        <div style="width:33.3333%!important;word-break:break-all"><%= order.receiverAddress %></div>
+                        <div style="width:33.3333%!important;display:block;word-break:break-all"><%= order.createdAt %></div>
+
+                    </li>
+                    <% } %>
+
+                </ul>
+            </div>
+            <div class="swiper-slide orange-slide">
+                <ul class="price_list_copy">
+
+                    <% if(deliveryOrders.length == 0){
+                    %>
+                    <li style="height: 44px;padding-top: 0px">
+                        <div style="height: 44px;line-height: 44px">当前没有订单..</div>
+                    </li>
+                    <% } %>
+                    <% for(var i = 0;i < deliveryOrders.length;i++){
+                        order = deliveryOrders[i];
+                        var id = order._id.toString();
+                    %>
+                    <li style="" id='<%= id %>' onclick="getOrderDetials(this.id)">
+                        <div style="word-break:break-all"><%= order.orderNo %></div>
+                        <div style="word-break:break-all"><%= order.receiverAddress %></div>
+                        <div style="display:block;word-break:break-all"><%= order.createdAt %></div>
+                    </li>
+                    <% } %>
+
+                </ul>
+            </div>
+            <div class="swiper-slide orange-slide">
+                <ul class="price_list_copy">
+                    <% if(receivedOrders.length == 0){
+                    %>
+                    <li style="height: 44px;padding-top: 0px">
+                        <div style="height: 44px;line-height: 44px">当前没有订单</div>
+                    </li>
+                    <% } %>
+
+                    <% for(var i = 0;i < receivedOrders.length;i++){
+                        order = receivedOrders[i];  var id = order._id.toString();
+                    %>
+                    <li style="" id='<%= id %>' onclick="getOrderDetials(this.id)">
+                        <div style="word-break:break-all;"><%= order.orderNo %></div>
+                        <div style="word-break:break-all;"><%= order.receiverAddress %></div>
+                        <div style="word-break:break-all"><%= order.createdAt %></div>
+
+                    </li>
+                    <% } %>
+
+                </ul>
+            </div>
+
+        </div>
+        <div class="swiper-pagination swiper-pagination-clickable"></div>
+    </div>
+</div>
+
+<% include ../template/bottom.ejs %>
+
+<script>
+
+    location.href = "#start";
+    document.body.scrollTop = 0
+
+    var anchor= parseInt('<%=anchor%>');
+    document.title = '<%=title%>';
+    var swiper = new Swiper('.swiper-container', {
+        onSlideChangeStart: function (swiper) {
+            document.body.scrollTop = 0
+        },
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        initialSlide: anchor,
+        paginationBulletRender: function (index, className) {
+            switch (index) {
+                case 0:
+                    name = '<span style="text-align: center"><span class="dingdan" style="display: -webkit-box;">新订单</span></span>';
+                    break;
+
+                case 1:
+                    name = '<span class="" style="text-align: center"><span class="dingdan">已下单</span></span>';
+                    break;
+                case 2:
+                    name = '<span style="text-align: center"><span class="dingdan">已配送</span></span>';
+                    break;
+                default:
+                    name = '<span style="text-align: center"><span class="dingdan">已验收</span></span>';
+            }
+            return '<span class="' + className + '">' + name + '</span>';
+        }
+    });
+    var li = document.querySelectorAll(".check")
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function (event) {
+            var liq = this.parentNode.parentNode.parentNode
+            var clas = liq.getAttribute('class')
+            if (clas == 'li_q') {
+                liq.className = ''
+            } else {
+                liq.className = 'li_q'
+            }
+            event.stopPropagation();
+        }
+    }
+    var dingdan = document.querySelectorAll(".dingdan")
+    var wi = dingdan[0].offsetWidth
+    for (var i = 0; i < dingdan.length; i++) {
+        dingdan[i].style.margin = "0 0 0 " + ((document.body.clientWidth - 4) / 4 - wi) / 2 + "px"
+    }
+
+    function getOrderDetials(orderNo) {
+        var url = "/getOrderDetail?ordId=" + orderNo;
+        pageLoad(url);
+    }
+
+    function mergeOrders() {
+        var ids = [];
+        var elem = document.getElementsByName("mergedOrders");
+        for (var i = 0; i < elem.length; i++) {
+            if (elem[i].checked) {
+                ids.push(elem[i].id.substring(1));
+            }
+        }
+        if (!ids.length > 0) {
+            alert('请选择至少一个订单');
+            return;
+        }
+        $.post("/mergeOrders", {ids: ids, orderStatus: 'N'}, function (data) {
+            if (data.status == 100) {
+                pageLoad('/myorder');
+            } else if (data.status == 500) {
+                alert(data.message);
+
+            }
+        });
+
+
+    }
+</script>

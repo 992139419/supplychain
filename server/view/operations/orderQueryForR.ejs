@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include template/head.ejs %>
+    <% include template/footer.ejs %>
+</head>
+<body>
+<div id="wrapper">
+    <% include template/menu.ejs %>
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <% include template/nav.ejs %>
+        <div class="row  border-bottom white-bg dashboard-header">
+            <div class="col-sm-12">
+                <div class="row">
+                </div>
+                <div class="row">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>当前餐厅列表</h5>
+                        </div>
+                        <form role="form" class="form-inline" method="get"
+                              action="/cmsQueryOrder?name=<%= name %>&startIdx=<%= parseInt(currentIdx - 1) * 10 %>">
+
+                            <% if(userInfo.userType == 1){ %>
+                            <div class="col-sm-6">
+                                <label style="padding: 0px;margin-top: 7px"
+                                       class="col-sm-4 control-label">餐厅列表</label>
+
+                                <div class="col-sm-8" style="padding: 0">
+                                    <div class="input-group m-b" style="float: left;width: 100%">
+                                        <div class="input-group-btn">
+                                            <button data-toggle="dropdown" style="width: 100%"
+                                                    class="btn btn-white dropdown-toggle"
+                                                    type="button"><span class="caret"></span></button>
+                                            <ul class="dropdown-menu" style="left:0;">
+                                                <li style="  height: 30px; line-height: 30px; ">
+                                                    <div onclick="getValue(this,'all')"
+                                                         type="button">全部
+                                                    </div>
+                                                </li>
+                                                <% for(var i = 0;i < restruantArray.length;i++){
+                                                    var orderObj = restruantArray[i];
+                                                %>
+                                                <% if(orderObj){ %>
+                                                <li style="  height: 30px; line-height: 30px; ">
+                                                    <div onclick="getValue(this,'<%= orderObj.id %>')"
+                                                         type="button"><%= orderObj.name %></div>
+                                                </li>
+                                                <% } %>
+                                                <% } %>
+                                            </ul>
+                                        </div>
+                                        <input type="text" name="resName" id="resName" class="form-control"
+                                               value="<%= resName %>">
+                                        <input type="text" name="resId" id="resId" class="form-control-id"
+                                               value="<%= resId %>" style="display: none">
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                            <div class="col-sm-6">
+                                <label style="padding: 0px;margin-top: 7px"
+                                       class="col-sm-4 control-label">对应商家列表</label>
+
+                                <div class="col-sm-8" style="padding: 0">
+                                    <div class="input-group m-b" style="float: left;width: 100%">
+                                        <div class="input-group-btn">
+                                            <button data-toggle="dropdown" style="width: 100%"
+                                                    class="btn btn-white dropdown-toggle"
+                                                    type="button"><span class="caret"></span></button>
+                                            <ul class="dropdown-menu" style="left:0;">
+                                                <% for(var i = 0;i < suppColl.length;i++){
+                                                    var orderObj = suppColl[i];
+                                                %>
+                                                <% if(orderObj){ %>
+                                                <li style="  height: 30px; line-height: 30px; ">
+                                                    <div onclick="getValue(this)"
+                                                         type="button"><%= orderObj %></div>
+                                                </li>
+                                                <% } %>
+                                                <% } %>
+                                            </ul>
+                                        </div>
+                                        <input type="text" name="name" id="name" class="form-control"
+                                               value="<%= name %>"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-4">订单编号查询</label>
+                                <input type="text" placeholder="订单编号查询" id="orderId" class="form-control" name="orderId"
+                                       value="<%= orderNo %>"></div>
+                            <div class="checkbox m-l m-r-xs"></div>
+                            <div style="clear: both"></div>
+                            <br>
+
+                            <div class="col-sm-6" id="data_1">
+                                <label class="font-noraml col-sm-4">起始日期</label>
+
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
+                                            name="startDate" type="text" class="form-control" value="<%= startDate %>">
+                                </div>
+                            </div>
+                            <div class="col-sm-6" id="data_1">
+                                <label class="font-noraml col-sm-4">截止日期</label>
+
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
+                                            name="endDate" type="text" class="form-control" value="<%= endDate %>">
+                                </div>
+                            </div>
+                            <div style="clear: both">
+
+                            </div>
+                            <br>
+
+                            <div class="col-sm-6">
+                                <label class="font-noraml col-sm-4">订单状态</label>
+                                <!--<span style="margin-left: 20px;margin-right: 15px;">订单状态</span>-->
+                                <select class="form-control m-b" name="status" value="All"
+                                        style="margin-right: 10px;margin-top: 9px;">
+                                    <% if(!orderStatus || orderStatus === 'All'){ %>
+                                    <option value="All" selected>全部</option>
+                                    <option value="P">新订单</option>
+                                    <option value="N">已下单</option>
+                                    <option value="S">配送中</option>
+                                    <option value="R">已验收</option>
+                                    <% }else if(orderStatus === 'P'){ %>
+                                    <option value="All">全部</option>
+                                    <option value="P" selected>新订单</option>
+                                    <option value="N">已下单</option>
+                                    <option value="S">配送中</option>
+                                    <option value="R">已验收</option>
+                                    <% }else if(orderStatus === 'N'){ %>
+                                    <option value="All">全部</option>
+                                    <option value="P">新订单</option>
+                                    <option value="N" selected>已下单</option>
+                                    <option value="S">配送中</option>
+                                    <option value="R">已验收</option>
+                                    <% }else if(orderStatus === 'S'){ %>
+                                    <option value="All">全部</option>
+                                    <option value="P">新订单</option>
+                                    <option value="N">已下单</option>
+                                    <option value="S" selected>配送中</option>
+                                    <option value="R">已验收</option>
+                                    <% }else if(orderStatus === 'R'){ %>
+                                    <option value="All">全部</option>
+                                    <option value="P">新订单</option>
+                                    <option value="N">已下单</option>
+                                    <option value="S">配送中</option>
+                                    <option value="R" selected>已验收</option>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <button class="btn btn-danger" type="submit">查询</button>
+                        </form>
+                        <br/>
+                        <br/>
+
+                        <div class="ibox-content">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>订单编号</th>
+                                    <th>对应商家</th>
+                                    <th>订单状态</th>
+                                    <th>时间</th>
+                                    <th>订购金额</th>
+                                    <th>实收总金额</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <%
+                                for(var i = 0;i < data.length;i++, startIdx++){
+                                    var itemCount = data[i].orderItem.length;
+                                    var itemName = "";
+
+                                    for (var j = 0; j < itemCount && j <= 3; j++) {
+                                        var obj = data[i].orderItem[j];
+                                        itemName += obj.materialName + "/";
+
+                                    }
+                                    itemName += '....';
+                                %>
+                                <tr>
+                                    <td><%= startIdx %></td>
+                                    <td data-toggle="modal" data-target="#myModal"><a
+                                                href="javascript:showOrderDetial('<%= data[i]._id %>')"> <%= data[i].orderNo %></a><br>
+                                        <%= itemName %>
+                                    </td>
+                                    <td><%= data[i].supplyName %></td>
+                                    <td>
+                                        <% if(data[i].orderStatus === 'P'){ %>
+                                        新订单
+                                        <% }else if(data[i].orderStatus === 'N'){ %>
+                                        已下单
+                                        <% }else if(data[i].orderStatus === 'S'){ %>
+                                        配送中
+                                        <% }else{ %>
+                                        已验收
+                                        <% } %>
+                                    </td>
+                                    <td><%= data[i].createdAt %></td>
+                                    <td><%= data[i].sum %></td>
+                                    <td><%= data[i].paidIn_Sum %></td>
+                                    <!--     <td>
+                                             <a href="javascript:delUser('')"
+                                                class="btn btn-sm btn-primary">删除</a></td>-->
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                            <div id="pageIdx" class="pagination" style="width:100%">
+                                <% var pageNum = sum / 10; %>
+                                <span style="float: left; line-height: 28px;">共有 <%= sum %> 条记录　</span>
+                                <span style="float: right; line-height: 28px; padding-right: 80px;">实收总金额 <%= paidInTotalNumber %></span>
+                                <span style="float: right; line-height: 28px; padding-right: 80px;"> 订购总金额 <%= totalNumber %></span>
+
+                                <% if(parseInt(sum) > 10){ %>
+                                <% if(currentIdx > 1){ %>
+                                <a id
+                                   href="/cmsQueryOrder?startIdx=0&status=<%= orderStatus %>&resName=<%= resName %>&name=<%= name %>&resId=<%= resId %>&startDate=<%= startDate %>&endDate=<%= endDate %>"
+                                   class="pagination-q" style="width:4rem">首页</a>
+                                <a href="/cmsQueryOrder?startIdx=<%= parseInt(currentIdx - 2) * 10 %>&resName=<%= resName %>&resId=<%= resId %>&name=<%= name %>&status=<%= orderStatus %>&startDate=<%= startDate %>&endDate=<%= endDate %>"
+                                   class="pagination-q"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>上一页</a>
+                                <% } %>
+                                <span style="float: left; line-height: 28px;padding: 0 0.5rem"> 第 <%= currentIdx %>
+                                    页 </span>
+                                <% if(parseInt(currentIdx * 10) < sum + 1){ %>
+                                <a href="/cmsQueryOrder?startIdx=<%= currentIdx * 10 %>&name=<%= name %>&resName=<%= resName %>&resId=<%= resId %>&status=<%= orderStatus %>&startDate=<%= startDate %>&endDate=<%= endDate %>"
+                                   class="pagination-q">下一页
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+                                <% } %>
+                                <% if(pageNum > 10){ %>
+                                <span style="float: left; line-height: 28px;">... 共有 <%= Math.ceil(pageNum) %> 页
+                                <span>跳转到</span>
+                                <input id="pageSkippedTo" type="Number" min="1" style="width:4rem; height:28px;"/>
+                                <span>页</span>
+                                <a class="btn btn-default" onclick="skipHandler()"
+                                   href="javascript:void(0)" role="button" style="float:right;height:28px;">
+                                    <span style="position: relative; top: -8px;">go</span></a>
+                            </span>
+                                <% } %>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog " style="width: 80%!important;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">订单信息</h4>
+
+                <div style="width: 100%; height: 2px;margin-top: 10px; background-color: #F8F8F8"></div>
+                <div id="receiverInfo" class="modal-body">
+
+                    <div style=" width: 100%;border-radius: 5px">
+
+                        <div style="width: 100%;padding: 10px 10px; border-bottom: 1px solid #F8F8F8">
+                            <span style="font-size: 15px;float: left;margin-bottom: 5px ">收货人信息</span>
+                            <br>
+
+                            <div style="clear: both;width: 100%"></div>
+                            收货人：<span id="name">王林海</span><br>
+                            地&nbsp;&nbsp;址：<span id="add">上海长宁区</span><br>
+                            手机号码：<span id="phone">123456</span><br>
+                        </div>
+                        <!--<div style="width: 100%;padding: 10px 10px; border-bottom: 1px solid #F8F8F8">
+                            <span style="font-size: 15px;float: left;margin-bottom: 5px ">支付及配送方式</span>
+
+                            <br><div style="clear: both;width: 100%"></div>
+
+                            支付方式：<span id="payWay">在线支付</span><br>
+                            运&nbsp;&nbsp;费<span id="add">¥10.00</span><br>
+                            手机号码：<span id="phone">123456</span><br>
+                        </div>
+                        <div style="width: 100%;padding: 10px 10px; border-bottom: 1px solid #F8F8F8">
+                            <span style="font-size: 15px;float: left;margin-bottom: 5px ">发票信息</span>
+                            <br>
+                            <div style="clear: both;width: 100%"></div>
+                            发票类型：<span id="invoice">不开</span><br>
+
+                        </div>-->
+                        <div style="width: 100%;padding: 10px 10px; border-bottom: 1px solid #F8F8F8">
+                            <span style="font-size: 15px;float: left;margin-bottom: 5px ">商品清单</span>
+                            <br>
+
+                            <div style="clear: both;width: 100%"></div>
+                            <div id='orderItem' class="wrapper wrapper-content animated fadeInRight">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    $(document).ready(function () {
+
+
+        $('#data_1 .input-group.date').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+
+
+    });
+    function skipHandler() {
+        var nextPage = $('#pageSkippedTo').val();
+        if ($.trim(nextPage) == '') {
+            return;
+        }
+        nextPage = parseInt(nextPage);
+        if (!isNaN(nextPage)) {
+            if (nextPage <= parseInt(<%=Math.ceil(pageNum)%>)) {
+                window.location.href = '/cmsGetSupply?name=<%=name%>&resName=<%=resName%>&resId=<%=resId%>&startIdx=' + ((nextPage - 1) * 10);
+            }
+        }
+    }
+
+    function delUser(id) {
+        $.post('/cmsDelSupply', {id: id}, function (data) {
+            if (data.status == 100) {
+                window.location.reload();
+            }
+        });
+    }
+
+    function showOrderDetial(orderId) {
+        $.post('/cmsGetOrderDetails', {orderId: orderId}, function (data) {
+            var orderStatusDesc;
+            if (data.orderStatus == 'R') {
+                orderStatusDesc = '已验收';
+            } else if (data.orderStatus == 'P') {
+                orderStatusDesc = '新订单';
+            } else if (data.orderStatus == 'N') {
+                orderStatusDesc = '已下单';
+            } else if (data.orderStatus == 'S') {
+                orderStatusDesc = '配送中';
+            }
+            if (data.orderStatus == 'R') {
+                $('#name').text(data.receiver);
+            }
+            $('#add').text(data.receiverAddress);
+            $('#phone').text(data.mobile);
+            var orderSum = 0;
+            var paidIn_orderSum = 0;
+            ;
+            var orderItems = '<div style=" width: 100%;border-radius: 5px"> <div style="width: 100%;padding: 10px 10px; border-bottom: 1px solid #F8F8F8">';
+            orderItems += '<span style="font-size: 15px;float: left;margin-bottom: 5px ">收货信息</span>';
+            orderItems += '<br>';
+            orderItems += '<div style="clear: both;width: 100%"></div>';
+            orderItems += '订单编号：<span id="name">' + data.orderNo + '</span><br>';
+            orderItems += '收货供应商：<span id="supplyName">' + data.supplyName + '</span><br>';
+            if (data.orderStatus == 'R') {
+                orderItems += '收货人：<span id="name">' + data.receiver + '</span><br>';
+            }
+            orderItems += '地&nbsp;&nbsp;址：<span id="add">' + data.receiverAddress + '</span><br>';
+            orderItems += '手机号码：<span id="phone">' + data.mobile + '</span><br>';
+            orderItems += '订单状态:<span>' + orderStatusDesc + '<span><br>'
+            orderItems += '</div>';
+            orderItems += '<form class="form-inline" action="/printOrder" method="post"> <table class="table table-bordered">';
+            orderItems += '<thead>';
+            orderItems += '<tr>';
+            orderItems += '<th>商品编号</th>';
+            orderItems += '<th>商品名称</th>';
+            orderItems += '<th>商品单价</th>';
+            orderItems += '<th>商品单位</th>';
+            orderItems += '<th>订购数量</th>';
+            orderItems += '<th>备注说明</th>';
+            if (data.orderStatus === 'R') {
+                orderItems += '<th>实收数量</th>';
+            }
+            orderItems += '</tr>';
+            orderItems += '</thead>';
+            orderItems += '</tbody>';
+
+            $("#receiverInfo").html('');
+            for (var i = 0; i < data.orderItem.length; i++) {
+                var obj = data.orderItem[i];
+                var materialPrice = obj.materialPrice ? obj.materialPrice : '0';
+                var number = obj.number ? obj.number : '0';
+                orderItems += '<tr>';
+                orderItems += '<td>' + obj.materialId + '</td>';
+                orderItems += '<td>' + obj.materialName + '</td>';
+                orderItems += '<td>' + materialPrice + '</td>';
+                orderItems += '<td>' + obj.unit + '</td>';
+                orderItems += '<td>' + number + '</td>';
+                orderItems += '<td>' + obj.remark + '</td>';
+                if (data.orderStatus === 'R') {
+                    var paidIn = obj.paidIn ? obj.paidIn : "0";
+                    orderItems += '<td>' + paidIn + '</td>';
+                }
+                orderItems += '</tr>';
+
+                var sum = (new Decimal(number).times(new Decimal(materialPrice)));
+                orderSum = new Decimal(orderSum).plus(new Decimal(sum));
+                if (data.orderStatus === 'R') {
+                    var paidInSum = (new Decimal(obj.paidIn ? obj.paidIn : '0').times(new Decimal(materialPrice)));
+                    paidIn_orderSum = new Decimal(paidIn_orderSum).plus(new Decimal(paidInSum));
+                }
+
+            }
+            orderItems += '</tbody>';
+            orderItems += '</table>';
+            orderItems += '<div style="text-align: right;float: right;margin-top: 20px;">订购总金额:' + orderSum + '</div>';
+            if (data.orderStatus === 'R') {
+                orderItems += '<div style="text-align: right;float: right;margin-top: 50px;margin-right: -90px;">实收总金额:' + paidIn_orderSum + '</div>';
+            }
+            orderItems += '<input type="text" name="orderId" style="display:none" value=' + orderId + '>';
+            orderItems += '<button class="btn btn-danger" id="sumbit" type="submit">打印清单</button>';
+            orderItems += '</form>';
+
+            $('#receiverInfo').append(orderItems);
+        });
+    }
+
+    function getValue(obj, id) {
+        if (!id) {
+            $(obj).parent().parent().parent().parent().children('.form-control').val(obj.innerHTML);
+            //$(obj).parent().parent().parent().parent().children('.form-control-id').val(id);
+        } else if (id === 'all') {
+            $(obj).parent().parent().parent().parent().children('.form-control').val(obj.innerHTML);
+            $(obj).parent().parent().parent().parent().children('.form-control-id').val('');
+        }
+        else {
+            $(obj).parent().parent().parent().parent().children('.form-control-id').val(id);
+            $(obj).parent().parent().parent().parent().children('.form-control').val(obj.innerHTML);
+        }
+    }
+
+</script>
+</html>

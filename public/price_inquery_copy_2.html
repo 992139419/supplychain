@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body style="background-color:#F7F7F7;height: 100% ">
+<meta charset="UTF-8">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+<meta content="initial-scale=1.0, width=device-width" name="viewport">
+<title>Material</title>
+<!-- css -->
+<link href="css/base.min.css" rel="stylesheet">
+<link href="css/wo.css" rel="stylesheet">
+<link href="css/swiper.min.css" rel="stylesheet">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</body>
+
+<div class="new_price new_price_inquery">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+
+            <div class="swiper-slide blue-slide">
+                <dl class="template">
+
+                    <dd>
+                        <ul>
+
+                            <li>
+                                <div>餐厅名二</div>
+                                <div>2015.05.15
+                                    <div class="icon icon-keyboard-arrow-right"></div>
+                                </div>
+                            </li>
+                            <li>
+                                <div>餐厅名二</div>
+                                <div>2015.05.15
+                                    <div class="icon icon-keyboard-arrow-right"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </dd>
+
+                </dl>
+            </div>
+            <div class="swiper-slide orange-slide">
+                <ul class="price_list_copy list_copy_4">
+                    <li style="  height: 44px;
+  padding-top: 0;
+  line-height: 44px;">
+                        <div> 餐厅名</div>
+                        <div>日期</div>
+                    </li>
+                </ul>
+                <div class="offer_copy_2">
+                    <ul class="new_price_copuyq" style="margin-top: 0">
+                        <li>
+                            <div class="new_price_copuyq_q">
+                                <div><span>餐厅名一
+                <div class="new_price_copuyq_w">
+                    白萝卜/红萝卜/胡卜卜…共23种
+                </div></span></div>
+                                <div>5月15日</div>
+                            </div>
+
+                        </li>
+                        <li>
+                            <div class="new_price_copuyq_q">
+                                <div><span>餐厅名一
+                <div class="new_price_copuyq_w">
+                    白萝卜/红萝卜/胡卜卜…共23种
+                </div></span></div>
+                                <div>5月15日</div>
+                            </div>
+
+                        </li>
+                        <li>
+                            <div class="new_price_copuyq_q">
+                                <div><span>餐厅名一
+                <div class="new_price_copuyq_w">
+                    白萝卜/红萝卜/胡卜卜…共23种
+                </div></span></div>
+                                <div>5月15日</div>
+                            </div>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="swiper-pagination swiper-pagination-clickable"></div>
+    </div>
+</div>
+<div class="bottom">
+    <a>
+        <div><img src="images/bottom_q.png"><br>首页</div>
+    </a>
+    <a>
+        <div style="color: #2ecc70; "><img src="images/bottom_w_q.png"><br>询价</div>
+    </a>
+    <a>
+        <div><img src="images/bottom_e.png"><br>订单
+        </div>
+    </a>
+    <a href="my.html">
+        <div><img src="images/bottom_r.png"><br>我的</div>
+    </a>
+</div>
+<script src="js/base.min.js" type="text/javascript"></script>
+<script src="material/js/html5shiv.js" type="text/javascript"></script>
+<script src="material/js/respond.js" type="text/javascript"></script>
+<script src="js/base.min.js" type="text/javascript"></script>
+<script src="js/swiper.min.js" type="text/javascript"></script>
+<script>
+
+    var swiper = new Swiper('.swiper-container', {
+
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+
+        paginationBulletRender: function (index, className) {
+            switch (index) {
+                case 0:
+                    name = '<span>报价单</span>';
+                    break;
+
+                case 1:
+                    name = '<span>询价单</span>';
+                    break;
+                default:
+                    name = '';
+            }
+            return '<span class="' + className + '">' + name + '</span>';
+        }
+    });
+
+</script>
+
+</html>

@@ -1,0 +1,194 @@
+<div id="favM"></div>
+
+<div class="tav">
+    <div class="tav_q">
+        <a href="javascript:pageLoad('/getFavMaterial');">
+            <div class="tav_q_q">
+                食材
+            </div>
+        </a>
+        <a href="javascript:pageLoad('/getFavSupply');">
+            <div>
+                供应商
+            </div>
+        </a>
+    </div>
+</div>
+<div class="tavq">
+    <div class="hei" style="min-height: 100%;width: 100%;margin-bottom: 55px">
+    <ul class="user_defined_copy">
+        <% for(var i = 0;i < materials.length;i++){ %>
+        <li>
+            <div class="new_tavq">
+
+                <div class="content">
+                    <%= materials[i].name %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="content_q">￥：<%= materials[i].price %>
+                        元/<%= materials[i].unit %></span>
+
+                    <div class="content_q">
+                        共<%= materials[i].supplyNum %>家供应商报价
+                    </div>
+                </div>
+                <a id="<%= materials[i]._id %>" class="dele">删除</a>
+            </div>
+        </li>
+        <% } %>
+    </ul>
+    </div>
+</div>
+<% include ../template/bottom.ejs %>
+<script type="text/javascript">
+    document.title = '<%=title%>';
+    var ad = 1;
+    var number = 1
+    var start;
+    var end;
+    var li = document.querySelectorAll("li .new_tavq")
+    var dele = document.querySelectorAll(".dele");
+    var hei = document.querySelectorAll("html")[0].offsetHeight - 50;
+
+    document.querySelectorAll(".hei")[0].style.minHeight = hei + 'px'
+    document.querySelectorAll(".hei")[0].onclick = function () {
+        for (var a = 0; a < li.length; a++) {
+            li[a].style.transform = 'translateX(0px)'
+        }
+    }
+
+    for (var a = 0; a < li.length; a++) {
+        li[a].addEventListener('touchstart', chstart, false);
+        li[a].addEventListener('touchmove', function (ev) {
+            if (ad == 1) {
+                for (var a = 0; a < li.length; a++) {
+                    li[a].style.transform = 'translateX(0px)'
+                }
+            }
+            ad = 2
+            var move = ev.changedTouches[0].clientX
+            var x = start - move
+            this.style.transform = 'translateX(' + -x + 'px)';
+            end = x
+        }, false);
+        li[a].addEventListener('touchend', end, false);
+    }
+    function chstart(ev) {
+        end = 0
+        ad = 1
+        start = ev.changedTouches[0].clientX
+    }
+    function end(ev) {
+        var en = parseInt(end)
+        if (en > 60) {
+            this.style.transform = 'translateX(-60px)';
+        } else if (en == 0) {
+
+        } else {
+            this.style.transform = 'translateX(0px)';
+        }
+    }
+
+    for (var a = 0; a < dele.length; a++) {
+        dele[a].onclick = function () {
+            var idq = this.id
+            if (window.confirm('你确定要删除吗？')) {
+                var id = this.querySelectorAll('a')[0].getAttribute('id');
+                var dom = this;
+                $.get('/setFavMaterial?id=' + id, function (data) {
+                    pageLoad('/getFavMaterial');
+                });
+                return true;
+            } else {
+                for (var a = 0; a < li.length; a++) {
+                    li[a].style.transform = 'translateX(0px)'
+                }
+                return false;
+            }
+        }
+    }
+//    var suoyou = document.querySelectorAll("*");
+//    for (var a = 0; a < suoyou.length; a++) {
+//        suoyou[a].onclick = function (event) {
+//            var al = this.querySelectorAll('a')[0].getAttribute('class');
+//            var f = this.style.transform;
+//            if (al == 'dele' && f == 'translateX(-60px)') {
+//                if (window.confirm('你确定要删除吗？')) {
+//                    var id = this.querySelectorAll('a')[0].getAttribute('id');
+//                    var dom = this;
+//                    $.get('/setFavMaterial?id=' + id, function (data) {
+//                        pageLoad('/getFavMaterial');
+//                    });
+//                    return true;
+//                } else {
+//                    return false;
+//                }
+//            } else {
+//                for (var a = 0; a < li.length; a++) {
+//                    li[a].style.transform = 'translateX(0px)'
+//                }
+//            }
+//        }
+//    }
+    var favM = document.getElementById('favM')
+
+    // 下拉加载
+    window.onscroll = function () {
+        if(favM){
+        //获取滚动条当前的位置
+        function getScrollTop() {
+            var scrollTop = 0;
+            if (document.documentElement && document.documentElement.scrollTop) {
+                scrollTop = document.documentElement.scrollTop;
+            }
+            else if (document.body) {
+                scrollTop = document.body.scrollTop;
+            }
+            return scrollTop;
+        }
+
+//获取当前可是范围的高度
+        function getClientHeight() {
+            var clientHeight = 0;
+            if (document.body.clientHeight && document.documentElement.clientHeight) {
+                clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight);
+            }
+            else {
+                clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);
+            }
+            return clientHeight;
+        }
+
+//获取文档完整的高度
+        function getScrollHeight() {
+            return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        }
+
+
+        if (getScrollTop() + getClientHeight() == getScrollHeight()) {
+            var template = document.querySelectorAll(".template li")[2]
+            if (template) {
+                var type = template.getAttribute('type');
+                var mechanismId = template.getAttribute('mechanismId');
+            }
+
+
+            $.post('/newmokuai', {type: type, mechanismId: mechanismId, number: number}, function (data) {
+                if (data) {
+                    for (var a = 0; a < data.length; a++) {
+                        var li = document.createElement("li")
+                        var text = '<div class="template_new_q">'
+                        text += '<div>' + data[a].name + '</div>'
+                        text += ' <div>' + data[a].createdAt
+                        text += ' <div class="icon icon-keyboard-arrow-right"></div>'
+                        text += ' <a class="dele" id="' + data[a]._id + '">删除</a></div>'
+                        text += ' </div>'
+                        li.innerHTML = text
+                        document.getElementById("template").appendChild(li);
+                    }
+                    number++
+                }
+            })
+        }
+        }
+    }
+
+
+</script>

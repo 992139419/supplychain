@@ -1,0 +1,121 @@
+
+<ul class="user_defined_copy template_confirm" style="position: absolute;top: 0;bottom: 55px;width: 100%;overflow-y: auto">
+    <% var materials = JSON.parse(selectMaterials);
+            materials.forEach(function(material){ %>
+    <li name='material' id="<%= material._id %>" style="padding-top: 20px">
+
+        <div class="content">
+            <span class="pingm"> <%= material.name %></span>
+            <span  class="danw" style="float: right"><%= material.unit %></span>
+        </div>
+
+        <div class="c"></div>
+        <div class="beizhu" style="  font-size: 12px;
+  line-height: 14px;
+  margin-top: 7px;
+  color: #7B7A7A;overflow : hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+-webkit-box-orient: vertical;"><%= material.remark %>
+        </div>
+    </li>
+    <div class="new_template"
+         style="width: 100%; height: 150px;border-bottom: 1px solid #979797; display: none;padding: 3px 15px">
+        <div style="width: 20%; text-align: center;height:30px;float: left;line-height: 30px">单位</div>
+        <input class="biaoji" type="text" style="height: 30px;width: 75%" value="" placeholder="<%= material.unit %>">
+
+        <div class="c" style="height: 10px"></div>
+        <div style="width: 20%; text-align: center;height:30px;float: left;line-height: 30px">备注</div>
+        <textarea style="width: 75%" name="textarea" cols="10" rows="3" placeholder="<%= material.remark %>"></textarea>
+    </div>
+    <% }) %>
+</ul>
+    <div class="template_confirmw pa" style="margin-bottom: 0px;position:absolute;bottom: 0px">
+        <div class="template_confirmw_w">
+            <input id="name" class="form-control" placeholder="请输入询价单名" type="text" value="<%=insheetName%>">
+        </div>
+        <a class="template_confirmw_q btn btn-green waves-button waves-effect waves-light"
+          href="javascript:commit()">保存</a>
+    </div>
+<script  type="text/javascript">
+
+    var li = document.querySelectorAll("li")
+
+    for (var a = 0; a < li.length; a++) {
+
+        li[a].onclick = function () {
+            var inpu = this.querySelectorAll('.danw')[0].innerHTML;
+            this.nextElementSibling.querySelectorAll('input')[0].value = inpu
+            if (this.nextElementSibling.style.display == 'block') {
+                var new_template = document.querySelectorAll(".new_template")
+                for (var a = 0; a < new_template.length; a++) {
+                    new_template[a].style.display = 'none'
+                }
+            } else {
+                var new_template = document.querySelectorAll(".new_template")
+                for (var a = 0; a < new_template.length; a++) {
+                    new_template[a].style.display = 'none'
+                }
+                this.nextElementSibling.style.display = "block"
+            }
+        }
+    }
+    var boot = document.querySelectorAll(".biaoji")
+    for (var a = 0; a < boot.length; a++) {
+        boot[a].oninput = function () {
+            var inpu = this.value;
+            this.parentElement.previousElementSibling.querySelectorAll('.danw')[0].innerHTML = inpu
+        }
+    }
+    var boot = document.querySelectorAll("textarea")
+    for (var a = 0; a < boot.length; a++) {
+        boot[a].oninput = function () {
+            var inpu = this.value;
+            this.parentElement.previousElementSibling.querySelectorAll('.beizhu')[0].innerHTML = inpu
+        }
+    }
+    function commit() {
+
+        setTimeout('yourFunction()', 200);
+    }
+    function yourFunction(){
+        document.getElementById("name").onblur = function(e){
+            function stopDefault( e ) {
+                //阻止默认浏览器动作(W3C)
+                if ( e && e.preventDefault )
+                    e.preventDefault();
+                //IE中阻止函数器默认动作的方式
+                else
+                    window.event.returnValue = false;
+                return false;
+            }
+        }
+        var value = document.getElementById("name").value;
+        var selectMaterials = JSON.parse('<%-selectMaterials%>');
+        var materials = document.getElementsByName('material');
+        for(var i=0;i<materials.length;i++){
+            for(var j=0;j<selectMaterials.length;j++){
+                if(selectMaterials[j]._id==materials[i].id)
+                {
+                    selectMaterials[j].unit = materials[i].querySelectorAll('.danw')[0].innerText;
+                    selectMaterials[j].remark =  materials[i].querySelectorAll('.beizhu')[0].innerText;
+                    break;
+                }
+            };
+        }
+        if(!value){
+            document.getElementById("name").focus();
+            return alert('询价单名不能为空');
+        }else if(value.indexOf('\'')>-1||value.indexOf('\"')>-1){
+            document.getElementById("name").focus();
+            return alert('询价单名不能包含非法字符');
+        }
+        var url = '/addInquerySheet';
+        var data = {
+            selectMaterials:JSON.stringify(selectMaterials),
+            inqueryName:value
+        }
+        pageLoadPost(url,data,'添加询价单',false);
+    }
+</script>

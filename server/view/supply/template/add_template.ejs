@@ -1,0 +1,21 @@
+<% include template.ejs %>
+<div class="add_tem">
+    <a> </a>
+    <div class="add_w">
+
+        <a class="add_w_w_q" href="javascript:templateConfirm()">
+            确认
+        </a>
+    </div>
+
+</div>
+<script type="text/javascript">
+var hei = document.querySelectorAll(".add_tem")[0]
+guding(hei,100)
+    //添加模版确认
+    function templateConfirm(){
+
+        pageLoad('/template_Confirm?selectMaterial='+JSON.stringify(materialTemp.getSelectArray()));
+    }
+</script>
+

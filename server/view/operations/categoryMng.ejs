@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include template/head.ejs %>
+</head>
+<body>
+<div id="wrapper">
+    <% include template/menu.ejs %>
+
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <% include template/nav.ejs %>
+        <div class="row  border-bottom white-bg dashboard-header">
+            <div class="col-sm-12">
+                <div class="row">
+
+                </div>
+                <div class="row">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>菜品类别列表</h5>
+                        </div>
+                        <form role="form" class="form-inline" method="get"
+                              action="/cmsGetCategory?name=<%= name %>&startIdx=<%= parseInt(currentIdx - 1) * 10 %>">
+                            <div class="form-group"><label for="exampleInputEmail2" class="sr-only">菜品类别名称</label>
+                                <input type="text" placeholder="菜品类别名称" id="name" class="form-control" name="name"
+                                       value="<%= name %>"></div>
+                            <div class="checkbox m-l m-r-xs"></div>
+                            <button class="btn btn-danger" type="submit">查询</button>
+                            <!--<a class="btn btn-danger" href="/Data2Excel">打印</a>-->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                新增
+                            </button>
+                        </form>
+                        <br/>
+                        <br/>
+
+                        <div class="ibox-content">
+
+                            <table id="category" class="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th width="500px">菜品类别名称</th>
+                                    <!--<th>备注</th>-->
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <%
+                                for(var i = 0;i < data.length;i++, startIdx++){ %>
+                                <tr>
+                                    <td><%= data[i].seqNo %></td>
+                                    <td><%= data[i].name %></td>
+                                    <!--<td><%= data[i].remark %></td>-->
+                                    <td>
+                                        <a href="javascript:editCate('<%= data[i]._id %>')"
+                                           class="btn btn-sm btn-primary">编辑</a>
+                                        <a href="javascript:delCate('<%= data[i]._id %>')"
+                                           class="btn btn-sm btn-primary">删除</a></td>
+                                </tr>
+                                <% } %>
+                                </tbody>
+                            </table>
+                            <div id="pageIdx" class="pagination">
+                                <% var pageNum = sum / 10; %>
+                                <span style="float: left; line-height: 28px;">共有 <%= sum %> 条记录　</span>
+                                <% if(parseInt(sum) > 10){ %>
+                                <% if(currentIdx > 1){ %>
+                                <a href="/cmsGetCategory?name=<%= name %>" class="pagination-q"
+                                   style="width:4rem;float: left;margin-left: 10px;margin-top: 4px;">首页</a>
+                                <a href="/cmsGetCategory?name=<%= name %>&startIdx=<%= parseInt(currentIdx - 2) * 10 %>"
+                                   class="pagination-q" style="float: left;
+    margin-top: 4px;
+    margin-left: -11px;"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>上一页</a>
+                                <% } %>
+                                <span style="float: left; line-height: 28px;padding: 0 0.5rem"> 第 <%= currentIdx %>
+                                    页 </span>
+                                <% if(parseInt(currentIdx * 10) < sum + 1){ %>
+                                <a href="/cmsGetCategory?name=<%= name %>&startIdx=<%= currentIdx * 10 %>"
+                                   class="pagination-q" style="
+                                        float: left;
+                                        margin-top: 5px;">下一页<span class="glyphicon glyphicon-chevron-right"
+                                                                   aria-hidden="true"></span></a>
+                                <% } %>
+                                <% if(pageNum > 10){ %>
+                                <span style="float: left; line-height: 28px;">... 共有 <%= Math.ceil(pageNum) %> 页
+                                <span>跳转到</span>
+                                <input id="pageSkippedTo" type="Number" min="1" style="width:4rem; height:28px;"/>
+                                <span>页</span>
+                                <a class="btn btn-default" onclick="skipHandler()"
+                                   href="javascript:void(0)" role="button" style="float:right;height:28px;">
+                                    <span style="position: relative; top: -8px;">go</span></a>
+                            </span>
+                                <% } %>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form role="form" class="form-horizontal">
+                                        <div class="form-group" style="margin: 10px 0"><label for="exampleInputEmail2"
+                                                                                              class="sr-only">类别名称</label>
+                                            <input type="text" placeholder="食材名称" id="a_name" class="form-control"
+                                                   name="a_name">
+                                        </div>
+                                        <div class="input-group m-b">
+                                            <div class="input-group-btn">
+                                                <button data-toggle="dropdown"  class="btn btn-white dropdown-toggle"
+                                                        type="button" aria-expanded="false">序列号<span
+                                                            class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <% for(var i = 1;i <= 10;i++) { %>
+                                                    <li>
+                                                        <a href="javascript:moveValue(<%= parseInt(maxSeqNo)+i %>)"><%= parseInt(maxSeqNo)+i %></a>
+                                                    </li>
+                                                    <% } %>
+                                                </ul>
+                                            </div>
+                                            <input type="text" id="seqNo" class="form-control">
+                                            <input type="text" id="cateId" style="display: none" class="form-control">
+                                        </div>
+                                        <!--<div class="checkbox m-l m-r-xs"></div>-->
+                                        <!--<div class="form-group"><label for="exampleInputEmail2" class="sr-only">备注</label>-->
+                                        <!--<input type="text" placeholder="备注" id="a_remark" class="form-control" name="a_remark"></div>-->
+                                        <!--<div class="checkbox m-l m-r-xs"></div>-->
+
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <a type="button" class="btn btn-default" href="javascript:cancelPrice();">取消</a>
+                                    <a type="button" class="btn btn-primary" href="javascript:savePrice();">保存</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include template/footer.ejs %>
+</body>
+<script>
+
+
+    function editCate(id) {
+        $.get('/cmsGetCategoryDetail?id=' + id, function (data) {
+            if (data.status == 100) {
+                var category = data.data;
+                if (category) {
+                    var name = category.name;
+                    var seqNo = category.seqNo;
+                    var cateId = category._id;
+                    $('#a_name').val(name);
+                    $('#seqNo').val(seqNo);
+                    $('#cateId').val(category._id);
+                    $("#myModal").modal('show');
+                }
+            }
+        });
+    }
+
+    function moveValue(para) {
+        $('#seqNo').val(para);
+    }
+
+    function cancelPrice_edit() {
+        $('#a_name').val('');
+        $('#seqNo').val('');
+        $('#cateId').val('');
+        $("#editModel").modal('hide');
+    }
+
+
+    function skipHandler() {
+        var nextPage = $('#pageSkippedTo').val();
+        if ($.trim(nextPage) == '') {
+            return;
+        }
+        nextPage = parseInt(nextPage);
+        if (!isNaN(nextPage)) {
+            if (nextPage <= parseInt(<%=Math.ceil(pageNum)%>)) {
+                window.location.href = '/cmsGetCategory?name=<%=name%>&startIdx=' + ((nextPage - 1) * 10);
+            }
+        }
+    }
+
+    function delCate(id) {
+        if(confirm('确认删除？')){
+            $.post('/cmsDelCategory', {id: id}, function (data) {
+                if (data.status == 100) {
+                    window.location.reload();
+                }
+            });
+        }
+    }
+
+    function cancelPrice() {
+        $('#a_name').val('');
+        $('#a_remark').val('');
+        $("#myModal").modal('hide');
+    }
+
+    function savePrice() {
+        var vname = $('#a_name').val();
+        var vseqNo = $('#seqNo').val();
+        var vobjId = $("#cateId").val();
+        if(!vname){
+            alert('请填写类别名称');
+            return;
+        }
+        if(!vseqNo){
+            alert('请填写序号');
+            return;
+        }
+        $.post('/cmsAddCategory', {
+            name: vname,
+            seqNo: vseqNo,
+            objId: vobjId
+        }, function (data) {
+            if (data.status == 100) {
+                window.location.reload();
+            }
+        });
+
+    }
+
+    function export2Excel() {
+
+
+        alert("导出EXCEL");
+        var tableid = "category";
+        var curTbl = document.getElementById(tableid);
+        var oXL = null;
+        try {
+            oXL = GetObject("", "Excel.Application");
+        } catch (E) {
+            try {
+                oXL = new ActiveXObject("Excel.Application");
+            } catch (E2) {
+                alert("请确认:\n1.安装Microsoft Excel.\n2.设置浏览器安全级别：Internet 选项=>安全=>自定义级别 \n \"将ActiveX控件启用\"");
+                return;
+            }
+        }
+// 创建AX对象excel
+        var oWB = oXL.Workbooks.Add();
+// 获取workbook对象
+        var oSheet = oWB.ActiveSheet;
+// 在此进行样式控制
+        oSheet.Rows(1 + ":" + 1).RowHeight = 20;// 定义行高
+        oSheet.Rows(2 + ":" + 2).RowHeight = 30;
+// 定义列宽
+        oSheet.Columns('A:A').ColumnWidth = 5;
+        oSheet.Columns('B:B').ColumnWidth = 10;
+        oSheet.Columns('C:C').ColumnWidth = 15;
+        oSheet.Columns('D:D').ColumnWidth = 15;
+        oSheet.Columns('E:E').ColumnWidth = 20;
+        oSheet.Columns('F:F').ColumnWidth = 12;
+        oSheet.Columns('G:G').ColumnWidth = 15;
+        oSheet.Columns('H:H').ColumnWidth = 15;
+        oSheet.Columns('I:I').ColumnWidth = 15;
+        oSheet.Columns('J:J').ColumnWidth = 15;
+        oSheet.Columns('K:K').ColumnWidth = 15;
+        oSheet.Columns('L:L').ColumnWidth = 15;
+        oSheet.Columns('M:M').ColumnWidth = 5;
+        oSheet.Columns('N:N').ColumnWidth = 5;
+        oSheet.Columns('O:O').ColumnWidth = 15;
+
+        oSheet.Rows(1).HorizontalAlignment = 3;
+
+        var sel = document.body.createTextRange(); // 激活当前sheet
+        sel.moveToElementText(curTbl); // 把表格中的内容移到TextRange中
+        sel.select(); // 全选TextRange中内容
+        sel.execCommand("Copy"); // 复制TextRange中内容
+        oSheet.Paste(); // 粘贴到活动的EXCEL中
+        oXL.Visible = true; // 设置excel可见属性
+        oSheet.Application.Quit(); // 结束当前进程
+        window.opener = null;
+
+
+    }
+
+
+</script>
+</html>

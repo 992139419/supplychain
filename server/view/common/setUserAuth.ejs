@@ -1,0 +1,51 @@
+<%
+var u1 = '';
+var u2 = '';
+if (isConfirme == '0') {
+    u1 = 'li_q';
+} else {
+    u2 = 'li_q';
+}
+%>
+<ul class="user_defined_copy new_add_template_3">
+    <label for="input" style="width: 100%">
+        <li value="1" class="<%= u2 %>">
+            <img src="images/qr.png">订单确认员
+            <div class="check"></div>
+        </li>
+        <li value="0" class="<%= u1 %>">
+            <img src="images/bj.png">订单编辑员
+            <div class="check"></div>
+        </li>
+    </label>
+    <input type="checkbox" id="input" style="display: none">
+</ul>
+<input type="checkbox" style="display: none" id="switch">
+<script type="text/javascript">
+    var uId = '<%=uId%>';
+    var li = document.querySelectorAll("li");
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            for(var i=0;i<li.length;i++){
+                li[i].setAttribute('class','');
+            }
+            var clas = this.getAttribute('class')
+            if (clas == 'li_q') {
+                this.className = ''
+            } else {
+                this.className = 'li_q'
+            }
+            var user = {};
+            var value = this.getAttribute('value');
+            user.userAuth = value;
+            user._id = uId;
+            $.post('/setUserAuth', user, function (data) {
+                if (data && data.status == 100) {
+                    alert('权限修改成功');
+                } else {
+                    alert('权限修改异常');
+                }
+            });
+        }
+    }
+</script>

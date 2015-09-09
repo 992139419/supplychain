@@ -1,0 +1,118 @@
+
+<ul class="add_q new_add_q_q">
+    <li style="padding-right: 15px">
+        <label class="add_q_q" for="name">
+            选择餐厅:
+        </label>
+
+        <div class="add_q_w" for='name'>
+            <select id="cantingq" class ="form-control" style="width: 100%; height: 44px; line-height: 32px">
+                <option value="0" selected="">请选择</option>
+                <%JSON.parse(restruantArray).forEach(function(restruant){%>
+                <option style="height: 44px" value="<%=restruant._id%>" ><%=restruant.name%></option>
+                <%})%>
+            </select>
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="name">
+            餐厅名称:
+        </label>
+
+        <div class="add_q_w" for='name'>
+            <input class="form-control" id="name" name="name" placeholder="请输入您的餐厅名称" type="text">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="header">
+            联系人：
+        </label>
+
+        <div class="add_q_w">
+            <input class="form-control" id="header" name="header" placeholder="请输入联系人姓名" type="text">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="telephone">
+            联系电话：
+        </label>
+
+        <div class="add_q_w">
+            <input class="form-control inputBlue" id="telephone" name="telephone" placeholder="请输入联系人电话" type="text">
+        </div>
+    </li>
+
+    <li>
+        <label class="add_q_q" for="address">
+            区域：
+        </label>
+
+        <div class="add_q_w">
+            <input class="form-control" id="area" name="area" placeholder="请输入餐厅所在区域城市" type="text">
+        </div>
+    </li>
+    <li>
+        <label class="add_q_q" for="address">
+            配送地址：
+        </label>
+
+        <div class="add_q_w">
+            <input class="form-control" id="address" name="address" placeholder="请输入相关的配送地址" type="text">
+        </div>
+    </li>
+</ul>
+<div class="add_w">
+
+    <a class="add_w_w" style=" width: 100%;padding:0 " href="javascript:commit()">
+        确定发货
+    </a>
+</div>
+<script>
+document.getElementById('cantingq').onchange = function(){
+    var restruantArray = JSON.parse('<%-restruantArray%>');
+    var id = this.value;
+    restruantArray.forEach(function(restruant){
+        if(restruant._id == id){
+        document.getElementById('name').value = restruant.name?restruant.name:'';
+        document.getElementById('header').value = restruant.header?restruant.header:"";
+        document.getElementById('telephone').value = restruant.telephone?restruant.telephone:'';
+        document.getElementById('area').value = restruant.area?restruant.area:'';
+        document.getElementById('address').value = restruant.address?restruant.address:'';
+        }
+    });
+}
+    function commit(){
+        var id = document.getElementById('cantingq').value;
+        var name = document.getElementById('name').value;
+        var header = document.getElementById('header').value ;
+        var telephone = document.getElementById('telephone').value;
+        var area = document.getElementById('area').value ;
+        var address = document.getElementById('address').value;
+        var url = '/saveOrderDist';
+        var data = {
+            orderItem:'<%-orderItem%>',
+            sum:'<%-sum%>',
+            id:id,
+            name:name,
+            header:header,
+            telephone:telephone,
+            area:area,
+            address:address
+        }
+        if(id === '0'){
+            return alert('请选择餐厅');
+        }
+        $.post(url,data,function(result){
+            if(result.code == 101){
+                alert('请联系管理人员进行报价');
+                return;
+            }else if(result.code==100){
+                alert('配送成功');
+                pageLoad('/supMyOrder');
+                return;
+            }
+        });
+    }
+
+
+</script>

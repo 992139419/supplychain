@@ -1,0 +1,82 @@
+<div class="new_price_copuy_q" style="line-height:20px;padding-top: 11px;  text-align: center; ">
+    常用联系餐厅
+    <br><span style="font-size:13px">
+            (注意:只能选择一个联系人进行发货地址等信息填写)
+        </span>
+</div>
+<dl class="template">
+    <dd>
+        <ul class="template_q">
+            <% JSON.parse(restruantds).forEach(function(restruantd){ %>
+            <label for="input_<%= restruantd._id %>" style="width: 100%">
+                <li>
+                    <div id="supply_name_<%= restruantd._id %>"><%= restruantd.name %></div>
+                    <div>
+                        <div>
+                            <a href='tel://<%= restruantd.telephone %>'><img src="images/telephone.png"></a>
+
+                            <div class="check"></div>
+                        </div>
+                    </div>
+                </li>
+            </label>
+
+            <input name="checkbox" type="checkbox" id="input_<%= restruantd._id %>" style="display: none">
+            <% }) %>
+        </ul>
+    </dd>
+</dl>
+<div class="add_tem">
+    <div class="add_w">
+        <a href="javascript:commit()" class="add_w_w_q">
+            填写发货信息
+        </a>
+    </div>
+</div>
+
+
+<% include ../template/bottom.ejs %>
+<script type="text/javascript">
+    var hei = document.querySelectorAll(".add_tem")[0]
+    guding(hei,100)
+    var li = document.querySelectorAll("li");
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            var clas = this.getAttribute('class');
+            if (clas == 'li_q') {
+                this.className = ''
+            } else {
+                if(document.querySelectorAll(".li_q")[0]){
+                document.querySelectorAll(".li_q")[0].className = "";
+                }
+                this.className = 'li_q'
+
+            }
+        }
+    }
+
+    function commit() {
+        var orderItem = JSON.parse('<%-orderItem%>');
+        var checkboxs = document.getElementsByName('checkbox')
+        var restruantdId;
+        for(var i= 0,size = checkboxs.length;i<size;i++){
+            var id = (checkboxs[i].id).replace('input_','');
+            var name =document.getElementById('supply_name_'+id).innerText;
+            if(checkboxs[i].checked){
+                restruantdId=id;
+            }
+        }
+        if(!restruantdId){
+            alert('请至少选择一个供应商进行询价.');
+            return;
+        }
+
+        var url = '/queryDistInformationOffer'
+        var data ={
+            sum :'<%=sum%>',
+            orderItem:'<%-orderItem%>',
+            restruantdId:restruantdId
+        }
+        pageLoadPost(url,data,'选择配送地址信息',false,'post');
+    }
+</script>

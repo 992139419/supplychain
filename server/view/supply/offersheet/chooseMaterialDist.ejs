@@ -1,0 +1,25 @@
+<% include ../../restaurant/template/template.ejs %>
+
+<div class="add_tem">
+    <a> </a>
+
+    <div class="add_w">
+
+        <a class="add_w_w_q" href="javascript:commit()">
+            下一步
+        </a>
+    </div>
+
+</div>
+<script type="text/javascript">
+    var hei = document.querySelectorAll(".add_tem")[0]
+    guding(hei, 100);
+    function commit() {
+        var url = '/queryMaterialsDist';
+        var data = {
+            selectMaterials: JSON.stringify(materialTemp.getSelectArray())
+        }
+        pageLoadPost(url, data, '新增配送订单', false, 'post');
+    }
+</script>
+

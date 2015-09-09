@@ -1,0 +1,48 @@
+<ul class="user_defined_copy new_add_template_3">
+    <label for="input" style="width: 100%">
+        <li>
+            <img src="images/qr.png">订单确认员
+            <div class="check"></div>
+        </li>
+        <li>
+            <img src="images/bj.png">订单编辑员
+            <div class="check"></div>
+        </li>
+    </label>
+
+    <input type="checkbox" id="input" style="display: none">
+</ul>
+
+<input type="checkbox" style="display: none" id="switch">
+
+<div class="bottom">
+    <a>
+        <div><img src="images/bottom_q.png"><br>首页</div>
+    </a>
+    <a>
+        <div><img src="images/bottom_w.png"><br>询价</div>
+    </a>
+    <a>
+        <div><img src="images/bottom_e.png"><br>订单
+        </div>
+    </a>
+    <a href="my.html">
+        <div style="color: #2ecc70; "><img src="images/bottom_r_q.png"><br>我的</div>
+    </a>
+</div>
+
+<script type="text/javascript">
+    var li = document.querySelectorAll("li")
+    for (var a = 0; a < li.length; a++) {
+        li[a].onclick = function () {
+            var clas = this.getAttribute('class')
+            if (clas == 'li_q') {
+                this.className = ''
+            } else {
+                this.className = 'li_q'
+
+            }
+        }
+    }
+
+</script>

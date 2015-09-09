@@ -1,0 +1,103 @@
+
+<div class="price_offer">
+    <%if(supplyList&&supplyList.length>0){%>
+   <%=supplyList[0].material_name%> :共<%=supplyList.length%>家供应商报价
+    <%}%>
+</div>
+
+<div class="new_price">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+
+            <div class="swiper-slide blue-slide">
+                <ul class="price_offerw">
+                    <li class="title">
+                        <div style="width: 45%">供应商</div>
+                        <div style="width: 35%">价格(元)</div>
+                        <div style="width: 20%">拨打电话</div>
+                    </li>
+                    <%for(var i=0;i<supplyList.length;i++){
+                        var supply=supplyList[i];
+                    %>
+                    <li style="height: 70px" class="tanchu" onclick="getOfferSheets('<%=supply.supply_id%>','<%=supply.material_id%>')">
+                        <div style="width: 45%;height: 30px" class="name"><%=supply.supply_Name%></div>
+                        <div style="width: 35%;height: 30px">¥<%=supply.price%></div>
+                        <div style="width: 20%;height: 30px">
+                            <a href='tel://<%=supply.contactNo%>'><img src="images/telephone.png"></a>
+                        </div>
+                        <%if(supply.distance=='-1'){%>
+                        <span style="margin-left: 15px;font-size: 13px"> 地址不正确，无法计算 </span>
+                        <%}else{%>
+                        <span style="margin-left: 15px;font-size: 13px">  距离餐厅<%=supply.distance%>米 </span>
+                        <%}%>
+
+                    </li>
+                    <%}%>
+                </ul>
+            </div>
+            <div class="swiper-slide orange-slide">
+                <dl class="template">
+                    <dt>
+                    <ul>
+                        <li>供应商</li>
+                        <li>单价(元)</li>
+                    </ul>
+                    </dt>
+                    <dd>
+                        <ul>
+                            <%for(var i=0;i<supplyList.length;i++){
+
+                                var supply=supplyList[0];
+                            %>
+                            <li class="tanchu">
+                                <div class="name"> <%=supply.supply_Name%></div>
+                                <div class="template_qw">￥<%=supply.price%></div>
+                            </li>
+                            <%}%>
+                        </ul>
+                    </dd>
+
+                </dl>
+            </div>
+
+        </div>
+        <div class="swiper-pagination swiper-pagination-clickable"></div>
+    </div>
+</div>
+
+<script>
+    document.body.scrollTop = 0
+    var swiper = new Swiper('.swiper-container', {
+        onSlideChangeStart: function (swiper) {
+            document.body.scrollTop = 0
+        },
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        paginationBulletRender: function (index, className) {
+
+            switch (index) {
+                case 0:
+                    name = '白菜价';
+                    break;
+
+                case 1:
+                    name = '公网价';
+                    break;
+                default:
+                    name = '';
+            }
+            return '<span class="' + className + '">' + name + '</span>';
+        }
+    });
+    //查询供应商所有公开报价单
+    function getOfferSheets(supplyId,materialId){
+        pageLoad('/getPublicSheets?supId='+supplyId+'&materialId='+materialId);
+//        alert(supplyId);
+    }
+var tan = document.querySelectorAll(".tanchu")
+    if(tan[0]){
+    for(var i =0;i<tan.length;i++){
+        changan(tan[i],tan[i].querySelectorAll(".name")[0].innerHTML)
+    }}
+</script>
+<% include template/bottom.ejs %>
