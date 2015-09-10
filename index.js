@@ -37,7 +37,7 @@ app.use(sessionMiddleware);
 //app.use(authority.check);//请求权限验证
 weixinService.getAccess_token();
 app.use('/weixin', wechat("token2015", function (req, res, next) {
-    // 微信输入信息都在req.
+    // 微信输入信息都在req.//test by osy2333
     var message = req.weixin;
     var openId = message.FromUserName;
     var pathname = url.parse(req.url).pathname;  //pathname => select
