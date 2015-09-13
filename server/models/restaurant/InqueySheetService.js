@@ -367,6 +367,20 @@ exports.qryOfferSheet = function (req, res) {
     });
 }
 
+exports.addOfferSheetItem = function (req, res) {
+    userPromise(req, res).then(function (userInfo) {
+        if (!userInfo) {
+            return res.render('restaurant/login');
+        } else {
+            var offerSheetId = req.query.offerSheetId;
+            var supplyName = req.query.supplyName;
+            res.render('restaurant/inqueySheet/addOfferSheetItem',
+                {openId: userInfo.openId,
+                    offerSheetId:offerSheetId,
+                    supplyName:supplyName});
+        }
+    });
+}
 
 /**
  * 根据报价单id查询报价单信息

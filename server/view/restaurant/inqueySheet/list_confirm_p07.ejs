@@ -33,7 +33,8 @@
                                  data-target="#tile-collapse-<%= material.material_id %>"
                                  data-toggle="tile">
                                 <ul>
-                                    <li class="tan" style="height: 88px; ">
+                                    <li class="tan" style="height: 88px; <% if(material.material_id=="0"){ %>
+                                        background-color:antiquewhite; <%}%>" >
                                         <div style="width: 25%;display:block;"
                                              class="name"><%= material.material_name %></div>
 
@@ -115,6 +116,12 @@ padding-left: 10px;
         订单总额：￥<span id="sum" class="pricew"> 0</span>
     </div>
     <div class="c"></div>
+    <div class="new_add_template_7"onclick="javaScript:pageLoad('/addOfferSheetItem?offerSheetId=<%= JSON.parse(offerSheet)._id %>&supplyName=<%= JSON.parse(offerSheet).supplyName %>')">
+        <div class="new_add_template_7_q">
+        </div>
+        <div class="new_add_template_7_w">
+        </div>
+    </div>
     <div style="width: 100%;clear: both;height: 60px"></div>
     <div class="add_tem">
         <div class="add_w">

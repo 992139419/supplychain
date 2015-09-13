@@ -148,6 +148,7 @@ module.exports = function (app) {
     app.get('/setFavMaterial', restaurantService.setFavMaterial);
     app.get('/qryOfferSheetforInquery', inqueySheetService.qryOfferSheet);
     app.get('/qryOfferSheetById', inqueySheetService.qryOfferSheetById);
+    app.get('/addOfferSheetItem', inqueySheetService.addOfferSheetItem);
     //联系我们
     app.get('/contactUs', userService.contactUs);
     //选择食材查看价格走势
@@ -175,6 +176,7 @@ module.exports = function (app) {
 
     //报价单模块
     app.post('/updateOfferSheetById', offerSheetService.updateOfferSheetById);
+    app.post('/offerSheetNewMaterial', offerSheetService.offerSheetNewMaterial);
     app.get('/qryOfferSheet', offerSheetService.qryOfferSheet);
     app.get('/addOfferSheetchoose', offerSheetService.addOfferSheetchoose);
     app.get('/chooseMaterial', offerSheetService.intiMaterial);

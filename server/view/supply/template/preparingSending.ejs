@@ -21,6 +21,10 @@
     <% for(var i = 0;i < ordersDetail[0].orderItem.length;i++) {
 
         var subItem = ordersDetail[0].orderItem[i];
+        if(subItem.number<1)
+        {
+            continue;
+        }
     %>
     <li class="tan">
         <div class="name" style="text-align:left;width:25%;display:block;"><%= subItem.materialName %></div>

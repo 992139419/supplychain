@@ -560,6 +560,39 @@ exports.updatePublicOffer = function (req, res) {
     });
 }
 
+exports.offerSheetNewMaterial=function(req,res){
+    var offerSheetId = req.body.offerSheetId;
+    //var supplyName = req.body.supplyName;
+    var itemName = req.body.itemName;
+    var itemPrice = req.body.itemPrice;
+    var itemNumber = req.body.itemNumber;
+    var itemUnit = req.body.itemUnit;
+    var itemMemo = req.body.itemMemo;
+    //openId: _openId,
+    //var offerSheetData;
+    //return res.json({offerSheetId: offerSheetId,itemName:itemName,itemPrice:itemPrice,itemNumber:itemNumber,itemUnit:itemUnit,itemMemo:itemMemo});
+    mongodbDao.findById(offerSheetId, 'OfferSheet', function (err, offerSheetData) {
+        if (!err && offerSheetData) {
+            offerSheetData.materials.push({
+                material_id: "0",
+                material_name: itemName,
+                price: itemPrice,
+                unit: itemUnit,
+                remark: itemMemo,
+                isOffer: '1'
+            });
+            //return res.json(offerSheetData);
+            mongodbDao.update({_id: new BSON.ObjectID(offerSheetId)},
+                offerSheetData, 'OfferSheet', function (err, result) {
+                if (result == 1) {
+                    return res.json({code: 100});
+                }
+            });
+        } else {
+            return res.json({code: 102});
+        }
+    });
+}
 
 /**
  * 新建报价单
