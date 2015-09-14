@@ -534,6 +534,19 @@ function addOfferSheetItem(id,name) {
     var itemNumber = document.getElementById('itemNumberId').value;
     var itemUnit = document.getElementById('itemUnitId').value;
     var itemMemo = document.getElementById('itemMemoId').value;
+    var re = /^[0-9]+.?[0-9]*$/;   //判断字符串是否为数字     //判断正整数 /^[1-9]+[0-9]*]*$/
+    if (!re.test(itemPrice))
+    {
+        alert("请输入数字");
+        //document.getElementById('itemPriceId').value="";
+        return false;
+    }
+    if (!re.test(itemNumber))
+    {
+        alert("请输入数字");
+        //document.getElementById('itemNumberId').value="";
+        return false;
+    }
     var offerSheetItemData = {
         openId: _openId,
         offerSheetId:offerSheetId,
