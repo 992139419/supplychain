@@ -587,6 +587,8 @@ function getOrderNo() {
 
 exports.getOrderNo = getOrderNo;
 
+exports.getNewMaterialNo = getOrderNo;
+
 
 //订单模板发送
 function sendOrderTemplate(orderId) {

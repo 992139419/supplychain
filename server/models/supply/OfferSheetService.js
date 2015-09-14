@@ -573,13 +573,15 @@ exports.offerSheetNewMaterial=function(req,res){
     //return res.json({offerSheetId: offerSheetId,itemName:itemName,itemPrice:itemPrice,itemNumber:itemNumber,itemUnit:itemUnit,itemMemo:itemMemo});
     mongodbDao.findById(offerSheetId, 'OfferSheet', function (err, offerSheetData) {
         if (!err && offerSheetData) {
+            var newmaterialno=commonService.getNewMaterialNo();
             offerSheetData.materials.push({
-                material_id: "0",
+                material_id: newmaterialno,
                 material_name: itemName,
                 price: itemPrice,
                 unit: itemUnit,
                 remark: itemMemo,
-                isOffer: '1'
+                isOffer: '1',
+                newitem: '1'
             });
             //return res.json(offerSheetData);
             mongodbDao.update({_id: new BSON.ObjectID(offerSheetId)},

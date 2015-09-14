@@ -33,7 +33,7 @@
                                  data-target="#tile-collapse-<%= material.material_id %>"
                                  data-toggle="tile">
                                 <ul>
-                                    <li class="tan" style="height: 88px; <% if(material.material_id=="0"){ %>
+                                    <li class="tan" style="height: 88px; <% if(!!material.newitem){ %>
                                         background-color:antiquewhite; <%}%>" >
                                         <div style="width: 25%;display:block;"
                                              class="name"><%= material.material_name %></div>
