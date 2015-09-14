@@ -44,8 +44,29 @@
                                                  style="margin-left: 30px;"> <%= material.unit %></div>
                                         </div>
                                         <div style="width: 25%;">
+                                            <%
+                                                var hasnumber=false;
+                                            if(!!orderItem)
+                                            {
+
+                                                JSON.parse(orderItem).forEach(function(item ){
+                                                //console.info("item.materialId:"+item.materialId+"material.material_id:"+material.material_id);
+                                                if(item.materialId==material.material_id)
+                                                {
+                                            %>
+                                            <div name="number" id="<%= material.material_id %>"
+                                                 class="number" style="margin-top: -7px;"><%= item.number %></div>
+                                            <%
+                                                    hasnumber=true;
+                                                    return;
+                                                }
+                                            });
+                                            }
+                                            if(!hasnumber){
+                                            %>
                                             <div name="number" id="<%= material.material_id %>"
                                                  class="number" style="margin-top: -7px;"><%= material.number ? material.number : '0.00' %></div>
+                                            <%}%>
                                         </div>
                                         <div class="c"></div>
                                         <div class="beizhu" style="font-size: 12px;width: auto;
@@ -116,7 +137,7 @@ padding-left: 10px;
         订单总额：￥<span id="sum" class="pricew"> 0</span>
     </div>
     <div class="c"></div>
-    <div class="new_add_template_7"onclick="javaScript:pageLoad('/addOfferSheetItem?offerSheetId=<%= JSON.parse(offerSheet)._id %>&supplyName=<%= JSON.parse(offerSheet).supplyName %>')">
+    <div class="new_add_template_7"onclick="addOfferSheetItem()">
         <div class="new_add_template_7_q">
         </div>
         <div class="new_add_template_7_w">
@@ -197,6 +218,35 @@ padding-left: 10px;
                 document.querySelectorAll('.pricew')[0].innerHTML = pricew
 
             }
+        }
+
+        function addOfferSheetItem() {
+            var offerSheet = JSON.parse('<%-offerSheet%>');
+            var numbers = document.getElementsByName('number');
+            var orderItem = new Array();
+            for (var i = 0, size = numbers.length; i < size; i++) {
+                if(parseFloat(numbers[i].innerText)==0)
+                {
+                    continue;
+                }
+                var newmaterial = {
+                    materialId: numbers[i].id,
+                    number: numbers[i].innerText
+                }
+                orderItem.push(newmaterial);
+
+            }
+            //跳转到下单页面
+            //alert(offerSheet._id);
+            //alert(JSON.stringify(orderItem));
+            var url = '/addOfferSheetItem';
+            var data = {
+                orderItem: JSON.stringify(orderItem),
+                offerSheetId: offerSheet._id,
+                supplyName: offerSheet.supplyName
+
+            }
+            pageLoadPost(url, data, '新增食材', false, 'post');
         }
 
         function commitOrder() {

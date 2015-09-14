@@ -523,53 +523,6 @@ function login() {
     });
 }
 
-//添加订单的临时项目
-//by osy
-function addOfferSheetItem(id,name) {
-    var offerSheetId = id;
-    var supplyName = name;
-    //alert(id);return;
-    var itemName = document.getElementById('itemNameId').value;
-    var itemPrice = document.getElementById('itemPriceId').value;
-    var itemNumber = document.getElementById('itemNumberId').value;
-    var itemUnit = document.getElementById('itemUnitId').value;
-    var itemMemo = document.getElementById('itemMemoId').value;
-    var re = /^[0-9]+.?[0-9]*$/;   //判断字符串是否为数字     //判断正整数 /^[1-9]+[0-9]*]*$/
-    if (!re.test(itemPrice))
-    {
-        alert("请输入数字");
-        //document.getElementById('itemPriceId').value="";
-        return false;
-    }
-    if (!re.test(itemNumber))
-    {
-        alert("请输入数字");
-        //document.getElementById('itemNumberId').value="";
-        return false;
-    }
-    var offerSheetItemData = {
-        openId: _openId,
-        offerSheetId:offerSheetId,
-        //supplyName:supplyName,
-        itemName: itemName,
-        itemPrice: itemPrice,
-        itemNumber: itemNumber,
-        itemUnit: itemUnit,
-        itemMemo: itemMemo
-    };
-    //alert(JSON.stringify(offerSheetItemData));return;
-    $.post("/offerSheetNewMaterial", offerSheetItemData, function (data) {
-        var code = data.code;
-        if (code == 100) {
-            //待验
-            alert("添加成功");
-            //window.location.href = "/resIndex?openId=" + _openId;
-            pageLoad('/qryOfferSheetById?offerSheetId='+offerSheetId+'&supplyName='+supplyName);
-        } else{
-            alert("添加失败");
-        }
-    });
-}
 
 
 //添加餐厅信息

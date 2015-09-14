@@ -38,6 +38,60 @@
 </div>
 </body>
 <script>
-    //document.title="xxxx平台系统登录";
+    //添加订单的临时项目
+    //by osy
+    function addOfferSheetItem(id,name) {
+        var orderItem=JSON.parse('<%-orderItem%>');
+        //var orderItem='<%-orderItem%>';
+        var offerSheetId = id;
+        var supplyName = name;
+        //alert(id);return;
+        var itemName = document.getElementById('itemNameId').value;
+        var itemPrice = document.getElementById('itemPriceId').value;
+        var itemNumber = document.getElementById('itemNumberId').value;
+        var itemUnit = document.getElementById('itemUnitId').value;
+        var itemMemo = document.getElementById('itemMemoId').value;
+        var re = /^[0-9]+.?[0-9]*$/;   //判断字符串是否为数字     //判断正整数 /^[1-9]+[0-9]*]*$/
+        if (!re.test(itemPrice))
+        {
+            alert("请输入数字");
+            //document.getElementById('itemPriceId').value="";
+            return false;
+        }
+        if (!re.test(itemNumber))
+        {
+            alert("请输入数字");
+            //document.getElementById('itemNumberId').value="";
+            return false;
+        }
+        var offerSheetItemData = {
+            openId: _openId,
+            offerSheetId:offerSheetId,
+            //supplyName:supplyName,
+            itemName: itemName,
+            itemPrice: itemPrice,
+            itemNumber: itemNumber,
+            itemUnit: itemUnit,
+            itemMemo: itemMemo
+        };
+
+        //alert(JSON.stringify(offerSheetItemData));return;
+        $.post("/offerSheetNewMaterial", offerSheetItemData, function (data) {
+            var code = data.code;
+            if (code == 100) {
+                //待验
+                alert("添加成功");
+                orderItem.push({materialId:data.mid,number:itemNumber});
+                //window.location.href = "/resIndex?openId=" + _openId;
+                pageLoadPost('/qryOfferSheetById?offerSheetId='+offerSheetId+'&supplyName='+supplyName,
+                        {
+                            orderItem:JSON.stringify(orderItem)
+                        },"",false,'post');
+            } else{
+                alert("添加失败");
+            }
+        });
+    }
+
 </script>
 </html>

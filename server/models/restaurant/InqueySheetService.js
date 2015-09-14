@@ -372,10 +372,12 @@ exports.addOfferSheetItem = function (req, res) {
         if (!userInfo) {
             return res.render('restaurant/login');
         } else {
-            var offerSheetId = req.query.offerSheetId;
-            var supplyName = req.query.supplyName;
+            var orderItem = req.body.orderItem;
+            var offerSheetId = req.body.offerSheetId;
+            var supplyName = req.body.supplyName;
             res.render('restaurant/inqueySheet/addOfferSheetItem',
                 {openId: userInfo.openId,
+                    orderItem:orderItem,
                     offerSheetId:offerSheetId,
                     supplyName:supplyName});
         }
@@ -397,6 +399,8 @@ exports.qryOfferSheetById = function (req, res) {
             var supplyName = req.query.supplyName;
             var openId = req.query.openId;
             var isHead = req.query.isHead ? req.query.isHead : 'false';
+            var orderItem = req.body.orderItem;
+            console.info("orderItem:"+orderItem);
             Q.nfcall(mongodbDao.queryBy, {_id: new BSON.ObjectID(offerSheetId)}, 'OfferSheet').then(function (offerSheets) {
                 if (offerSheets) {
                     var offerSheet = offerSheets[0];
@@ -424,6 +428,7 @@ exports.qryOfferSheetById = function (req, res) {
                         res.render('restaurant/inqueySheet/list_confirm_p07', {
                             title: '下单',
                             offerSheet: JSON.stringify(offerSheet),
+                            orderItem:orderItem,
                             supplyName: supplyName,
                             openId: openId,
                             isHead: isHead

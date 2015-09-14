@@ -581,13 +581,14 @@ exports.offerSheetNewMaterial=function(req,res){
                 unit: itemUnit,
                 remark: itemMemo,
                 isOffer: '1',
+                //number: itemNumber,
                 newitem: '1'
             });
             //return res.json(offerSheetData);
             mongodbDao.update({_id: new BSON.ObjectID(offerSheetId)},
                 offerSheetData, 'OfferSheet', function (err, result) {
                 if (result == 1) {
-                    return res.json({code: 100});
+                    return res.json({code: 100,mid:newmaterialno});
                 }
             });
         } else {
