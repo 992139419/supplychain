@@ -399,6 +399,11 @@
             $("#receiverInfo").html('');
             for (var i = 0; i < data.orderItem.length; i++) {
                 var obj = data.orderItem[i];
+                if(parseInt(data.orderItem[i].number)==0)
+                {
+                    //alert(0);
+                    continue;
+                }
                 var materialPrice = obj.materialPrice ? obj.materialPrice : '0';
                 var number = obj.number ? obj.number : '0';
                 orderItems += '<tr>';
