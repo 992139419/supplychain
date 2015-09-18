@@ -247,7 +247,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="printlist" onclick="printlist()">打印</button>
+                <!--<button type="button" class="btn btn-primary" id="printlist" onclick="printlist()">打印</button>-->
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary">确定</button>
             </div>
@@ -382,8 +382,8 @@
                 orderItems += '<div style="text-align: right;float: right;margin-top: 50px;margin-right: -90px;">实收总金额:' + paidIn_orderSum + '</div>';
             }
             orderItems += '<input type="text" name="orderId" style="display:none" value=' + orderId + '>';
-            orderItems += '<button class="btn btn-danger" id="sumbit" type="submit">导出清单</button>';
-            //orderItems += '<button class="btn btn-danger" id="printlist" type="button" onclick="printlist()">打印清单</button>';
+            orderItems += '<button class="btn btn-danger" style="margin-right: 20px;" id="sumbit" type="submit">导出清单</button>';
+            orderItems += '<button class="btn btn-danger" id="printlist" type="button" onclick="window.open(\'/cmsPrintView?orderId='+orderId+'\', \'_blank\');\">打印清单</button>';
             orderItems += '</form>';
 
             $('#receiverInfo').append(orderItems);
