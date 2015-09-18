@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/cms/js/jquery-2.1.1.js"></script>
+    <script src="/cms/js/bootstrap.min.js"></script>
+    <script src="/cms/js/respond.min.js"></script>
+    <script src="/cms/js/decimal.js" type="text/javascript"></script>
+    <link href="/cms/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/cms/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/cms/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="/cms/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+    <link href="/cms/css/style.css" rel="stylesheet">
+    <title>订单打印</title>
+</head>
+<body style="background-color: transparent !important;">
+<div style="margin: 20px;">
+    <button type="button" style="float:right;" class="btn btn-default" id="printlist" onclick="printlist()">打印</button>
+    <div id="receiverInfo">
+
+        <div style=" width: 100%;border-radius: 5px">
+
+            <div style="width: 100%;padding: 10px 10px; border-bottom: 1px solid #F8F8F8">
+                <span style="font-size: 15px;float: left;margin-bottom: 5px ">收货人信息</span>
+                <br>
+
+                <div style="clear: both;width: 100%"></div>
+                收货人：<span id="name">王林海</span><br>
+                地&nbsp;&nbsp;址：<span id="add">上海长宁区</span><br>
+                手机号码：<span id="phone">123456</span><br>
+            </div>
+
+            <div style="width: 100%;padding: 10px 10px; border-bottom: 1px solid #F8F8F8">
+                <span style="font-size: 15px;float: left;margin-bottom: 5px ">商品清单</span>
+                <br>
+
+                <div style="clear: both;width: 100%"></div>
+                <div id='orderItem' class="wrapper wrapper-content animated fadeInRight">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        showOrderDetial('<%= orderId %>');
+
+    });
+
+
+    function showOrderDetial(orderId) {
+        $.post('/cmsGetOrderDetails', {orderId: orderId}, function (data) {
+            var orderStatusDesc;
+            if (data.orderStatus == 'R') {
+                orderStatusDesc = '已验收';
+            } else if (data.orderStatus == 'P') {
+                orderStatusDesc = '新订单';
+            } else if (data.orderStatus == 'N') {
+                orderStatusDesc = '已下单';
+            } else if (data.orderStatus == 'S') {
+                orderStatusDesc = '配送中';
+            }
+            if (data.orderStatus == 'R') {
+                $('#name').text(data.receiver);
+            }
+            $('#add').text(data.receiverAddress);
+            $('#phone').text(data.mobile);
+            var orderSum = 0;
+            var paidIn_orderSum = 0;
+            ;
+            var orderItems = '<div style=" width: 100%;border-radius: 5px"> <div style="width: 100%;padding: 10px 10px; border-bottom: 1px solid #F8F8F8">';
+            orderItems += '<span style="font-size: 15px;float: left;margin-bottom: 5px ">收货信息</span>';
+            orderItems += '<br>';
+            orderItems += '<div style="clear: both;width: 100%"></div>';
+            orderItems += '订单编号：<span id="name">' + data.orderNo + '</span><br>';
+            orderItems += '收货供应商：<span id="supplyName">' + data.supplyName + '</span><br>';
+            if (data.orderStatus == 'R') {
+                orderItems += '收货人：<span id="name">' + data.receiver + '</span><br>';
+            }
+            orderItems += '地&nbsp;&nbsp;址：<span id="add">' + data.receiverAddress + '</span><br>';
+            orderItems += '手机号码：<span id="phone">' + data.mobile + '</span><br>';
+            orderItems += '订单状态:<span>' + orderStatusDesc + '<span><br>'
+            orderItems += '</div>';
+            orderItems += '<form class="form-inline" action="/printOrder" method="post"> <table class="table table-bordered">';
+            orderItems += '<thead>';
+            orderItems += '<tr>';
+            orderItems += '<th>商品编号</th>';
+            orderItems += '<th>商品名称</th>';
+            orderItems += '<th>商品单价</th>';
+            orderItems += '<th>商品单位</th>';
+            orderItems += '<th>订购数量</th>';
+            orderItems += '<th>备注说明</th>';
+            if (data.orderStatus === 'R') {
+                orderItems += '<th>实收数量</th>';
+            }
+            orderItems += '</tr>';
+            orderItems += '</thead>';
+            orderItems += '</tbody>';
+
+            $("#receiverInfo").html('');
+            for (var i = 0; i < data.orderItem.length; i++) {
+                var obj = data.orderItem[i];
+                if(parseInt(data.orderItem[i].number)==0)
+                {
+                    //alert(0);
+                    continue;
+                }
+                var materialPrice = obj.materialPrice ? obj.materialPrice : '0';
+                var number = obj.number ? obj.number : '0';
+                orderItems += '<tr>';
+                orderItems += '<td>' + obj.materialId + '</td>';
+                orderItems += '<td>' + obj.materialName + '</td>';
+                orderItems += '<td>' + materialPrice + '</td>';
+                orderItems += '<td>' + obj.unit + '</td>';
+                orderItems += '<td>' + number + '</td>';
+                orderItems += '<td>' + obj.remark + '</td>';
+                if (data.orderStatus === 'R') {
+                    var paidIn = obj.paidIn ? obj.paidIn : "0";
+                    orderItems += '<td>' + paidIn + '</td>';
+                }
+                orderItems += '</tr>';
+
+                var sum = (new Decimal(number).times(new Decimal(materialPrice)));
+                orderSum = new Decimal(orderSum).plus(new Decimal(sum));
+                if (data.orderStatus === 'R') {
+                    var paidInSum = (new Decimal(obj.paidIn ? obj.paidIn : '0').times(new Decimal(materialPrice)));
+                    paidIn_orderSum = new Decimal(paidIn_orderSum).plus(new Decimal(paidInSum));
+                }
+
+            }
+            orderItems += '</tbody>';
+            orderItems += '</table>';
+            orderItems += '<div style="text-align: right;float: right;margin-top: 20px;">订购总金额:' + orderSum + '</div>';
+            if (data.orderStatus === 'R') {
+                orderItems += '<div style="text-align: right;float: right;margin-top: 50px;margin-right: -90px;">实收总金额:' + paidIn_orderSum + '</div>';
+            }
+            orderItems += '<input type="text" name="orderId" style="display:none" value=' + orderId + '>';
+            orderItems += '</form>';
+
+            $('#receiverInfo').append(orderItems);
+        });
+    }
+
+    function printlist(obj) {
+        $("#printlist").hide();
+        window.print();
+    }
+
+</script>
+</html>

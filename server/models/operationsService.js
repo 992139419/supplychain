@@ -1310,6 +1310,20 @@ exports.cmsOrderItemTotalList = function (req, res) {
     });
 }
 
+exports.cmsPrintView = function (req, res) {
+
+    var orderId = req.query.orderId;
+    userPromise(req, res).then(function (userInfo) {
+        if (!userInfo) {
+            return res.json({status: 200});
+        } else {
+            return res.render('operations/printView', {
+                orderId: orderId
+            });
+        }
+    });
+}
+
 
 exports.querychainStored = function (req, res) {
     var headId = req.body.id;

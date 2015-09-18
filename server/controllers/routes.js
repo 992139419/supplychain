@@ -73,6 +73,7 @@ module.exports = function (app) {
     app.get('/cmsGetMembers',operationsService.getMembersForResturant);
     app.post('/cmsDisMember',operationsService.cmsDisMember);
     app.post('/cmsAppvCustMe',operationsService.cmsAddCustMetiral);
+    app.get('/cmsPrintView',operationsService.cmsPrintView);
     app.post('/data2Excel',operationsService.toexcel);
     app.post('/printOrder',operationsService.printOrder);
     app.post('/appvCustMe',operationsService.appvCustMe);
