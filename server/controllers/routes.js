@@ -57,7 +57,9 @@ module.exports = function (app) {
     app.post('/cmsAddCategory', operationsService.cmsAddCategory);
     app.get('/cmsQueryOrder', operationsService.cmsQueryOrder);
     app.get('/cmsOrderItemList', operationsService.cmsOrderItemList);
+    app.get('/cmsOrderItemTotalList', operationsService.cmsOrderItemTotalList);
     app.post('/getOrderItem', operationsService.fetchOrderItem);
+    app.post('/getOrderItemTotal', operationsService.fetchOrderItemTotal);
     app.get('/cmsShowMateriesInfo', operationsService.cmsShowMateriesInfo);
     app.get('/cmsGetCategoryDetail',operationsService.cmsShowCategoryInfo);
     app.get('/cmsTemplateMng', operationsService.cmsTemplateMng);

@@ -992,7 +992,13 @@ exports.printOrder = function (req, res) {
                     var seq = 0, sum = 0, paidIn_orderSum = 0;
                     if (data && data.length >= 1) {
                         for (var i = 0; i < data.length; i++) {
+
                             var obj = data[i];
+                            if(parseInt(obj.number)==0)
+                            {
+                                //alert(0);
+                                continue;
+                            }
                             var row = [];
                             var materialName = obj.materialName;
                             var materialPrice = !obj.materialPrice ? '0' : obj.materialPrice;
@@ -1285,6 +1291,26 @@ exports.cmsOrderItemList = function (req, res) {
 }
 
 
+exports.cmsOrderItemTotalList = function (req, res) {
+
+    var name = req.query.supName;
+    var orderStatus = '';
+    userPromise(req, res).then(function (userInfo) {
+        if (!userInfo) {
+            return res.json({status: 200});
+        } else {
+
+            return res.render('operations/orderItemTotalList', {
+                userInfo: userInfo,
+                supData: [userInfo.mechanism_name],
+                parentId: 3,
+                childId: 34
+            });
+        }
+    });
+}
+
+
 exports.querychainStored = function (req, res) {
     var headId = req.body.id;
     var restruantArray = new Array();
@@ -1326,6 +1352,24 @@ exports.fetchOrderItem = function (req, res) {
                 }
             }
             getOrderItemsFormDB(orderStatus, startDate, endDate, userInfo, sname, resname, supId, resId, function (data) {
+                return res.json(data);
+            });
+
+        }
+    });
+}
+
+exports.fetchOrderItemTotal = function (req, res) {
+
+    var startDate = req.body.pStartDate;
+    var endDate = req.body.pEndDate;
+    var orderStatus = 'N';
+    userPromise(req, res).then(function (userInfo) {
+        if (!userInfo) {
+            return res.json({status: 200});
+        } else {
+
+            getOrderItemsTotalFormDB(orderStatus, startDate, endDate,userInfo, function (data) {
                 return res.json(data);
             });
 
@@ -1444,6 +1488,8 @@ function getOrderItemsFormDB(orderStatus, pStartDate, pEndDate, userInfo, pName,
                     orderItem.materialName = subObj.materialName;
                     orderItem.price = subObj.materialPrice;
                     orderItem.count = subObj.number;
+                    orderItem.unit = subObj.unit;
+                    orderItem.remark = subObj.remark;
                     orderItem.paidIn = subObj.paidIn ? subObj.paidIn : '0';
                     var paidIn_subSum;
                     paidIn_subSum = Decimal(orderItem.price).mul(orderItem.paidIn);
@@ -1457,7 +1503,9 @@ function getOrderItemsFormDB(orderStatus, pStartDate, pEndDate, userInfo, pName,
             }
             var arrayId = new Array();
             orderItemList.forEach(function (orderItem) {
-                arrayId.push(new BSON.ObjectID(orderItem.oid));
+                if(orderItem.oid.length==12) {
+                    arrayId.push(new BSON.ObjectID(orderItem.oid));
+                }
             });
 
             mongodbDao.queryAdv('Material', {_id: {$in: arrayId}}, {
@@ -1483,6 +1531,121 @@ function getOrderItemsFormDB(orderStatus, pStartDate, pEndDate, userInfo, pName,
         });
     });
 
+
+}
+
+function getOrderItemsTotalFormDB(orderStatus, pStartDate, pEndDate, userInfo, callback) {
+
+    var startDate = pStartDate;
+    var endDate = pEndDate;
+    // 每页显示10条记录
+    var supplyData = {};
+    //var enddate="2016-06-30"
+    //var startDate="2015-06-24";
+
+    var supplyId;
+    if (userInfo.userType == 2) {
+        supplyId = userInfo.mechanism_id;
+    }
+    console.info('supplyId:' + supplyId);
+
+    if (supplyId && supplyId != 'undefined') {
+        supplyData.toSupply = supplyId;
+    }
+    if (startDate || endDate) {
+        supplyData.createdAt = {};
+        if (startDate) {
+            startDate = new Date(Date.parse(startDate.replace(/-/g, "/"))); //转换成Data();
+            supplyData.createdAt.$gte = startDate;
+        }
+        if (endDate) {
+            endDate = new Date(Date.parse(endDate.replace(/-/g, "/"))); //转换成Data();
+            endDate.setDate(endDate.getDate() + 1);
+            supplyData.createdAt.$lte = endDate;
+        }
+    }
+    if (orderStatus && orderStatus != 'All') {
+        supplyData.orderStatus = orderStatus;
+    }
+    var totalAmt = 0;
+    var respObj = {};
+    var paidIn_totalSum = 0;
+    var orderItemList = [];
+    var orderItem = {oid: "",materialName:"", unit: "", remark:"",
+        restruants:[{restruantId:"",restruantName:"",number:"",price:"",sum:""}],
+        totalnumber:"",totalprice:"",totalsum:""};
+    var restruantlist=[];//[{restruantid:"",restruantname:""}]
+
+    console.info('supplyData:' + JSON.stringify(supplyData));
+    mongodbDao.queryBy(supplyData, 'Orders', function (err, data) {
+        if (!!err) {
+            logger.error("error: " + err);
+            return reject(err);
+        }
+        var totalSum = 0;
+        for (var i = 0; i < data.length; i++) {
+            var obj = data[i];
+            if (obj.createdAt) {
+                obj.createdAt = commonUtil.formatDate(obj.createdAt, 'yyyy-M-d');
+            }
+            for (var j = 0; j < obj.orderItem.length; j++) {
+                orderItem = {};
+                var subObj = obj.orderItem[j];
+                if(!!orderItemList.find({"oid":subObj.materialId})) {//已有菜品
+                    if(!!orderItemList.restruants.find({"restruantId":subObj.mechanism_id}))//更新餐厅
+                    {
+
+                    }else{//新餐厅
+
+                    }
+                }else{//新菜品
+                    orderItem.oid = subObj.materialId;
+                    orderItem.materialName = subObj.materialName;
+                    orderItem.price = subObj.materialPrice;
+                    orderItem.count = subObj.number;
+                    orderItem.paidIn = subObj.paidIn ? subObj.paidIn : '0';
+                    var paidIn_subSum;
+                    paidIn_subSum = Decimal(orderItem.price).mul(orderItem.paidIn);
+                    paidIn_totalSum = Decimal(totalSum).add(paidIn_subSum);
+                    var subSum = Decimal(orderItem.price).mul(orderItem.count);
+                    totalSum = Decimal(totalSum).add(subSum);
+                    if (!isExisting(orderItemList, orderItem)) {
+                        orderItemList.push(orderItem);
+                    }
+                }
+                //餐厅列表
+                if(!restruantlist.find({"restruantid":subObj.mechanism_id}))//没找则加入
+                {
+                    restruantlist.push({"restruantid":subObj.mechanism_id,"restruantname":subObj.mechanism_name});
+                }
+            }
+        }
+        var arrayId = new Array();
+        orderItemList.forEach(function (orderItem) {
+            arrayId.push(new BSON.ObjectID(orderItem.oid));
+        });
+
+        mongodbDao.queryAdv('Material', {_id: {$in: arrayId}}, {
+            _id: 1,
+            remark: 1,
+            unit: 1
+        }, {_id: 1}, function (err, data) {
+            data.forEach(function (material) {
+                orderItemList.forEach(function (orderItem) {
+                    if (material._id.toString() === orderItem.oid) {
+                        orderItem.unit = material.unit;
+                        orderItem.remark = material.remark;
+                    }
+                });
+            });
+            respObj.orderItemList = orderItemList;
+            respObj.totalAmt = totalSum;
+            respObj.paidIn_totalSum = paidIn_totalSum;
+            console.log('Total Amt is :' + totalSum);
+            console.log('paidIn_totalSum Amt is :' + paidIn_totalSum);
+            callback(respObj);
+        });
+    });
 
 }
 

@@ -196,7 +196,7 @@
 </div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog " style="width: 80%!important;" role="document">
+    <div class="modal-dialog " style="width: 100%!important;" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -380,7 +380,8 @@
                 orderItems += '<div style="text-align: right;float: right;margin-top: 50px;margin-right: -90px;">实收总金额:' + paidIn_orderSum + '</div>';
             }
             orderItems += '<input type="text" name="orderId" style="display:none" value=' + orderId + '>';
-            orderItems += '<button class="btn btn-danger" id="sumbit" type="submit">打印清单</button>';
+            orderItems += '<button class="btn btn-danger" id="sumbit" type="submit">导出清单</button>';
+            orderItems += '<button class="btn btn-danger" id="printlist" type="button" onclick="printlist()">打印清单</button>';
             orderItems += '</form>';
 
             $('#receiverInfo').append(orderItems);
@@ -390,6 +391,10 @@
     }
     function getValue(obj) {
         $(obj).parent().parent().parent().parent().children('.form-control').val(obj.innerHTML);
+    }
+
+    function printlist() {
+        window.open($('#receiverInfo').innerHTML, "打印", "height=100%, width=100%, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no");
     }
 
 </script>
