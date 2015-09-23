@@ -81,27 +81,10 @@
 
     function getItemByPageIdx(currentIdx) {
 
-        var data = $('#supName').val();
         var startDate = $('#startdate').val();
         var endDate = $('#enddate').val();
-        var restName = $('#resName').val();
-        var resId = $('#resId').val();
-        var supId = $('#supId').val();
-        var orderStatus = $("#orderStatus").val();
-        var fenResId;
-        if ($('#fenResId')) {
-            fenResId = $('#fenResId').val();
-        }
-        data = $.trim(data);
-        if (data.length < 1 && restName.length < 1) {
-            $('#errorSup').show();
-            return;
-//        } else if (data && restName && data.length >= 1 && restName.length >= 1) {
-//            $('#errorSup').text('供应商和餐厅只能选一个');
-//            $('#errorSup').show();
-//            return;
-//        }
-        } else if (startDate.length < 1) {
+        var orderStatus ="N";
+        if (startDate.length < 1) {
             $('#errStarDate').text('请输入开始时间时间');
             $('#errStarDate').show();
             return;
@@ -117,25 +100,20 @@
         } else {
             $('#errEndDate').hide();
             $('#errStarDate').hide();
-            $('#errorSup').hide();
             var numberForPage = 10, pageCount = 0;
             $("#itemColl").html('');
 
             $.post("/getOrderItemTotal", {
-                supName: data,
                 pEndDate: endDate,
                 pStartDate: startDate,
-                resName: restName,
-                resId: resId,
-                supId: supId,
-                fenResId: fenResId,
                 orderStatus: orderStatus
             }, function (respObj) {
                 if (!currentIdx) {
                     currentIdx = 0;
 
                 }
-                data = respObj.orderItemList;
+                data = respObj.materialsItemList;
+                thdata=respObj.restruantlist;
                 currentIdx = parseInt(currentIdx)
                 var nextPageIdx = currentIdx + 1;
                 var prevPageIdx = currentIdx - 1;
@@ -149,14 +127,14 @@
                 result += '<thead>';
                 result += '<tr>';
                 result += '<th>#</th>';
-                result += '<th>商品名称</th>';
-                result += '<th>商品单位</th>';
-                result += '<th>备注说明</th>';
-                result += '<th>平均单价</th>';
-                result += '<th>数量</th>';
-                result += '<th>实收数量</th>';
-                result += '<th>订购总金额</th>';
-                result += '<th>实收总金额</th>';
+                result += '<th>食材</th>';
+                result += '<th>单位</th>';
+                result += '<th>备注</th>';
+                for(var thi=0;thi<thdata.length;thi++)
+                {
+                    result += '<th>'+thdata[thi].restruantName+'</th>';
+                }
+                result += '<th>总计</th>';
                 result += '</tr>';
                 result += '</thead>';
                 result += '<tbody>';
@@ -165,33 +143,33 @@
                     seq++
                     var obj = data[i + startIdx];
 
-                    var price = !obj.price ? 0 : obj.price;
-                    obj.count = !obj.count.toString() ? 0 : obj.count.toString();
-                    obj.paidIn = !obj.paidIn ? 0 : obj.paidIn.toString();
-                    var sum = new Decimal(obj.price).times(new Decimal(obj.count));
-                    var paidIn_subSum = new Decimal(obj.price).times(new Decimal(obj.paidIn));
                     result += '<tr>';
                     result += '<td>' + seq + '</td>';
                     result += '<td>' + obj.materialName + '</td>';
                     result += '<td>' + obj.unit + '</td>';
                     result += '<td>' + obj.remark + '</td>';
-                    result += '<td>' + price + '</td>';
-                    result += '<td>' + obj.count + '</td>';
-                    result += '<td>' + obj.paidIn + '</td>';
-                    result += '<td>' + sum + '</td>';
-                    result += '<td>' + paidIn_subSum + '</td>';
-                    totalAmt = new Decimal(totalAmt).plus(new Decimal(sum));
-                    paidIn_totalAmt = new Decimal(paidIn_totalAmt).plus(new Decimal(paidIn_subSum));
+                    for(var tri=0;tri<thdata.length;tri++)
+                    {
+                        var hasmatch=false;
+                        for(var itemi=0;itemi<obj.restruants.length;itemi++)
+                        {
+                            if(obj.restruants[itemi].restruantId==thdata[tri].restruantId)
+                            {
+                                result += '<td>' + obj.restruants[itemi].number+"/"+obj.restruants[itemi].price+"/"+obj.restruants[itemi].sum + '</td>';
+                                hasmatch=true;
+                                break;
+                            }
+                        }
+                        if(!hasmatch)
+                        {
+                            result += '<td>0/0.00/0.00</td>';
+                        }
+                    }
+                    result += '<td>' + obj.totalnumber+"/"+obj.totalprice+"/"+obj.totalsum + '</td>';
+                    result += '</tr>';
                 }
                 result += '</tbody>'
                 result += '</table>'
-
-                result += '<div id="pageIdx" class="pagination" style="width:100%">' +
-                        '<span style="float: left; line-height: 28px;">共有' + data.length + '条记录　</span>' +
-                        '<span style="float: right; line-height: 28px; padding-right: 80px;">订购总金额:' + totalAmt + '</span>';
-                result += '<div id="pageIdx" class="pagination" style="width:100%">' +
-                        '<span style="float: left; line-height: 28px;">共有' + data.length + '条记录　</span>' +
-                        '<span style="float: right; line-height: 28px; padding-right: 80px;">实收总金额:' + paidIn_totalAmt + '</span>';
 
                 result += '<a href="javascript:getItemByPageIdx(0)" class="pagination-q" style="width:4rem">首页</a>';
                 if (currentIdx > 0) {

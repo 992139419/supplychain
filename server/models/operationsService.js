@@ -1548,6 +1548,53 @@ function getOrderItemsFormDB(orderStatus, pStartDate, pEndDate, userInfo, pName,
 
 }
 
+//materialsItem = {oid: "",materialName:"", unit: "", remark:"",
+//    restruants:[{restruantId:"",restruantName:"",number:"",price:"",sum:""}],
+//    totalnumber:"",totalprice:"",totalsum:""};
+function MaterialsItemIn(materialsItemList, materialsItem,restruantId,restruantName) {
+
+    var hasMaterial = false;
+    var hasRestruant = false;
+    for (var i = 0; i < materialsItemList.length; i++) {
+        var obj = materialsItemList[i];
+        if (obj.oid == materialsItem.oid &&
+            obj.unit == materialsItem.unit &&
+            obj.remark == materialsItem.remark) {
+            //update item and total
+            for (var resi = 0; resi < obj.restruants.length; resi++) {
+                //var subObj = obj.restruants[i];
+                if (obj.restruants[resi].restruantId == restruantId) {
+                    materialsItemList[i].restruants[resi].number=materialsItem.number+materialsItemList[i].restruants[resi].number;
+                    materialsItemList[i].restruants[resi].sum=materialsItem.number*materialsItem.materialPrice+materialsItemList[i].restruants[resi].sum;
+                    materialsItemList[i].restruants[resi].price=(parseFloat(materialsItemList[i].restruants[resi].sum)/parseFloat(materialsItemList[i].restruants[resi].number)).toFixed(2);
+                    hasRestruant=true;
+                }
+            }
+            if(!hasRestruant)
+            {
+                var insertItmeData={restruantId:restruantId,restruantName:restruantName,
+                    number:materialsItem.number,price:materialsItem.materialPrice,
+                    sum:materialsItem.number*materialsItem.materialPrice};
+                materialsItemList[i].restruants.push(insertItmeData);
+            }
+            //update total
+            obj.totalnumber = obj.totalnumber + materialsItem.number;
+            obj.totalsum = obj.totalsum + materialsItem.number * materialsItem.materialPrice;
+            obj.totalprice = (parseFloat(obj.totalsum) / parseFloat(obj.totalnumber)).toFixed(2);
+            hasMaterial = true;
+        }
+    }
+    if(!hasMaterial){
+        //insert
+        var insertData={oid:materialsItem.materialId,materialName:materialsItem.materialName,
+            unit:materialsItem.unit,remark:materialsItem.remark,
+            restruants:[{restruantId:restruantId,restruantName:restruantName,number:materialsItem.number,price:materialsItem.materialPrice,sum:materialsItem.number * materialsItem.materialPrice}],
+            totalnumber:materialsItem.number,totalprice:materialsItem.materialPrice,totalsum:materialsItem.number * materialsItem.materialPrice};
+        materialsItemList.push(insertData);
+    }
+}
+
+
 function getOrderItemsTotalFormDB(orderStatus, pStartDate, pEndDate, userInfo, callback) {
 
     var startDate = pStartDate;
@@ -1584,11 +1631,11 @@ function getOrderItemsTotalFormDB(orderStatus, pStartDate, pEndDate, userInfo, c
     var totalAmt = 0;
     var respObj = {};
     var paidIn_totalSum = 0;
-    var orderItemList = [];
-    var orderItem = {oid: "",materialName:"", unit: "", remark:"",
+    var materialsItemList = new Array();
+    var materialsItem = {oid: "",materialName:"", unit: "", remark:"",
         restruants:[{restruantId:"",restruantName:"",number:"",price:"",sum:""}],
         totalnumber:"",totalprice:"",totalsum:""};
-    var restruantlist=[];//[{restruantid:"",restruantname:""}]
+    var restruantlist=new Array();//[{restruantid:"",restruantname:""}]
 
     console.info('supplyData:' + JSON.stringify(supplyData));
     mongodbDao.queryBy(supplyData, 'Orders', function (err, data) {
@@ -1605,60 +1652,30 @@ function getOrderItemsTotalFormDB(orderStatus, pStartDate, pEndDate, userInfo, c
             for (var j = 0; j < obj.orderItem.length; j++) {
                 orderItem = {};
                 var subObj = obj.orderItem[j];
-                if(!!orderItemList.find({"oid":subObj.materialId})) {//已有菜品
-                    if(!!orderItemList.restruants.find({"restruantId":subObj.mechanism_id}))//更新餐厅
-                    {
+                MaterialsItemIn(materialsItemList,subObj,obj.restruantId,obj.restruantName)//已有菜品
+            }
 
-                    }else{//新餐厅
-
-                    }
-                }else{//新菜品
-                    orderItem.oid = subObj.materialId;
-                    orderItem.materialName = subObj.materialName;
-                    orderItem.price = subObj.materialPrice;
-                    orderItem.count = subObj.number;
-                    orderItem.paidIn = subObj.paidIn ? subObj.paidIn : '0';
-                    var paidIn_subSum;
-                    paidIn_subSum = Decimal(orderItem.price).mul(orderItem.paidIn);
-                    paidIn_totalSum = Decimal(totalSum).add(paidIn_subSum);
-                    var subSum = Decimal(orderItem.price).mul(orderItem.count);
-                    totalSum = Decimal(totalSum).add(subSum);
-                    if (!isExisting(orderItemList, orderItem)) {
-                        orderItemList.push(orderItem);
-                    }
-                }
-                //餐厅列表
-                if(!restruantlist.find({"restruantid":subObj.mechanism_id}))//没找则加入
+            //餐厅列表
+            var hasrestruantname=false;
+            for(var resi= 0;resi<restruantlist.length;resi++)
+            {
+                if(restruantlist[resi].restruantId==obj.restruantId)//找到
                 {
-                    restruantlist.push({"restruantid":subObj.mechanism_id,"restruantname":subObj.mechanism_name});
+                    hasrestruantname=true;
+                    break;
                 }
             }
+            if(!hasrestruantname)
+            {
+                restruantlist.push({"restruantId":obj.restruantId,"restruantName":obj.restruantName});
+            }
         }
-        var arrayId = new Array();
-        orderItemList.forEach(function (orderItem) {
-            arrayId.push(new BSON.ObjectID(orderItem.oid));
-        });
 
-        mongodbDao.queryAdv('Material', {_id: {$in: arrayId}}, {
-            _id: 1,
-            remark: 1,
-            unit: 1
-        }, {_id: 1}, function (err, data) {
-            data.forEach(function (material) {
-                orderItemList.forEach(function (orderItem) {
-                    if (material._id.toString() === orderItem.oid) {
-                        orderItem.unit = material.unit;
-                        orderItem.remark = material.remark;
-                    }
-                });
-            });
-            respObj.orderItemList = orderItemList;
-            respObj.totalAmt = totalSum;
-            respObj.paidIn_totalSum = paidIn_totalSum;
-            console.log('Total Amt is :' + totalSum);
-            console.log('paidIn_totalSum Amt is :' + paidIn_totalSum);
-            callback(respObj);
-        });
+        respObj.materialsItemList = materialsItemList;
+        respObj.restruantlist=restruantlist;
+        console.info('materialsItemList is :' + JSON.stringify(materialsItemList));
+        callback(respObj);
+
     });
 
 }
