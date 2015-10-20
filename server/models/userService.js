@@ -107,11 +107,11 @@ exports.wxTest = function (req, res) {
     //var openId = 'oQmXLvsga1kd9fCrcL6rsP4bhGZ0';
     //var userType = '1';
 
-    //var openId = 'oQmXLvqj27L5XvfAcWwz63-xuJ24';
-    //var userType = '2';
+    var openId = 'oQmXLvqj27L5XvfAcWwz63-xuJ24';
+    var userType = '2';
 
-    var openId = 'oQmXLvttioLZ3Q9KMsWh11ynR8Vw';
-    var userType = '1';
+    //var openId = 'oQmXLvttioLZ3Q9KMsWh11ynR8Vw';
+    //var userType = '1';
 
     //var openId = 'oQmXLvnC0lKk-0s31lPwMNprhThA';
     //var userType = '1';

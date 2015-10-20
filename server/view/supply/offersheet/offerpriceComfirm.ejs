@@ -150,7 +150,31 @@ user-select:none;">
 </div>
 <div style="width: 100%;height: 55px">
 </div>
+<div class="add_tem">
+    <div class="add_w" style="margin-bottom: 55px">
+        <a href="javascript:$(this).css('display','none');$('#template_confirmw').css('display','none');" class="add_w_w_q">
+            拷贝报价单
+        </a>
+    </div>
+</div>
+<div class="template_confirmw pa" style="margin-bottom: 0px;position:absolute;bottom: 0px;display:none;">
+    <a class="template_confirmw_q btn btn-grey waves-button waves-effect waves-light"
+       href="javascript:commit()">取消</a>
+    <div class="template_confirmw_w">
+
+        <input id="name" class="form-control" placeholder="请输入报价单名" type="text" value="<%=JSON.parse(offerSheetData).name%>">
+    </div>
+    <a class="template_confirmw_q btn btn-green waves-button waves-effect waves-light"
+       href="javascript:commit()">保存</a>
+</div>
 <% } %>
+<div class="new_add_template_7"onclick="addOfferSheetItem()">
+    <div class="new_add_template_7_q">
+    </div>
+    <div class="new_add_template_7_w">
+    </div>
+</div>
+
 <script type="text/javascript">
     var biaoji = 1
     var li = document.querySelectorAll("li")
