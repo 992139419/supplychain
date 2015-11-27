@@ -28,7 +28,7 @@
     if (/iP(hone|od|ad)/.test(navigator.userAgent)) {
         hrefUrl=hrefLocation;
     }else{
-        hrefUrl=location.href.split('#')[0];
+        hrefUrl=hrefLocation; //修改后
     }
     var li = document.querySelectorAll("li")
     for (var a = 0; a < li.length; a++) {
@@ -49,7 +49,7 @@
                 url:hrefUrl
             }, function (data) {
                 wx.config({
-                    debug: false,
+                    debug: true,
                     appId: data.appId,
                     timestamp: data.timestamp,
                     nonceStr: data.nonceStr,
@@ -80,6 +80,7 @@
                 }
             });
             wx.error(function (res) {
+                alert(JSON.stringify(res));
                 alert(res.errMsg);
             });
 

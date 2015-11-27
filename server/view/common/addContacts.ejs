@@ -12,7 +12,8 @@
     if (/iP(hone|od|ad)/.test(navigator.userAgent)) {
         hrefUrl = hrefLocation;
     } else {
-        hrefUrl = location.href.split('#')[0];
+        //hrefUrl = location.href.split('#')[0]; //修改前
+        hrefUrl = hrefLocation; //修改后
     }
     $.post('http://www.idabaicai.com/getQMData', {
         url: hrefUrl

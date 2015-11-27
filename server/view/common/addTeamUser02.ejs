@@ -26,7 +26,8 @@
     if (/iP(hone|od|ad)/.test(navigator.userAgent)) {
         hrefUrl = hrefLocation;
     } else {
-        hrefUrl = location.href.split('#')[0];
+        //hrefUrl = location.href.split('#')[0];
+        hrefUrl = hrefLocation; // 修改后
     }
     var li = document.querySelectorAll(".check")
     for (var a = 0; a < li.length; a++) {
